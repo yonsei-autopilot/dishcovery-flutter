@@ -8,6 +8,10 @@
 .history
 .env
 
+#firebase
+google-services.json
+GoogleService-Info.plist
+
 
 
 # Flutter repo-specific
