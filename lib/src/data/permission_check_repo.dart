@@ -1,5 +1,6 @@
 import 'package:permission_handler/permission_handler.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smart_menu_flutter/src/domain/repositories/permission_repository.dart';
 
 class PermissionCheckRepo implements PermissionRepository {
@@ -8,16 +9,24 @@ class PermissionCheckRepo implements PermissionRepository {
     var status = await Permission.location.status;
     Position position;
     if (status.isGranted) {
-      // sharedpreferences에 위치 정보 저장 Geolocator 사용해서
       position = await Geolocator.getCurrentPosition();
+      SharedPreferences.getInstance().then((prefs) {
+        prefs.setBool('locationPermission', true);
+        prefs.setDouble('latitude', position.latitude);
+        prefs.setDouble('longitude', position.longitude);
+      });
       return true;
     } else {
       status =  await Permission.location.request();
       // var status = await Permission.location.status;
       if (status.isGranted && status.isLimited) {
         if (await Permission.locationWhenInUse.serviceStatus.isEnabled) {
-          // sharedpreferences에 위치 정보 저장 Geolocator 사용해서
           position = await Geolocator.getCurrentPosition();
+          SharedPreferences.getInstance().then((prefs) {
+            prefs.setBool('locationPermission', true);
+            prefs.setDouble('latitude', position.latitude);
+            prefs.setDouble('longitude', position.longitude);
+          });
           return true;
         }
       } else if (status.isPermanentlyDenied) {
@@ -39,9 +48,15 @@ class PermissionCheckRepo implements PermissionRepository {
     } else {
       status = await Permission.camera.request();
       if (status.isGranted) {
+        SharedPreferences.getInstance().then((prefs) {
+          prefs.setBool('cameraPermission', true);
+        });
         return true;
       } else if (status.isDenied) {
         if (await cameraPermission()) {
+          SharedPreferences.getInstance().then((prefs) {
+            prefs.setBool('cameraPermission', true);
+          });
           return true;
         } else {
           return false;
