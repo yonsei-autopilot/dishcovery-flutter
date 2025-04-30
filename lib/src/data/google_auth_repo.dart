@@ -11,6 +11,6 @@ class GoogleAuthRepository implements AuthRepository {
     final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
     final GoogleSignInAuthentication authentication = await googleUser!.authentication;
     // 서버랑 로그인
-    return ;
+    return new MenuUser(id: "0", password: "password");
   }
 }
