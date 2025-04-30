@@ -7,6 +7,13 @@
 .buildlog/
 .history
 .env
+.DS_Store
+
+# IntelliJ related
+*.iml
+*.ipr
+*.iws
+.idea/
 
 #firebase
 google-services.json
