@@ -19,6 +19,8 @@
 google-services.json
 GoogleService-Info.plist
 
+# Build cache
+android/app/.cxx
 
 
 # Flutter repo-specific
