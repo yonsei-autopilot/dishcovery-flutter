@@ -6,7 +6,7 @@ import 'package:smart_menu_flutter/src/presentation/pages/login_page.dart';
 final routerProvider = Provider<GoRouter>((ref) {
   // final authNotifier = AuthNotifier(ref: ref);
   return GoRouter(
-      initialLocation: '/login',
+      initialLocation: '/',
       routes: [
         GoRoute(
           path: '/',
