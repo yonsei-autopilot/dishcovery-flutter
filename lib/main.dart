@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:smart_menu_flutter/src/core/router.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:smart_menu_flutter/src/data/local/shared_preferences_provider.dart';
+import 'package:smart_menu_flutter/src/core/router/router.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  final prefs = await SharedPreferences.getInstance();
+
   await Firebase.initializeApp();
-  runApp(const ProviderScope(child: MyApp()));
+  runApp(ProviderScope(
+      overrides: [sharedPreferencesProvider.overrideWithValue(prefs)],
+      child: const MyApp()));
 }
 
 class MyApp extends ConsumerWidget {
