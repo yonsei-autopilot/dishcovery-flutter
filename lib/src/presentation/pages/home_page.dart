@@ -4,8 +4,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smart_menu_flutter/src/config/theme/body_text.dart';
-import 'package:smart_menu_flutter/src/presentation/providers/camera_provider.dart';
-import 'package:smart_menu_flutter/src/presentation/providers/providers.dart';
+import 'package:smart_menu_flutter/src/core/providers/usecase_providers.dart';
+import 'package:smart_menu_flutter/src/presentation/notifiers/camera_notifier.dart';
+import 'package:smart_menu_flutter/src/presentation/states/camera_state.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
@@ -31,19 +32,25 @@ class HomePageState extends ConsumerState<HomePage> {
 
     return Scaffold(
       body: switch (state) {
-        CInitial() || CLoading() => const Center(child: CircularProgressIndicator(),),
+        CInitial() || CLoading() => const Center(
+            child: CircularProgressIndicator(),
+          ),
         CReady(:final controller) => CameraPreview(controller),
         CCapturing() => const Center(child: BodyText(text: "Taking Photo...")),
         CCapturedSuccess(:final file) => Image.file(File(file.path)),
         CError(:final error) => ElevatedButton(
-          child: const BodyText(text: "Retry"),
-          onPressed: () => ref.read(cameraControllerProvider.notifier).initialize(),
-        ),
+            child: const BodyText(text: "Retry"),
+            onPressed: () =>
+                ref.read(cameraControllerProvider.notifier).initialize(),
+          ),
       },
-      floatingActionButton: state is CReady ? FloatingActionButton(
-        onPressed: () => ref.read(cameraControllerProvider.notifier).takePicture(),
-        child: const Icon(CupertinoIcons.camera_fill),
-      ) : null,
+      floatingActionButton: state is CReady
+          ? FloatingActionButton(
+              onPressed: () =>
+                  ref.read(cameraControllerProvider.notifier).takePicture(),
+              child: const Icon(CupertinoIcons.camera_fill),
+            )
+          : null,
     );
   }
 }

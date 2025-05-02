@@ -1,14 +1,13 @@
 import 'package:camera/camera.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:smart_menu_flutter/src/data/camera_repo.dart';
+import 'package:smart_menu_flutter/src/core/providers/repository_providers.dart';
 import 'package:smart_menu_flutter/src/domain/repositories/camera_repository.dart';
+import 'package:smart_menu_flutter/src/presentation/states/camera_state.dart';
 
-final cameraRepositoryProvider = Provider<CameraRepository>((ref) {
-  return CameraImplRepository();
-});
-
-final cameraControllerProvider = StateNotifierProvider<CameraControllerNotifier, CameraState> ((ref) {
-  final notifier = CameraControllerNotifier(ref.watch(cameraRepositoryProvider));
+final cameraControllerProvider =
+    StateNotifierProvider<CameraControllerNotifier, CameraState>((ref) {
+  final notifier =
+      CameraControllerNotifier(ref.watch(cameraRepositoryProvider));
   notifier.initialize();
   return notifier;
 });
@@ -46,21 +45,4 @@ class CameraControllerNotifier extends StateNotifier<CameraState> {
     repo.disposeCamera(controller!);
     super.dispose();
   }
-}
-
-sealed class CameraState {}
-class CInitial extends CameraState {}
-class CLoading extends CameraState {}
-class CReady extends CameraState {
-  final CameraController controller;
-  CReady(this.controller);
-}
-class CCapturing extends CameraState {}
-class CCapturedSuccess extends CameraState {
-  final XFile file;
-  CCapturedSuccess(this.file);
-}
-class CError extends CameraState {
-  final String error;
-  CError(this.error);
 }
