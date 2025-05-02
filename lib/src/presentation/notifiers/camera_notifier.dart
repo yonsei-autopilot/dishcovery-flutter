@@ -1,6 +1,6 @@
 import 'package:camera/camera.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:smart_menu_flutter/src/core/providers/repository_providers.dart';
+import 'package:smart_menu_flutter/src/core/di/repository_providers.dart';
 import 'package:smart_menu_flutter/src/domain/repositories/camera_repository.dart';
 import 'package:smart_menu_flutter/src/presentation/states/camera_state.dart';
 
