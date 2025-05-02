@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smart_menu_flutter/src/config/theme/body_text.dart';
 import 'package:smart_menu_flutter/src/config/theme/color.dart';
-import 'package:smart_menu_flutter/src/presentation/providers/providers.dart';
+import 'package:smart_menu_flutter/src/core/providers/usecase_providers.dart';
 
 class LoginPage extends ConsumerWidget {
   const LoginPage({super.key});
@@ -18,7 +18,10 @@ class LoginPage extends ConsumerWidget {
           onPressed: () {
             loginUseCase.call();
           },
-          child: const BodyText(text: "login", color: primaryRed,),
+          child: const BodyText(
+            text: "login",
+            color: primaryRed,
+          ),
         ),
       ),
     );

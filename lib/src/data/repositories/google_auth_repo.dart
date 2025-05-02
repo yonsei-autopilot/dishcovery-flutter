@@ -12,6 +12,10 @@ class GoogleAuthRepository implements AuthRepository {
     final GoogleSignInAuthentication authentication =
         await googleUser!.authentication;
 
+    print(authentication.accessToken);
+    print(authentication.idToken);
+    print(authentication.toString());
+
     // 서버랑 로그인
     return new MenuUser(id: "0", password: "password");
   }
