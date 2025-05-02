@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smart_menu_flutter/src/config/theme/body_text.dart';
-import 'package:smart_menu_flutter/src/core/providers/usecase_providers.dart';
+import 'package:smart_menu_flutter/src/core/di/usecase_providers.dart';
 import 'package:smart_menu_flutter/src/presentation/notifiers/camera_notifier.dart';
 import 'package:smart_menu_flutter/src/presentation/states/camera_state.dart';
 
