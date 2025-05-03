@@ -8,12 +8,7 @@ final permissionUseCaseProvider = Provider<PermissionUsecase>((ref) {
   return PermissionUsecase(repo);
 });
 
-final loginUseCaseProvider = Provider<LoginUseCase>((ref) {
+final authUseCaseProvider = Provider<AuthUseCase>((ref) {
   final repo = ref.read(authRepositoryProvider);
-  return LoginUseCase(repo);
-});
-
-final checkLoginUseCaseProvider = Provider<CheckLoginUseCase>((ref) {
-  final repo = ref.read(authRepositoryProvider);
-  return CheckLoginUseCase(repo);
+  return AuthUseCase(repo);
 });

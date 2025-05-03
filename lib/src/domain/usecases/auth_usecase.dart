@@ -1,18 +1,13 @@
-import '../entities/user.dart';
-import '../repositories/auth_repository.dart';
+import 'package:smart_menu_flutter/src/domain/dtos/login_response.dart';
+import 'package:smart_menu_flutter/src/domain/repositories/auth_repository.dart';
 
-class LoginUseCase {
-  final AuthRepository repo;
-  LoginUseCase(this.repo);
-  Future<MenuUser> call() {
-    return repo.loginWithGoogle();
-  }
-}
+class AuthUseCase {
+  final AuthRepository authRepository;
+  AuthUseCase(this.authRepository);
 
-class CheckLoginUseCase {
-  final AuthRepository repo;
-  CheckLoginUseCase(this.repo);
-  Future<bool> call() {
-    return repo.isLoggedIn();
+  Future<void> loginWithGoogle() async {
+    String accessToken = await authRepository.googleAuthenticate();
+    LoginResponse response = await authRepository.login(accessToken);
+    authRepository.saveTokens(response.accessToken, response.refreshToken);
   }
 }

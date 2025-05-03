@@ -1,19 +1,20 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../states/auth_state.dart';
+import 'package:smart_menu_flutter/src/presentation/states/auth_state.dart';
+import 'package:smart_menu_flutter/src/domain/usecases/auth_usecase.dart';
+import 'package:smart_menu_flutter/src/core/di/usecase_providers.dart';
 
-final authNotifierProvider =
-    StateNotifierProvider<AuthNotifier, AuthState>((ref) {
-  return AuthNotifier();
+final authNotifierProvider = StateNotifierProvider<AuthNotifier, AuthState>((ref) {
+  final notifier = AuthNotifier(ref.watch(authUseCaseProvider));
+  return notifier;
 });
 
 class AuthNotifier extends StateNotifier<AuthState> {
-  AuthNotifier() : super(Unauthenticated());
+  final AuthUseCase useCase;
 
-  void setAuthenticated() {
+  AuthNotifier(this.useCase) : super(Unauthenticated());
+
+  Future<void> loginWithGoogle() async {
+    await useCase.loginWithGoogle();
     state = Authenticated();
-  }
-
-  void setUnauthenticated() {
-    state = Unauthenticated();
   }
 }

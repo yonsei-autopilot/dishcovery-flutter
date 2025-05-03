@@ -4,10 +4,8 @@ import 'package:smart_menu_flutter/src/core/di/repository_providers.dart';
 import 'package:smart_menu_flutter/src/domain/repositories/camera_repository.dart';
 import 'package:smart_menu_flutter/src/presentation/states/camera_state.dart';
 
-final cameraControllerProvider =
-    StateNotifierProvider<CameraControllerNotifier, CameraState>((ref) {
-  final notifier =
-      CameraControllerNotifier(ref.watch(cameraRepositoryProvider));
+final cameraControllerProvider = StateNotifierProvider<CameraControllerNotifier, CameraState>((ref) {
+  final notifier = CameraControllerNotifier(ref.watch(cameraRepositoryProvider));
   notifier.initialize();
   return notifier;
 });
