@@ -1,6 +1,7 @@
-import '../entities/user.dart';
+import 'package:smart_menu_flutter/src/domain/dtos/login_response.dart';
 
 abstract class AuthRepository {
-  Future<MenuUser> loginWithGoogle();
-  Future<bool> isLoggedIn();
+  Future<String> googleAuthenticate();
+  Future<LoginResponse> login(String accessToken);
+  void saveTokens(String accessToken, String refreshToken);
 }
