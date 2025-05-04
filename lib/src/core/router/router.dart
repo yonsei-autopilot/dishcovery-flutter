@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:smart_menu_flutter/src/presentation/pages/camera/generated_menu_page.dart';
 import 'package:smart_menu_flutter/src/presentation/pages/camera/home_page.dart';
 import 'package:smart_menu_flutter/src/presentation/pages/login/login_page.dart';
-import 'package:smart_menu_flutter/src/presentation/pages/user_setting_page.dart';
+import 'package:smart_menu_flutter/src/presentation/pages/user_setting/preferences_page.dart';
+import 'package:smart_menu_flutter/src/presentation/pages/user_setting/user_setting_page.dart';
 import 'package:smart_menu_flutter/src/presentation/states/auth_state.dart';
 import 'package:smart_menu_flutter/src/presentation/notifiers/auth_notifier.dart';
 
@@ -36,7 +37,14 @@ final routerProvider = Provider<GoRouter>((ref) {
           )
       ),
       GoRoute(path: '/login', builder: (context, state) => const LoginPage()),
-      GoRoute(path: '/user_setting', builder: (context, state) => const UserSettingPage()),
+      GoRoute(
+          path: '/user_setting',
+          pageBuilder: (context, state) => buildPageWithDefaultTransition(
+              context: context,
+              state: state,
+              child: const UserSettingPage()
+          )
+      ),
       GoRoute(
         path: '/generated_menu',
         pageBuilder: (context, state) {
@@ -47,7 +55,15 @@ final routerProvider = Provider<GoRouter>((ref) {
             child: GeneratedMenuPage(filePath: filePath),
           );
         },
-      )
+      ),
+      GoRoute(
+          path: '/preferences',
+          pageBuilder: (context, state) => buildPageWithDefaultTransition(
+              context: context,
+              state: state,
+              child: const PreferencesPage()
+          )
+      ),
     ],
   );
 });
