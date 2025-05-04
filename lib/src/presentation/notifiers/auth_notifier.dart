@@ -16,4 +16,8 @@ class AuthNotifier extends StateNotifier<AuthState> {
     await useCase.loginWithGoogle();
     state = Authenticated();
   }
+
+  Future<void> test() async {
+    state = Authenticated();
+  }
 }

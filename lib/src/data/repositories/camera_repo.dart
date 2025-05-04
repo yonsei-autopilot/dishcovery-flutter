@@ -16,7 +16,7 @@ class CameraImplRepository implements CameraRepository {
   Future<CameraController> initializeCamera(CameraDescription camera) async {
     final controller = CameraController(
       camera,
-      ResolutionPreset.veryHigh,
+      ResolutionPreset.ultraHigh,
       enableAudio: false,
       imageFormatGroup: ImageFormatGroup.jpeg
     );
@@ -26,11 +26,17 @@ class CameraImplRepository implements CameraRepository {
 
   @override
   Future<XFile> takePicture(CameraController controller) async {
-    return await controller.takePicture();
+    try {
+      return await controller.takePicture();
+    } catch (e) {
+      throw Exception('사진 촬영 실패: $e');
+    }
   }
 
   @override
-  Future<void> disposeCamera(CameraController controller) async {
-    await controller.dispose();
+  Future<void> disposeCamera(CameraController? controller) async {
+    if (controller != null && controller.value.isInitialized) {
+      await controller.dispose();
+    }
   }
 }
