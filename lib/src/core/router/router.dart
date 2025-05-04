@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
 import 'package:smart_menu_flutter/src/presentation/pages/camera/generated_menu_page.dart';
 import 'package:smart_menu_flutter/src/presentation/pages/camera/home_page.dart';
-import 'package:smart_menu_flutter/src/presentation/pages/login_page.dart';
+import 'package:smart_menu_flutter/src/presentation/pages/login/login_page.dart';
 import 'package:smart_menu_flutter/src/presentation/pages/user_setting_page.dart';
 import 'package:smart_menu_flutter/src/presentation/states/auth_state.dart';
 import 'package:smart_menu_flutter/src/presentation/notifiers/auth_notifier.dart';
