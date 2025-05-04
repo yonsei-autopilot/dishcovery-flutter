@@ -21,27 +21,20 @@ class LoginPageState extends ConsumerState<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    final state = ref.read(authNotifierProvider);
-
-    if (state is Authenticated) {
-      context.go("/");
-    }
-
     return Scaffold(
-      body: state is Unauthenticated
-      ? Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: ElevatedButton(
-          onPressed: () {
-            ref.read(authNotifierProvider.notifier).loginWithGoogle();
-          },
-          child: const BodyText(
-            text: "Google Login",
-            color: primaryRed,
+      body:
+        Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: ElevatedButton(
+            onPressed: () {
+              ref.read(authNotifierProvider.notifier).loginWithGoogle();
+            },
+            child: const BodyText(
+              text: "Google Login",
+              color: primaryRed,
+            ),
           ),
-        ),
-      )
-      : const SizedBox.shrink(),
+        )
     );
   }
 }
