@@ -2,14 +2,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smart_menu_flutter/src/data/local/shared_preferences_provider.dart';
 
-final tokenStorageProvider = Provider<TokenStorage>((ref) {
-  return TokenStorage(ref.read(sharedPreferencesProvider));
+final authStorageProvider = Provider<AuthStorage>((ref) {
+  return AuthStorage(ref.read(sharedPreferencesProvider));
 });
 
-class TokenStorage {
+class AuthStorage {
   final SharedPreferences prefs;
 
-  TokenStorage(this.prefs);
+  AuthStorage(this.prefs);
 
   String? getAccessToken() {
     return prefs.getString("ACCCESS_TOKEN");

@@ -2,6 +2,11 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smart_menu_flutter/src/domain/repositories/permission_repository.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+final permissionRepositoryProvider = Provider<PermissionRepository>((ref) {
+  return PermissionCheckRepo();
+});
 
 class PermissionCheckRepo implements PermissionRepository {
   @override
