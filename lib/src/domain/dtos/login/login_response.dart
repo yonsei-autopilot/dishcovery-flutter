@@ -4,10 +4,10 @@ part 'login_response.g.dart';
 
 @JsonSerializable()
 class LoginResponse {
-  @JsonKey(name: 'access_token')
+  @JsonKey(name: 'accessToken')
   final String accessToken;
 
-  @JsonKey(name: 'refresh_token')
+  @JsonKey(name: 'refreshToken')
   final String refreshToken;
 
   LoginResponse({required this.accessToken, required this.refreshToken});

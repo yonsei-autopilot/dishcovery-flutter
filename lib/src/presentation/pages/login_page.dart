@@ -6,11 +6,21 @@ import 'package:smart_menu_flutter/src/config/theme/color.dart';
 import 'package:smart_menu_flutter/src/presentation/notifiers/auth_notifier.dart';
 import 'package:smart_menu_flutter/src/presentation/states/auth_state.dart';
 
-class LoginPage extends ConsumerWidget {
+class LoginPage extends ConsumerStatefulWidget {
   const LoginPage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  LoginPageState createState() => LoginPageState();
+}
+
+class LoginPageState extends ConsumerState<LoginPage> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final state = ref.read(authNotifierProvider);
 
     if (state is Authenticated) {
