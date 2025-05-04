@@ -1,20 +1,24 @@
 import 'package:dio/dio.dart';
-import 'package:smart_menu_flutter/src/data/local/token_storage.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:smart_menu_flutter/src/data/local/auth_storage.dart';
+import 'package:smart_menu_flutter/src/data/network/dio_provider.dart';
 
 class AuthInterceptor extends Interceptor {
-  final TokenStorage tokenStorage;
+  final Ref<DioService> ref;
 
-  AuthInterceptor(this.tokenStorage);
+  AuthInterceptor(this.ref);
 
   @override
-  void onRequest(
-      RequestOptions options, RequestInterceptorHandler handler) async {
-    final token = tokenStorage.getAccessToken();
+  void onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
+    final authStorage = ref.read(authStorageProvider);
 
-    if (token != null) {
-      options.headers['Authorization'] = 'Bearer $token';
+    final accessToken = authStorage.getAccessToken();
+
+    if (accessToken != null) {
+      options.headers['Authorization'] = 'Bearer $accessToken';
     }
-    handler.next(options); // 계속 진행
+    
+    handler.next(options);
   }
 
   @override

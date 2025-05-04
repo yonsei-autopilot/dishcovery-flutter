@@ -1,28 +1,25 @@
 import 'package:camera/camera.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:smart_menu_flutter/src/core/di/repository_providers.dart';
-import 'package:smart_menu_flutter/src/domain/repositories/camera_repository.dart';
+import 'package:smart_menu_flutter/src/domain/usecases/camera_usecase.dart';
 import 'package:smart_menu_flutter/src/presentation/states/camera_state.dart';
 
-final cameraControllerProvider =
-    StateNotifierProvider<CameraControllerNotifier, CameraState>((ref) {
-  final notifier =
-      CameraControllerNotifier(ref.watch(cameraRepositoryProvider));
+final cameraControllerProvider = StateNotifierProvider<CameraControllerNotifier, CameraState>((ref) {
+  final notifier = CameraControllerNotifier(ref.watch(cameraUseCaseProvider));
   notifier.initialize();
   return notifier;
 });
 
 class CameraControllerNotifier extends StateNotifier<CameraState> {
-  final CameraRepository repo;
+  final CameraUsecase usecase;
   CameraController? controller;
 
-  CameraControllerNotifier(this.repo) : super(CInitial());
+  CameraControllerNotifier(this.usecase) : super(CInitial());
 
   Future<void> initialize() async {
     try {
       state = CLoading();
-      final cameras = await repo.getAvailableCameras();
-      controller = await repo.initializeCamera(cameras.first);
+      final cameras = await usecase.getAvailableCameras();
+      controller = await usecase.initializeCamera(cameras.first);
       state = CReady(controller!);
     } catch (e) {
       state = CError(e.toString());
@@ -33,7 +30,7 @@ class CameraControllerNotifier extends StateNotifier<CameraState> {
     if (state is! CReady) return;
     try {
       state = CCapturing();
-      final file = await repo.takePicture(controller!);
+      final file = await usecase.takePicture(controller!);
       state = CCapturedSuccess(file);
     } catch (e) {
       state = CError(e.toString());
@@ -42,7 +39,7 @@ class CameraControllerNotifier extends StateNotifier<CameraState> {
 
   @override
   void dispose() {
-    repo.disposeCamera(controller!);
+    usecase.disposeCamera(controller!);
     super.dispose();
   }
 }
