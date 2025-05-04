@@ -1,5 +1,10 @@
 import 'package:camera/camera.dart';
 import 'package:smart_menu_flutter/src/domain/repositories/camera_repository.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+final cameraRepositoryProvider = Provider<CameraRepository>((ref) {
+  return CameraImplRepository();
+});
 
 class CameraImplRepository implements CameraRepository {
   @override

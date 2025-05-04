@@ -4,7 +4,7 @@ part 'login_request.g.dart';
 
 @JsonSerializable()
 class LoginRequest {
-  @JsonKey(name: 'access_token')
+  @JsonKey(name: 'accessToken')
   final String accessToken;
 
   LoginRequest({required this.accessToken});
