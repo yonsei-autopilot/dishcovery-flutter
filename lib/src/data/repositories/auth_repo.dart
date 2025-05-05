@@ -3,8 +3,9 @@ import 'package:smart_menu_flutter/src/data/network/api_path.dart';
 import 'package:smart_menu_flutter/src/data/network/dio_provider.dart';
 import 'package:smart_menu_flutter/src/data/network/http_method.dart';
 import 'package:smart_menu_flutter/src/domain/dtos/common/api_response.dart';
-import 'package:smart_menu_flutter/src/domain/dtos/login/login_request.dart';
+import 'package:smart_menu_flutter/src/domain/dtos/login/google_login_request.dart';
 import 'package:smart_menu_flutter/src/domain/dtos/login/login_response.dart';
+import 'package:smart_menu_flutter/src/domain/dtos/login/simple_login_request.dart';
 import 'package:smart_menu_flutter/src/domain/errors/global_exception.dart';
 import 'package:smart_menu_flutter/src/domain/errors/exception_type.dart';
 import 'package:smart_menu_flutter/src/domain/repositories/auth_repository.dart';
@@ -40,12 +41,12 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<LoginResponse> login(String accessToken) async {
+  Future<LoginResponse> googleLogin(String accessToken) async {
     try {
     final apiResponse = await dioService.request<ApiResponse<LoginResponse>>(
-      path: ApiPath.login,
+      path: ApiPath.googleLogin,
       method: HttpMethod.POST,
-      body: LoginRequest(accessToken: accessToken).toJson(),
+      body: GoogleLoginRequest(accessToken: accessToken).toJson(),
       decoder: (json) => ApiResponse.fromJson(json, (j) => LoginResponse.fromJson(j as Map<String, dynamic>)),
     );
 
@@ -57,6 +58,31 @@ class AuthRepositoryImpl implements AuthRepository {
       }
 
       return apiResponse.data!;
+
+    } catch (e) {
+      if (e is GlobalException) rethrow;
+      throw GlobalException(ExceptionType.networkError, 'Failed to connect to server');
+    }
+  }
+
+  @override
+  Future<LoginResponse> simpleLogin(SimpleLoginRequest request) async {
+    try {
+      final apiResponse = await dioService.request<ApiResponse<LoginResponse>>(
+        path: ApiPath.simpleLogin,
+        method: HttpMethod.POST,
+        body: request.toJson(),
+        decoder: (json) => ApiResponse.fromJson(json, (j) => LoginResponse.fromJson(j as Map<String, dynamic>)),
+      );
+
+      if (!apiResponse.isSuccess) {
+        final error = apiResponse.error;
+        if (error == null) {
+          throw GlobalException(ExceptionType.unknown, 'Unknown API error');
+        }
+      }
+
+      return apiResponse.data!; 
 
     } catch (e) {
       if (e is GlobalException) rethrow;
