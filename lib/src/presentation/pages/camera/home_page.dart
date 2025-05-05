@@ -17,7 +17,8 @@ class HomePage extends ConsumerStatefulWidget {
   HomePageState createState() => HomePageState();
 }
 
-class HomePageState extends ConsumerState<HomePage> with WidgetsBindingObserver {
+class HomePageState extends ConsumerState<HomePage>
+    with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
@@ -26,7 +27,7 @@ class HomePageState extends ConsumerState<HomePage> with WidgetsBindingObserver 
       final permissionUseCase = ref.read(permissionUseCaseProvider);
       final hasLocationPermission = await permissionUseCase.checkLocation();
       final hasCameraPermission = await permissionUseCase.checkCamera();
-      // ref.read(cameraControllerProvider.notifier).initialize();
+      ref.read(cameraControllerProvider.notifier).initialize();
     });
   }
 
@@ -51,56 +52,90 @@ class HomePageState extends ConsumerState<HomePage> with WidgetsBindingObserver 
       backgroundColor: Colors.black,
       body: switch (state) {
         CInitial() || CLoading() => const Center(
-            child: CircularProgressIndicator(color: primaryWhite,),
+            child: CircularProgressIndicator(
+              color: primaryWhite,
+            ),
           ),
         CReady(:final controller) => Stack(
-          children: [
-            Positioned(
-              top: 90,
-              left: 0,
-              right: 0,
-              bottom: 200,
-              child: CameraPreview(controller),
-            ),
-            Positioned(
-              top: 28,
-              left: 33,
-              child: IconButton(
-                onPressed: () {
-                  ref.read(routerProvider).go('/user_setting');
-                },
-                icon: const Icon(
-                  CupertinoIcons.person,
-                  color: primaryWhite,
-                  size: 33,
-                ),
+            children: [
+              Positioned(
+                top: 90,
+                left: 0,
+                right: 0,
+                bottom: 200,
+                child: CameraPreview(controller),
               ),
-            ),
-            Positioned(
-              bottom: 52,
-              left: 0,
-              right: 0,
-              child: Center(
+              Positioned(
+                top: 28,
+                left: 33,
                 child: IconButton(
-                  icon: const Icon(Icons.radio_button_checked, size: 96, color: primaryWhite,),
-                  onPressed: () => ref.read(cameraControllerProvider.notifier).takePicture(),
+                  onPressed: () {
+                    ref.read(routerProvider).go('/user_setting');
+                  },
+                  icon: const Icon(
+                    CupertinoIcons.person,
+                    color: primaryWhite,
+                    size: 33,
+                  ),
                 ),
               ),
-            )
-          ],
-        ),
-        CCapturing() => const Center(child: BodyText(text: "Taking Photo...", color: primaryWhite,)),
-        CCapturedSuccess(:final file) => Builder(
-          builder: (context) {
+              Positioned(
+                bottom: 52,
+                left: 0,
+                right: 0,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 32),
+                  child: Row(
+                    children: [
+                      const Expanded(
+                        child: Align(
+                            alignment: Alignment.centerLeft, child: SizedBox()),
+                      ),
+                      Expanded(
+                        child: Center(
+                          child: IconButton(
+                            icon: const Icon(Icons.radio_button_checked,
+                                size: 96, color: primaryWhite),
+                            onPressed: () => ref
+                                .read(cameraControllerProvider.notifier)
+                                .takePicture(),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Align(
+                          alignment: Alignment.centerRight,
+                          child: IconButton(
+                            icon: const Icon(Icons.photo_library,
+                                size: 40, color: primaryWhite),
+                            onPressed: () => ref
+                                .read(cameraControllerProvider.notifier)
+                                .selectPicture(),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        CCapturing() => const Center(
+              child: BodyText(
+            text: 'Generating Menu...',
+            color: primaryWhite,
+          )),
+        CCapturedSuccess(:final file) => Builder(builder: (context) {
             WidgetsBinding.instance.addPostFrameCallback((_) {
               context.go('/generated_menu', extra: file.path);
-            }
-          );
-          return const Center(child: BodyText(text: 'Generating Menu...', color: primaryWhite,));
-          }
-        ),
+            });
+            return const SizedBox();
+          }),
         CError(:final error) => ElevatedButton(
-            child: const BodyText(text: "Retry", color: primaryWhite,),
+            child: const BodyText(
+              text: "Retry",
+              color: primaryWhite,
+            ),
             onPressed: () =>
                 ref.read(cameraControllerProvider.notifier).initialize(),
           ),
