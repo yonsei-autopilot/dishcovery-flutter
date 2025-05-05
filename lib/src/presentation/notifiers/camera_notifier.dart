@@ -17,29 +17,45 @@ class CameraControllerNotifier extends StateNotifier<CameraState> {
 
   Future<void> initialize() async {
     try {
+      await controller?.dispose();
       state = CLoading();
       final cameras = await usecase.getAvailableCameras();
       controller = await usecase.initializeCamera(cameras.first);
+      if (!controller!.value.isInitialized) {
+        await controller!.initialize();
+      }
       state = CReady(controller!);
     } catch (e) {
       state = CError(e.toString());
+      await _safeDispose();
     }
   }
 
   Future<void> takePicture() async {
-    if (state is! CReady) return;
+    if (state is! CReady || controller == null || !controller!.value.isInitialized) return;
+
     try {
       state = CCapturing();
       final file = await usecase.takePicture(controller!);
       state = CCapturedSuccess(file);
     } catch (e) {
       state = CError(e.toString());
+      await _safeDispose();
+    }
+  }
+
+  Future<void> _safeDispose() async {
+    if (controller != null) {
+      await controller!.dispose();
+      controller = null;
     }
   }
 
   @override
-  void dispose() {
-    usecase.disposeCamera(controller!);
+  Future<void> dispose() async {
+    await controller?.dispose();
+    controller = null;
+    state = CInitial();
     super.dispose();
   }
 }
