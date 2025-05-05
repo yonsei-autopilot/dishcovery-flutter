@@ -6,11 +6,14 @@ import 'package:smart_menu_flutter/src/domain/dtos/menu/menu_explain_response.da
 import '../../../config/theme/color.dart';
 import '../../../core/router/router.dart';
 
+typedef GeneratedMenuPageParams = ({
+  String filePath,
+  MenuExplainResponse response
+});
+
 class GeneratedMenuPage extends ConsumerStatefulWidget {
-  const GeneratedMenuPage(
-      {super.key, required this.filePath, required this.response});
-  final String filePath;
-  final MenuExplainResponse response;
+  const GeneratedMenuPage({super.key, required this.params});
+  final GeneratedMenuPageParams params;
 
   @override
   GeneratedMenuPageState createState() => GeneratedMenuPageState();
@@ -24,7 +27,7 @@ class GeneratedMenuPageState extends ConsumerState<GeneratedMenuPage> {
   Widget build(BuildContext context) {
     if (isLoading) {
       return const Scaffold(
-        backgroundColor: Colors.black,
+        backgroundColor: primaryWhite,
         body: Center(
             child: CircularProgressIndicator(
           color: primaryWhite,
@@ -43,7 +46,7 @@ class GeneratedMenuPageState extends ConsumerState<GeneratedMenuPage> {
                       right: 0,
                       bottom: 200,
                       child: Image.file(
-                        File(widget.filePath),
+                        File(widget.params.filePath),
                         fit: BoxFit.fill,
                       )),
                   Positioned(
