@@ -1,10 +1,10 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
 
-class MenuExplainRequest {
+class MenuTranslationRequest {
   final File imageFile;
 
-  MenuExplainRequest(this.imageFile);
+  MenuTranslationRequest(this.imageFile);
 
   Future<FormData> toFormData() async {
     final fileName = imageFile.path.split('/').last;

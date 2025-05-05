@@ -2,13 +2,13 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:smart_menu_flutter/src/domain/dtos/menu/menu_explain_response.dart';
+import 'package:smart_menu_flutter/src/domain/dtos/menu/menu_translation_response.dart';
 import '../../../config/theme/color.dart';
 import '../../../core/router/router.dart';
 
 typedef GeneratedMenuPageParams = ({
   String filePath,
-  MenuExplainResponse response
+  MenuTranslationResponse response
 });
 
 class GeneratedMenuPage extends ConsumerStatefulWidget {
