@@ -1,16 +1,17 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'login_request.dart';
+part of 'google_login_request.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-LoginRequest _$LoginRequestFromJson(Map<String, dynamic> json) => LoginRequest(
+GoogleLoginRequest _$GoogleLoginRequestFromJson(Map<String, dynamic> json) =>
+    GoogleLoginRequest(
       accessToken: json['accessToken'] as String,
     );
 
-Map<String, dynamic> _$LoginRequestToJson(LoginRequest instance) =>
+Map<String, dynamic> _$GoogleLoginRequestToJson(GoogleLoginRequest instance) =>
     <String, dynamic>{
       'accessToken': instance.accessToken,
     };
