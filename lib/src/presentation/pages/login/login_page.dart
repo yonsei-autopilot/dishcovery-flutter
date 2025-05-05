@@ -13,9 +13,19 @@ class LoginPage extends ConsumerStatefulWidget {
 }
 
 class LoginPageState extends ConsumerState<LoginPage> {
+  final TextEditingController _loginIdController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _loginIdController.dispose();
+    _passwordController.dispose();
+    super.dispose();
   }
 
   @override
@@ -43,11 +53,18 @@ class LoginPageState extends ConsumerState<LoginPage> {
                   height: 58,
                   width: width - 110,
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(29),
-                      color: const Color(0xffD9D9D9)),
-                  child: const Padding(
-                    padding: EdgeInsets.fromLTRB(29, 20, 0, 0),
-                    child: BodyText(text: 'E-Mail', size: 14, color: primaryGrey),
+                    borderRadius: BorderRadius.circular(29),
+                    color: const Color(0xffD9D9D9),
+                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 29),
+                  alignment: Alignment.centerLeft,
+                  child: TextFormField(
+                    controller: _loginIdController,
+                    decoration: const InputDecoration(
+                      border: InputBorder.none,
+                      hintText: 'Login Id',
+                    ),
+                    style: const TextStyle(fontSize: 14, color: primaryGrey),
                   ),
                 ),
                 const SizedBox(
@@ -58,26 +75,23 @@ class LoginPageState extends ConsumerState<LoginPage> {
                   height: 58,
                   width: width - 110,
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(29),
-                      color: const Color(0xffD9D9D9)),
-                  child: const Stack(
-                    children: [
-                      Positioned(
-                        top: 20,
-                        left: 29,
-                        child: BodyText(
-                            text: 'Password', size: 14, color: primaryGrey),
+                    borderRadius: BorderRadius.circular(29),
+                    color: const Color(0xffD9D9D9),
+                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 29),
+                  alignment: Alignment.centerLeft,
+                  child: Center(
+                    child: TextFormField(
+                      controller: _passwordController,
+                      obscureText: true,
+                      decoration: const InputDecoration(
+                        border: InputBorder.none,
+                        hintText: 'Password',
+                        suffixIcon: Icon(CupertinoIcons.eye_slash, color: primaryGrey),
+                        contentPadding: EdgeInsets.symmetric(vertical: 18),
                       ),
-                      Positioned(
-                        top: 20,
-                        right: 18,
-                        child: Icon(
-                          CupertinoIcons.eye_slash,
-                          color: primaryGrey,
-                          size: 20,
-                        ),
-                      )
-                    ],
+                      style: const TextStyle(fontSize: 14, color: primaryGrey),
+                    ),
                   ),
                 ),
                 const SizedBox(
@@ -104,13 +118,14 @@ class LoginPageState extends ConsumerState<LoginPage> {
                 ),
                 // google login button
                 GestureDetector(
-                    child: Image.asset(
-                      'assets/images/google_login.png',
-                      height: 34,
-                    ),
-                    onTap: () {
-                      ref.read(authNotifierProvider.notifier).loginWithGoogle();
-                    }),
+                  child: Image.asset(
+                    'assets/images/google_login.png',
+                    height: 34,
+                  ),
+                  onTap: () {
+                    ref.read(authNotifierProvider.notifier).googleLogin();
+                  },
+                ),
                 const SizedBox(
                   height: 30,
                 ),
@@ -122,6 +137,11 @@ class LoginPageState extends ConsumerState<LoginPage> {
                       width: width - 110,
                       child: const Center(child: BodyText(text: 'Login', color: primaryWhite, size: 20,))
                   ),
+                  onTap: () {
+                    final loginId = _loginIdController.text.trim();
+                    final password = _passwordController.text.trim();
+                    ref.read(authNotifierProvider.notifier).simpleLogin(loginId, password);
+                  }
                 ),
                 // 임시 버튼
                 const SizedBox(
