@@ -5,7 +5,6 @@ import 'package:go_router/go_router.dart';
 
 import '../../../config/theme/body_text.dart';
 import '../../../config/theme/color.dart';
-import '../../../core/router/router.dart';
 
 class PreferencesPage extends ConsumerStatefulWidget {
   const PreferencesPage({super.key});
@@ -29,16 +28,20 @@ class PreferencesPageState extends ConsumerState<PreferencesPage> {
                   size: 30,
                   color: primaryBlack,
                 ),
-                onTap: ()  {
+                onTap: () {
                   context.pop();
                 },
-              )
-          ),
+              )),
           const Positioned(
             top: 80,
             left: 0,
             right: 0,
-            child: Center(child: BodyText(text: 'Allergies and Preferences', size: 20, color: primaryBlack,)),
+            child: Center(
+                child: BodyText(
+              text: 'Allergies and Preferences',
+              size: 20,
+              color: primaryBlack,
+            )),
           ),
         ],
       ),
