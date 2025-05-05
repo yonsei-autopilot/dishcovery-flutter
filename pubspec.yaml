@@ -74,6 +74,7 @@ flutter:
   assets:
     - .env
     - assets/fonts/
+    - assets/images/
 
   fonts:
     - family: SFProThin
