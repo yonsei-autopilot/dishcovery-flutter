@@ -1,17 +1,17 @@
 import 'package:json_annotation/json_annotation.dart';
 
-part 'menu_explain_response.g.dart';
+part 'menu_translation_response.g.dart';
 
 @JsonSerializable()
-class MenuExplainResponse {
+class MenuTranslationResponse {
   @JsonKey(name: 'items')
   final List<MenuItemResponse> items;
 
-  MenuExplainResponse({required this.items});
+  MenuTranslationResponse({required this.items});
 
-  factory MenuExplainResponse.fromJson(Map<String, dynamic> json) =>
-      _$MenuExplainResponseFromJson(json);
-  Map<String, dynamic> toJson() => _$MenuExplainResponseToJson(this);
+  factory MenuTranslationResponse.fromJson(Map<String, dynamic> json) =>
+      _$MenuTranslationResponseFromJson(json);
+  Map<String, dynamic> toJson() => _$MenuTranslationResponseToJson(this);
 }
 
 @JsonSerializable()

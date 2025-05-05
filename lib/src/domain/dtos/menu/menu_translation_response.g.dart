@@ -1,20 +1,21 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'menu_explain_response.dart';
+part of 'menu_translation_response.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-MenuExplainResponse _$MenuExplainResponseFromJson(Map<String, dynamic> json) =>
-    MenuExplainResponse(
+MenuTranslationResponse _$MenuTranslationResponseFromJson(
+        Map<String, dynamic> json) =>
+    MenuTranslationResponse(
       items: (json['items'] as List<dynamic>)
           .map((e) => MenuItemResponse.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 
-Map<String, dynamic> _$MenuExplainResponseToJson(
-        MenuExplainResponse instance) =>
+Map<String, dynamic> _$MenuTranslationResponseToJson(
+        MenuTranslationResponse instance) =>
     <String, dynamic>{
       'items': instance.items,
     };
