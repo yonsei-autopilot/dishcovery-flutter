@@ -21,7 +21,7 @@ class UserSettingPageState extends ConsumerState<UserSettingPage> {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-    
+
     return Scaffold(
         body: Stack(
       children: [
@@ -39,17 +39,20 @@ class UserSettingPageState extends ConsumerState<UserSettingPage> {
                   isLoading = true;
                 });
                 Future.microtask(() async {
-                  await ref.read(cameraControllerProvider.notifier).initialize();
                   ref.read(routerProvider).go('/');
                 });
               },
-            )
-        ),
+            )),
         const Positioned(
           top: 80,
           left: 0,
           right: 0,
-          child: Center(child: BodyText(text: 'Settings', size: 20, color: primaryBlack,)),
+          child: Center(
+              child: BodyText(
+            text: 'Settings',
+            size: 20,
+            color: primaryBlack,
+          )),
         ),
         const Positioned(
           top: 160,
@@ -63,14 +66,23 @@ class UserSettingPageState extends ConsumerState<UserSettingPage> {
             child: GestureDetector(
               child: Container(
                 alignment: Alignment.center,
-                width: width-100,
+                width: width - 100,
                 height: 55,
-                decoration: BoxDecoration(borderRadius: BorderRadius.circular(9), color: mainColor),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(9), color: mainColor),
                 child: const Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    BodyText(text: 'Allergies and Preferences', size: 16, color: primaryWhite,),
-                    Icon(CupertinoIcons.chevron_right, color: primaryWhite, size: 24,)
+                    BodyText(
+                      text: 'Allergies and Preferences',
+                      size: 16,
+                      color: primaryWhite,
+                    ),
+                    Icon(
+                      CupertinoIcons.chevron_right,
+                      color: primaryWhite,
+                      size: 24,
+                    )
                   ],
                 ),
               ),
