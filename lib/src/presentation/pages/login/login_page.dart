@@ -80,15 +80,18 @@ class LoginPageState extends ConsumerState<LoginPage> {
                   ),
                   padding: const EdgeInsets.symmetric(horizontal: 29),
                   alignment: Alignment.centerLeft,
-                  child: TextFormField(
-                    controller: _passwordController,
-                    obscureText: true,
-                    decoration: const InputDecoration(
-                      border: InputBorder.none,
-                      hintText: 'Password',
-                      suffixIcon: Icon(CupertinoIcons.eye_slash, color: primaryGrey, size: 20),
+                  child: Center(
+                    child: TextFormField(
+                      controller: _passwordController,
+                      obscureText: true,
+                      decoration: const InputDecoration(
+                        border: InputBorder.none,
+                        hintText: 'Password',
+                        suffixIcon: Icon(CupertinoIcons.eye_slash, color: primaryGrey),
+                        contentPadding: EdgeInsets.symmetric(vertical: 18),
+                      ),
+                      style: const TextStyle(fontSize: 14, color: primaryGrey),
                     ),
-                    style: const TextStyle(fontSize: 14, color: primaryGrey),
                   ),
                 ),
                 const SizedBox(
