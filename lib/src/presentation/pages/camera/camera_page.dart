@@ -7,17 +7,18 @@ import 'package:smart_menu_flutter/src/config/theme/body_text.dart';
 import 'package:smart_menu_flutter/src/core/router/router.dart';
 import 'package:smart_menu_flutter/src/domain/usecases/permission_usecase.dart';
 import 'package:smart_menu_flutter/src/presentation/notifiers/camera_notifier.dart';
+import 'package:smart_menu_flutter/src/presentation/pages/camera/generating_page.dart';
 import 'package:smart_menu_flutter/src/presentation/states/camera_state.dart';
 import '../../../config/theme/color.dart';
 
-class HomePage extends ConsumerStatefulWidget {
-  const HomePage({super.key});
+class CameraPage extends ConsumerStatefulWidget {
+  const CameraPage({super.key});
 
   @override
-  HomePageState createState() => HomePageState();
+  CameraPageState createState() => CameraPageState();
 }
 
-class HomePageState extends ConsumerState<HomePage>
+class CameraPageState extends ConsumerState<CameraPage>
     with WidgetsBindingObserver {
   @override
   void initState() {
@@ -27,7 +28,6 @@ class HomePageState extends ConsumerState<HomePage>
       final permissionUseCase = ref.read(permissionUseCaseProvider);
       final hasLocationPermission = await permissionUseCase.checkLocation();
       final hasCameraPermission = await permissionUseCase.checkCamera();
-      ref.read(cameraControllerProvider.notifier).initialize();
     });
   }
 
@@ -40,7 +40,9 @@ class HomePageState extends ConsumerState<HomePage>
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.paused) {
-      ref.read(cameraControllerProvider.notifier).dispose();
+      ref.read(cameraControllerProvider.notifier).safeDispose();
+    } else if (state == AppLifecycleState.resumed) {
+      ref.read(cameraControllerProvider.notifier).initialize();
     }
   }
 
@@ -49,7 +51,7 @@ class HomePageState extends ConsumerState<HomePage>
     final state = ref.watch(cameraControllerProvider);
 
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: primaryWhite,
       body: switch (state) {
         CInitial() || CLoading() => const Center(
             child: CircularProgressIndicator(
@@ -72,9 +74,9 @@ class HomePageState extends ConsumerState<HomePage>
                   onPressed: () {
                     ref.read(routerProvider).go('/user_setting');
                   },
-                  icon: const Icon(
+                  icon: Icon(
                     CupertinoIcons.person,
-                    color: primaryWhite,
+                    color: mainColor,
                     size: 33,
                   ),
                 ),
@@ -94,8 +96,8 @@ class HomePageState extends ConsumerState<HomePage>
                       Expanded(
                         child: Center(
                           child: IconButton(
-                            icon: const Icon(Icons.radio_button_checked,
-                                size: 96, color: primaryWhite),
+                            icon: Icon(Icons.radio_button_checked,
+                                size: 96, color: mainColor),
                             onPressed: () => ref
                                 .read(cameraControllerProvider.notifier)
                                 .takePicture(),
@@ -106,8 +108,8 @@ class HomePageState extends ConsumerState<HomePage>
                         child: Align(
                           alignment: Alignment.centerRight,
                           child: IconButton(
-                            icon: const Icon(Icons.photo_library,
-                                size: 40, color: primaryWhite),
+                            icon: Icon(Icons.photo_library,
+                                size: 40, color: mainColor),
                             onPressed: () => ref
                                 .read(cameraControllerProvider.notifier)
                                 .selectPicture(),
@@ -120,14 +122,14 @@ class HomePageState extends ConsumerState<HomePage>
               ),
             ],
           ),
-        CCapturing() => const Center(
+        CCapturing() => Center(
               child: BodyText(
-            text: 'Generating Menu...',
-            color: primaryWhite,
+            text: 'Capturing Image...',
+            color: mainColor,
           )),
         CCapturedSuccess(:final file) => Builder(builder: (context) {
             WidgetsBinding.instance.addPostFrameCallback((_) {
-              context.go('/generated_menu', extra: file.path);
+              context.go('/generating', extra: (filePath: file.path));
             });
             return const SizedBox();
           }),
