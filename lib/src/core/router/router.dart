@@ -42,15 +42,11 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/generated_menu',
         pageBuilder: (context, state) {
-          final extra = state.extra as Map<String, dynamic>;
-          final filePath = extra['filePath'] as String;
-          final response = extra['response'] as MenuExplainResponse;
           return buildPageWithDefaultTransition(
             context: context,
             state: state,
             child: GeneratedMenuPage(
-              filePath: filePath,
-              response: response,
+              params: state.extra as GeneratedMenuPageParams,
             ),
           );
         },
@@ -58,13 +54,11 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/generating',
         pageBuilder: (context, state) {
-          final extra = state.extra as Map<String, dynamic>;
-          final filePath = extra['filePath'] as String;
           return buildPageWithDefaultTransition(
             context: context,
             state: state,
             child: GeneratingPage(
-              filePath: filePath,
+              params: state.extra as GeneratingPageParams,
             ),
           );
         },

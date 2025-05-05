@@ -5,9 +5,11 @@ import 'package:smart_menu_flutter/src/core/router/router.dart';
 import 'package:smart_menu_flutter/src/domain/usecases/menu_usecase.dart';
 import '../../../config/theme/color.dart';
 
+typedef GeneratingPageParams = ({String filePath});
+
 class GeneratingPage extends ConsumerStatefulWidget {
-  const GeneratingPage({super.key, required this.filePath});
-  final String filePath;
+  const GeneratingPage({super.key, required this.params});
+  final GeneratingPageParams params;
 
   @override
   GeneratingPageState createState() => GeneratingPageState();
@@ -19,12 +21,13 @@ class GeneratingPageState extends ConsumerState<GeneratingPage>
   void initState() {
     super.initState();
     Future.microtask(() async {
-      final response =
-          await ref.read(menuUsecaseProvider).analyzeMenuImage(widget.filePath);
-      ref.read(routerProvider).go('/generated_menu', extra: {
-        'filePath': widget.filePath,
-        'response': response,
-      });
+      final response = await ref
+          .read(menuUsecaseProvider)
+          .analyzeMenuImage(widget.params.filePath);
+      ref.read(routerProvider).go('/generated_menu', extra: (
+        filePath: widget.params.filePath,
+        response: response,
+      ));
     });
   }
 

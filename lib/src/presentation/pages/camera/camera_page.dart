@@ -7,6 +7,7 @@ import 'package:smart_menu_flutter/src/config/theme/body_text.dart';
 import 'package:smart_menu_flutter/src/core/router/router.dart';
 import 'package:smart_menu_flutter/src/domain/usecases/permission_usecase.dart';
 import 'package:smart_menu_flutter/src/presentation/notifiers/camera_notifier.dart';
+import 'package:smart_menu_flutter/src/presentation/pages/camera/generating_page.dart';
 import 'package:smart_menu_flutter/src/presentation/states/camera_state.dart';
 import '../../../config/theme/color.dart';
 
@@ -128,7 +129,7 @@ class CameraPageState extends ConsumerState<CameraPage>
           )),
         CCapturedSuccess(:final file) => Builder(builder: (context) {
             WidgetsBinding.instance.addPostFrameCallback((_) {
-              context.go('/generating', extra: {'filePath': file.path});
+              context.go('/generating', extra: (filePath: file.path));
             });
             return const SizedBox();
           }),
