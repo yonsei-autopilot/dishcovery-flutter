@@ -12,7 +12,7 @@ class AuthStorage {
   AuthStorage(this.prefs);
 
   String? getAccessToken() {
-    return prefs.getString("ACCCESS_TOKEN");
+    return prefs.getString("ACCESS_TOKEN");
   }
 
   String? getRefreshToken() {
@@ -24,7 +24,7 @@ class AuthStorage {
   }
 
   Future<void> setRefreshToken(String token) {
-    return prefs.setString("REFRESS_TOKEN", token);
+    return prefs.setString("REFRESH_TOKEN", token);
   }
 
   Future<void> removeAccessToken() {

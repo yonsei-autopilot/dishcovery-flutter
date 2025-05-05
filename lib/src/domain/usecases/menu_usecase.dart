@@ -1,6 +1,6 @@
 import 'package:smart_menu_flutter/src/data/repositories/menu_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:smart_menu_flutter/src/domain/dtos/menu/menu_explain_response.dart';
+import 'package:smart_menu_flutter/src/domain/dtos/menu/menu_translation_response.dart';
 import 'package:smart_menu_flutter/src/domain/repositories/menu_repository.dart';
 
 final menuUsecaseProvider = Provider<MenuUsecase>((ref) {
@@ -12,7 +12,7 @@ class MenuUsecase {
   final MenuRepository repo;
   MenuUsecase(this.repo);
 
-  Future<MenuExplainResponse> analyzeMenuImage(String filePath) async {
+  Future<MenuTranslationResponse> analyzeMenuImage(String filePath) async {
     return await repo.getMenuTranslationAndBoundingBox(filePath);
   }
 }
