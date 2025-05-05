@@ -6,7 +6,8 @@ import 'package:smart_menu_flutter/src/domain/usecases/menu_usecase.dart';
 import 'package:smart_menu_flutter/src/presentation/states/camera_state.dart';
 
 final cameraControllerProvider =
-    StateNotifierProvider<CameraControllerNotifier, CameraState>((ref) {
+    StateNotifierProvider.autoDispose<CameraControllerNotifier, CameraState>(
+        (ref) {
   final notifier = CameraControllerNotifier(
       ref.read(cameraUseCaseProvider), ref.read(menuUsecaseProvider));
   notifier.initialize();
@@ -33,27 +34,25 @@ class CameraControllerNotifier extends StateNotifier<CameraState> {
       state = CReady(controller!);
     } catch (e) {
       state = CError(e.toString());
-      await _safeDispose();
+      await safeDispose();
     }
   }
 
   Future<void> takePicture() async {
     if (state is! CReady ||
         controller == null ||
-        !controller!.value.isInitialized) return;
+        !controller!.value.isInitialized) {
+      return;
+    }
 
     try {
       state = CCapturing();
       // Take Picture
       final file = await cameraUsecase.takePicture(controller!);
-
-      // Send Server
-      final response = await menuUsecase.analyzeMenuImage(file.path);
-
       state = CCapturedSuccess(file);
     } catch (e) {
       state = CError(e.toString());
-      await _safeDispose();
+      await safeDispose();
     }
   }
 
@@ -62,20 +61,14 @@ class CameraControllerNotifier extends StateNotifier<CameraState> {
       // Take Picture
       final ImagePicker picker = ImagePicker();
       final file = await picker.pickImage(source: ImageSource.gallery);
-
-      state = CCapturing();
-
-      // Send Server
-      final response = await menuUsecase.analyzeMenuImage(file!.path);
-
-      state = CCapturedSuccess(file);
+      state = CCapturedSuccess(XFile(file!.path));
     } catch (e) {
       state = CError(e.toString());
-      await _safeDispose();
+      await safeDispose();
     }
   }
 
-  Future<void> _safeDispose() async {
+  Future<void> safeDispose() async {
     if (controller != null) {
       await controller!.dispose();
       controller = null;
@@ -86,7 +79,6 @@ class CameraControllerNotifier extends StateNotifier<CameraState> {
   Future<void> dispose() async {
     await controller?.dispose();
     controller = null;
-    state = CInitial();
     super.dispose();
   }
 }

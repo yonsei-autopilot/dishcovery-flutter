@@ -1,8 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
+import 'package:smart_menu_flutter/src/domain/dtos/menu/menu_explain_response.dart';
 import 'package:smart_menu_flutter/src/presentation/pages/camera/generated_menu_page.dart';
-import 'package:smart_menu_flutter/src/presentation/pages/camera/home_page.dart';
+import 'package:smart_menu_flutter/src/presentation/pages/camera/camera_page.dart';
+import 'package:smart_menu_flutter/src/presentation/pages/camera/generating_page.dart';
 import 'package:smart_menu_flutter/src/presentation/pages/login/login_page.dart';
 import 'package:smart_menu_flutter/src/presentation/pages/user_setting/preferences_page.dart';
 import 'package:smart_menu_flutter/src/presentation/pages/user_setting/user_setting_page.dart';
@@ -31,39 +33,46 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
           path: '/',
           pageBuilder: (context, state) => buildPageWithDefaultTransition(
-            context: context,
-            state: state,
-            child: const HomePage()
-          )
-      ),
+              context: context, state: state, child: const CameraPage())),
       GoRoute(path: '/login', builder: (context, state) => const LoginPage()),
       GoRoute(
           path: '/user_setting',
           pageBuilder: (context, state) => buildPageWithDefaultTransition(
-              context: context,
-              state: state,
-              child: const UserSettingPage()
-          )
-      ),
+              context: context, state: state, child: const UserSettingPage())),
       GoRoute(
         path: '/generated_menu',
         pageBuilder: (context, state) {
-          final filePath = state.extra as String;
+          final extra = state.extra as Map<String, dynamic>;
+          final filePath = extra['filePath'] as String;
+          final response = extra['response'] as MenuExplainResponse;
           return buildPageWithDefaultTransition(
             context: context,
             state: state,
-            child: GeneratedMenuPage(filePath: filePath),
+            child: GeneratedMenuPage(
+              filePath: filePath,
+              response: response,
+            ),
+          );
+        },
+      ),
+      GoRoute(
+        path: '/generating',
+        pageBuilder: (context, state) {
+          final extra = state.extra as Map<String, dynamic>;
+          final filePath = extra['filePath'] as String;
+          return buildPageWithDefaultTransition(
+            context: context,
+            state: state,
+            child: GeneratingPage(
+              filePath: filePath,
+            ),
           );
         },
       ),
       GoRoute(
           path: '/preferences',
           pageBuilder: (context, state) => buildPageWithDefaultTransition(
-              context: context,
-              state: state,
-              child: const PreferencesPage()
-          )
-      ),
+              context: context, state: state, child: const PreferencesPage())),
     ],
   );
 });
@@ -72,7 +81,7 @@ CustomTransitionPage buildPageWithDefaultTransition<T>({
   required BuildContext context,
   required GoRouterState state,
   required Widget child,
-  }) {
+}) {
   return CustomTransitionPage<T>(
     key: state.pageKey,
     child: child,
