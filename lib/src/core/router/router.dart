@@ -5,6 +5,7 @@ import 'package:smart_menu_flutter/src/presentation/pages/camera/generated_menu_
 import 'package:smart_menu_flutter/src/presentation/pages/camera/camera_page.dart';
 import 'package:smart_menu_flutter/src/presentation/pages/camera/generating_page.dart';
 import 'package:smart_menu_flutter/src/presentation/pages/login/login_page.dart';
+import 'package:smart_menu_flutter/src/presentation/pages/menu_detail/menu_detail_page.dart';
 import 'package:smart_menu_flutter/src/presentation/pages/user_setting/preferences_page.dart';
 import 'package:smart_menu_flutter/src/presentation/pages/user_setting/user_setting_page.dart';
 import 'package:smart_menu_flutter/src/presentation/states/auth_state.dart';
@@ -65,7 +66,21 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
           path: '/preferences',
           pageBuilder: (context, state) => buildPageWithDefaultTransition(
-              context: context, state: state, child: const PreferencesPage())),
+              context: context, state: state, child: const PreferencesPage()
+          )
+      ),
+      GoRoute(
+          path: '/menu_detail',
+          pageBuilder: (context, state) {
+            return buildPageWithDefaultTransition(
+                context: context,
+                state: state,
+                child: MenuDetailPage(
+                  params: state.extra as MenuDetailPageParams,
+                )
+            );
+          }
+      ),
     ],
   );
 });
