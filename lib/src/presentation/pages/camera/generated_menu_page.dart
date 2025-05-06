@@ -36,7 +36,7 @@ class GeneratedMenuPageState extends ConsumerState<GeneratedMenuPage> {
     }
     return SafeArea(
       child: Scaffold(
-        backgroundColor: primaryWhite,
+        backgroundColor: backgroundColor,
         body: received
             ? Stack(
                 children: [
