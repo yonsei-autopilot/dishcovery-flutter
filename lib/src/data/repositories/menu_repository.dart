@@ -45,13 +45,6 @@ class MenuRepositoryImpl implements MenuRepository {
 
   @override
   Future<MenuDetailResponse> getMenuDetail(String menuName) async {
-  // //   final name = menuName;
-  // //   // final response = await
-  // //
-  // //
-  // //
-  // //   final menuDetail = response.data;
-  //   return
     throw UnimplementedError();
   }
 }
