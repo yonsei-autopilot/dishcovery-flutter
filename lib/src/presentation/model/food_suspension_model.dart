@@ -1,14 +1,14 @@
 import 'package:azlistview/azlistview.dart';
-import 'package:smart_menu_flutter/src/domain/entities/food_item.dart';
+import 'package:smart_menu_flutter/src/domain/entities/pref_food_item.dart';
 
-class FoodSuspensionModel extends ISuspensionBean {
+class PrefFoodSuspensionModel extends ISuspensionBean {
   final String name;
   final String tagIndex;
 
-  FoodSuspensionModel({required this.name, required this.tagIndex});
+  PrefFoodSuspensionModel({required this.name, required this.tagIndex});
 
-  factory FoodSuspensionModel.fromEntity(FoodItem item) {
-    return FoodSuspensionModel(name: item.name, tagIndex: item.tagIndex);
+  factory PrefFoodSuspensionModel.fromEntity(PrefFoodItem item) {
+    return PrefFoodSuspensionModel(name: item.name, tagIndex: item.tagIndex);
   }
 
   @override
