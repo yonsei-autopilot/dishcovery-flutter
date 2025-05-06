@@ -7,9 +7,9 @@ import 'package:smart_menu_flutter/src/core/router/router.dart';
 import 'package:smart_menu_flutter/src/domain/usecases/pref_usecase.dart';
 import 'package:smart_menu_flutter/src/presentation/model/food_suspension_model.dart';
 
-final foodListProvider = FutureProvider<List<FoodSuspensionModel>>((ref) async {
+final foodListProvider = FutureProvider<List<PrefFoodSuspensionModel>>((ref) async {
   final items = await ref.read(prefUseCaseProvider).getList('assets/allergens_and_polarizing_foods_sorted.txt');
-  final models = items.map(FoodSuspensionModel.fromEntity).toList();
+  final models = items.map(PrefFoodSuspensionModel.fromEntity).toList();
   SuspensionUtil.sortListBySuspensionTag(models);
   SuspensionUtil.setShowSuspensionStatus(models);
   return models;
@@ -30,7 +30,7 @@ class FoodScrollViewState extends ConsumerState<FoodScrollView> {
         .size;
     double height = size.height;
 
-    return FutureBuilder<List<FoodSuspensionModel>>(
+    return FutureBuilder<List<PrefFoodSuspensionModel>>(
       future: ref.read(foodListProvider.future),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
@@ -40,7 +40,7 @@ class FoodScrollViewState extends ConsumerState<FoodScrollView> {
         }
         final foodList = snapshot.data!;
         return SizedBox(
-          height: height*0.5,
+          height: height * 0.5,
           child: AzListView(
             data: foodList,
             itemCount: foodList.length,
@@ -48,22 +48,25 @@ class FoodScrollViewState extends ConsumerState<FoodScrollView> {
               return ListTile(
                 title: BodyText(text: foodList[index].name),
                 onTap: () {
-                  
+
                 },
               );
             },
             indexBarData: SuspensionUtil.getTagIndexList(foodList),
             indexBarOptions: IndexBarOptions(
-              indexHintWidth: 20,
-              indexHintHeight: 20,
-              indexHintAlignment: Alignment.centerRight,
-              downTextStyle: const TextStyle(color: primaryWhite, fontSize: 12),
-              downItemDecoration: BoxDecoration(
-                color: primaryGrey,
-                borderRadius: BorderRadius.circular(20)
-              )
+                indexHintWidth: 20,
+                indexHintHeight: 20,
+                indexHintAlignment: Alignment.centerRight,
+                downTextStyle: const TextStyle(
+                    color: primaryWhite, fontSize: 12),
+                downItemDecoration: BoxDecoration(
+                    color: primaryGrey,
+                    borderRadius: BorderRadius.circular(20)
+                )
+              ),
             ),
-          ),
-        );
-      },
-    );
+          );
+        },
+      );
+    }
+  }
