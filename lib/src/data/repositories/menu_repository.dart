@@ -7,6 +7,7 @@ import 'package:smart_menu_flutter/src/domain/dtos/common/api_response.dart';
 import 'package:smart_menu_flutter/src/domain/dtos/menu/menu_translation_request.dart';
 import 'package:smart_menu_flutter/src/domain/dtos/menu/menu_translation_response.dart';
 import 'package:smart_menu_flutter/src/domain/repositories/menu_repository.dart';
+import '../../domain/dtos/menu/menu_detail_response.dart';
 
 final menuRepositoryProvider = Provider<MenuRepository>((ref) {
   final dio = ref.read(dioProvider);
@@ -40,5 +41,17 @@ class MenuRepositoryImpl implements MenuRepository {
     }
 
     return menuTranslation;
+  }
+
+  @override
+  Future<MenuDetailResponse> getMenuDetail(String menuName) async {
+  // //   final name = menuName;
+  // //   // final response = await
+  // //
+  // //
+  // //
+  // //   final menuDetail = response.data;
+  //   return
+    throw UnimplementedError();
   }
 }
