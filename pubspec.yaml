@@ -44,7 +44,7 @@ dependencies:
   image_picker: ^1.1.2
   camera: ^0.11.1
   json_annotation: ^4.8.1
-  #image_gallery_saver: ^2.0.3
+  alphabet_scroll_view: ^0.3.2
 
 dev_dependencies:
   flutter_test:
@@ -75,6 +75,7 @@ flutter:
     - .env
     - assets/fonts/
     - assets/images/
+    - assets/allergens_and_polarizing_foods_sorted.txt
 
   fonts:
     - family: SFProThin
