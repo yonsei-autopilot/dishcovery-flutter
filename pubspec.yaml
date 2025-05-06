@@ -44,7 +44,8 @@ dependencies:
   image_picker: ^1.1.2
   camera: ^0.11.1
   json_annotation: ^4.8.1
-  alphabet_scroll_view: ^0.3.2
+#  alphabet_scroll_view: ^0.3.2
+  azlistview: ^2.0.0
 
 dev_dependencies:
   flutter_test:
