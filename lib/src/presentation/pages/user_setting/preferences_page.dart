@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:smart_menu_flutter/src/presentation/pages/user_setting/widget/food_scroll_view.dart';
 import '../../../config/theme/body_text.dart';
 import '../../../config/theme/color.dart';
 
@@ -15,9 +16,6 @@ class PreferencesPage extends ConsumerStatefulWidget {
 class PreferencesPageState extends ConsumerState<PreferencesPage> {
   @override
   Widget build(BuildContext context) {
-    // Size size = MediaQuery.of(context).size;
-    // double width = size.width;
-
     return Scaffold(
       backgroundColor: primaryWhite,
       body: SafeArea(
@@ -58,6 +56,12 @@ class PreferencesPageState extends ConsumerState<PreferencesPage> {
                   color: primaryBlack,
                 ),
               ),
+            ),
+            const Positioned(
+              top: 270,
+              left: 35,
+              right: 35,
+              child: FoodScrollView(),
             )
           ],
         ),
