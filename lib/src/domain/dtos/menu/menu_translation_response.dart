@@ -16,14 +16,20 @@ class MenuTranslationResponse {
 
 @JsonSerializable()
 class MenuItemResponse {
-  final String name;
-  final String description;
-  final int price;
+  final String originalItemName;
+  final String translatedItemName;
+  final String label;
+  final List<String> availableOptions;
+  final double price;
+  final List<int> boundingBox;
 
   MenuItemResponse({
-    required this.name,
-    required this.description,
+    required this.originalItemName,
+    required this.translatedItemName,
+    required this.label,
+    required this.availableOptions,
     required this.price,
+    required this.boundingBox,
   });
 
   factory MenuItemResponse.fromJson(Map<String, dynamic> json) =>
