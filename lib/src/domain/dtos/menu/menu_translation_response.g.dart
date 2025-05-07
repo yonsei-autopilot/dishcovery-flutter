@@ -22,14 +22,24 @@ Map<String, dynamic> _$MenuTranslationResponseToJson(
 
 MenuItemResponse _$MenuItemResponseFromJson(Map<String, dynamic> json) =>
     MenuItemResponse(
-      name: json['name'] as String,
-      description: json['description'] as String,
-      price: (json['price'] as num).toInt(),
+      originalItemName: json['originalItemName'] as String,
+      translatedItemName: json['translatedItemName'] as String,
+      label: json['label'] as String,
+      availableOptions: (json['availableOptions'] as List<dynamic>)
+          .map((e) => e as String)
+          .toList(),
+      price: (json['price'] as num).toDouble(),
+      boundingBox: (json['boundingBox'] as List<dynamic>)
+          .map((e) => (e as num).toInt())
+          .toList(),
     );
 
 Map<String, dynamic> _$MenuItemResponseToJson(MenuItemResponse instance) =>
     <String, dynamic>{
-      'name': instance.name,
-      'description': instance.description,
+      'originalItemName': instance.originalItemName,
+      'translatedItemName': instance.translatedItemName,
+      'label': instance.label,
+      'availableOptions': instance.availableOptions,
       'price': instance.price,
+      'boundingBox': instance.boundingBox,
     };
