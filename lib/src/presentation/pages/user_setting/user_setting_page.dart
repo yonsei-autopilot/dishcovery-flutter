@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smart_menu_flutter/src/config/theme/body_text.dart';
+import 'package:smart_menu_flutter/src/presentation/notifiers/food_aversion_notifier.dart';
 import 'package:smart_menu_flutter/src/presentation/pages/user_setting/widget/user_profile_widget.dart';
 import '../../../config/theme/color.dart';
 import '../../../core/router/router.dart';
@@ -87,6 +88,8 @@ class UserSettingPageState extends ConsumerState<UserSettingPage> {
                   ),
                 ),
                 onTap: () {
+                  // aversion widget test code
+                  ref.read(aversionsProvider.notifier).test();
                   ref.read(routerProvider).push('/preferences');
                 },
               ),
