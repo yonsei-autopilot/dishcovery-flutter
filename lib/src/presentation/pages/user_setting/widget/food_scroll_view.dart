@@ -11,9 +11,7 @@ import '../../../notifiers/food_aversion_notifier.dart';
 
 final foodListProvider =
     FutureProvider<List<PrefFoodSuspensionModel>>((ref) async {
-  final items = await ref
-      .read(prefUseCaseProvider)
-      .getList('assets/data/allergens_and_polarizing_foods_sorted.txt');
+  final items = await ref.read(prefUseCaseProvider).getList();
   final models = items.map(PrefFoodSuspensionModel.fromEntity).toList();
   SuspensionUtil.sortListBySuspensionTag(models);
   SuspensionUtil.setShowSuspensionStatus(models);
