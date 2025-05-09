@@ -13,7 +13,7 @@ final foodListProvider =
     FutureProvider<List<PrefFoodSuspensionModel>>((ref) async {
   final items = await ref
       .read(prefUseCaseProvider)
-      .getList('assets/allergens_and_polarizing_foods_sorted.txt');
+      .getList('assets/data/allergens_and_polarizing_foods_sorted.txt');
   final models = items.map(PrefFoodSuspensionModel.fromEntity).toList();
   SuspensionUtil.sortListBySuspensionTag(models);
   SuspensionUtil.setShowSuspensionStatus(models);
