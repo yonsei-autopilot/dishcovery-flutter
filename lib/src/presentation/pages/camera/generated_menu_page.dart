@@ -66,6 +66,8 @@ class GeneratedMenuPageState extends ConsumerState<GeneratedMenuPage> {
     final imageAspect = _imageInfo!.width / _imageInfo!.height;
     final displayWidth = screenWidth;
     final displayHeight = screenWidth / imageAspect;
+    const heightScaleFactor = 1.2;
+    const fontScaleFactor = 0.7;
 
     return Scaffold(
         body: Stack(children: [
@@ -96,12 +98,13 @@ class GeneratedMenuPageState extends ConsumerState<GeneratedMenuPage> {
                   var [ymin, xmin, ymax, xmax] = item.boundingBox;
                   final left = xmin / 1000 * displayWidth;
                   final top = ymin / 1000 * displayHeight;
-                  final w = (xmax - xmin) / 1000 * displayWidth;
-                  final h = (ymax - ymin) / 1000 * displayHeight;
+
+                  final h =
+                      (ymax - ymin) * heightScaleFactor / 1000 * displayHeight;
+                  final fontSize = h * fontScaleFactor;
                   return Positioned(
                       left: left,
                       top: top,
-                      width: w,
                       height: h,
                       child: IgnorePointer(
                         ignoring: isScaling,
@@ -110,12 +113,13 @@ class GeneratedMenuPageState extends ConsumerState<GeneratedMenuPage> {
                           onTap: () => print(item.toJson()),
                           behavior: HitTestBehavior.translucent,
                           child: Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
                             decoration:
                                 const BoxDecoration(color: Colors.white),
                             child: Text(
                               item.translatedItemName,
-                              style: const TextStyle(
-                                fontSize: 7,
+                              style: TextStyle(
+                                fontSize: fontSize,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.black,
                               ),
