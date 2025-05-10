@@ -98,24 +98,36 @@ class GeneratedMenuPageState extends ConsumerState<GeneratedMenuPage> {
                   var [ymin, xmin, ymax, xmax] = item.boundingBox;
                   final left = xmin / 1000 * displayWidth;
                   final top = ymin / 1000 * displayHeight;
+                  final width  = (xmax - xmin) / 1000 * displayWidth;
+                  final height = (ymax - ymin) * heightScaleFactor / 1000 * displayHeight;
+                  final fontSize = height * fontScaleFactor;
 
-                  final h =
-                      (ymax - ymin) * heightScaleFactor / 1000 * displayHeight;
-                  final fontSize = h * fontScaleFactor;
                   return Positioned(
                       left: left,
                       top: top,
-                      height: h,
+                      width: width,
+                      height: height,
                       child: IgnorePointer(
                         ignoring: isScaling,
                         child: GestureDetector(
-                          // 여기서 상세 페이지 이동
-                          onTap: () => print(item.toJson()),
-                          behavior: HitTestBehavior.translucent,
+                          onTap: () {
+
+                            ref.read(routerProvider).push(
+                                '/menu_detail',
+                                extra: (
+                                  menuName: item.translatedItemName
+                                )
+                            );
+                            
+                          },
+                          behavior: HitTestBehavior.opaque,
+
                           child: Container(
                             padding: const EdgeInsets.symmetric(horizontal: 10),
-                            decoration:
-                                const BoxDecoration(color: Colors.white),
+                            decoration: const BoxDecoration(color: Colors.white),
+                            width: double.infinity,
+                            height: double.infinity,
+                            alignment: Alignment.center,
                             child: Text(
                               item.translatedItemName,
                               style: TextStyle(
