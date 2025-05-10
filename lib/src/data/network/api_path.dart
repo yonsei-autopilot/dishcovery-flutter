@@ -3,7 +3,8 @@ enum ApiPath {
   simpleLogin,
   menuTranslation,
   disLikeFoods,
-  language
+  language,
+  menuOrder
 }
 
 extension ApiPathExt on ApiPath {
@@ -19,6 +20,8 @@ extension ApiPathExt on ApiPath {
         return "/user/dislike-foods";
       case ApiPath.language:
         return "/user/language";
+      case ApiPath.menuOrder:
+        return "/menus/order";
     }
   }
 }
