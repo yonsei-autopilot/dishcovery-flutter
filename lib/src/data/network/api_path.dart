@@ -1,4 +1,10 @@
-enum ApiPath { googleLogin, simpleLogin, menuTranslation, disLikeFoods }
+enum ApiPath {
+  googleLogin,
+  simpleLogin,
+  menuTranslation,
+  disLikeFoods,
+  language
+}
 
 extension ApiPathExt on ApiPath {
   String get path {
@@ -11,6 +17,8 @@ extension ApiPathExt on ApiPath {
         return "/menus/translation";
       case ApiPath.disLikeFoods:
         return "/user/dislike-foods";
+      case ApiPath.language:
+        return "/user/language";
     }
   }
 }
