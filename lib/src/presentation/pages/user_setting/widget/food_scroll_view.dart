@@ -11,9 +11,7 @@ import '../../../notifiers/food_aversion_notifier.dart';
 
 final foodListProvider =
     FutureProvider<List<PrefFoodSuspensionModel>>((ref) async {
-  final items = await ref
-      .read(prefUseCaseProvider)
-      .getList('assets/data/allergens_and_polarizing_foods_sorted.txt');
+  final items = await ref.read(prefUseCaseProvider).getList();
   final models = items.map(PrefFoodSuspensionModel.fromEntity).toList();
   SuspensionUtil.sortListBySuspensionTag(models);
   SuspensionUtil.setShowSuspensionStatus(models);
@@ -32,10 +30,9 @@ class FoodScrollViewState extends ConsumerState<FoodScrollView> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     double height = size.height;
-    double width = size.width;
 
     final aversionsAsync = ref.watch(aversionsProvider);
-    final currentAversions = aversionsAsync.value ?? [];
+    final currentAversions = aversionsAsync.asData?.value ?? [];
 
     return FutureBuilder<List<PrefFoodSuspensionModel>>(
       future: ref.read(foodListProvider.future),

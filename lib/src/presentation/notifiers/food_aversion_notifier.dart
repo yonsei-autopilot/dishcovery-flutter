@@ -1,8 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smart_menu_flutter/src/domain/usecases/food_aversion_usecase.dart';
 
-final aversionsProvider = StateNotifierProvider<AversionsNotifier, AsyncValue<List<String>>>(
-      (ref) => AversionsNotifier(ref.watch(foodAversionUseCaseProvider)),
+final aversionsProvider =
+    StateNotifierProvider<AversionsNotifier, AsyncValue<List<String>>>(
+  (ref) => AversionsNotifier(ref.watch(foodAversionUseCaseProvider)),
 );
 
 class AversionsNotifier extends StateNotifier<AsyncValue<List<String>>> {
@@ -25,7 +26,7 @@ class AversionsNotifier extends StateNotifier<AsyncValue<List<String>>> {
   Future<void> removeAversion(String item) async {
     final currentList = state.value ?? [];
     final newList = currentList.where((i) => i != item).toList();
-    await _useCase.saveAversions(newList);
+    await _useCase.updateAversions(newList);
     loadAversions();
   }
 
@@ -35,15 +36,25 @@ class AversionsNotifier extends StateNotifier<AsyncValue<List<String>>> {
         ? currentList.where((item) => item != foodName).toList()
         : [...currentList, foodName];
 
-    await _useCase.saveAversions(newList);
+    await _useCase.updateAversions(newList);
     loadAversions();
   }
 
-  Future<void> test() async {
+  Future<void> initializeAversions() async {
     state = const AsyncValue.loading();
-    await Future.delayed(const Duration(milliseconds: 500)); // 로딩 효과 시뮬레이션
+    final aversions = await _useCase.fetchFromServer();
+    await _useCase.updateAversions(aversions);
+    state = AsyncValue.data(aversions);
+  }
 
-    const testData = ["Almond butter", "Anchovies", "Oysters", "Passion fruit", "Aspartame"];
-    state = const AsyncValue.data(testData);
+  Future<void> saveAversions() async {
+    final listToSave = state.value ?? [];
+    state = const AsyncValue.loading();
+    try {
+      await _useCase.syncToServer(listToSave);
+      state = AsyncValue.data(listToSave);
+    } catch (e) {
+      state = AsyncValue.error(e, StackTrace.current);
+    }
   }
 }

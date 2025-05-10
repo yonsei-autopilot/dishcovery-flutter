@@ -12,7 +12,7 @@ class PrefUseCase {
   final PrefRepository repo;
   PrefUseCase(this.repo);
 
-  Future<List<PrefFoodItem>> getList(String path) {
-    return repo.loadFoodItemFromTxt(path);
+  Future<List<PrefFoodItem>> getList() {
+    return repo.loadFoodItemFromTxt();
   }
 }

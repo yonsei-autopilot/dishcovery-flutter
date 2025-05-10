@@ -11,7 +11,7 @@ class LanguageUseCase {
   final LanguageRepository repo;
   LanguageUseCase(this.repo);
 
-  Future<List<String>> getList() {
-    return repo.getLanguages();
-  }
+  Future<List<String>> getList() => repo.getLanguages();
+  Future<String> fetchFromServer() => repo.fetchFromServer();
+  Future<void> syncToServer(String language) => repo.syncToServer(language);
 }

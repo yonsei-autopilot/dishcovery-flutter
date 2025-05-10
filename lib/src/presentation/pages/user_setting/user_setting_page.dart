@@ -23,7 +23,7 @@ class UserSettingPageState extends ConsumerState<UserSettingPage> {
     double width = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      backgroundColor: primaryWhite,
+        backgroundColor: primaryWhite,
         body: Stack(
           children: [
             Positioned(
@@ -68,7 +68,9 @@ class UserSettingPageState extends ConsumerState<UserSettingPage> {
                       height: 60,
                       child: const Row(
                         children: [
-                          SizedBox(width: 10,),
+                          SizedBox(
+                            width: 10,
+                          ),
                           BodyText(
                             text: 'Allergies and Preferences',
                             size: 16,
@@ -87,14 +89,12 @@ class UserSettingPageState extends ConsumerState<UserSettingPage> {
                       ),
                     ),
                     onTap: () {
-                      // aversion widget test code
-                      ref.read(aversionsProvider.notifier).test();
                       ref.read(routerProvider).push('/preferences');
                     },
                   ),
                   Container(
                     height: 1,
-                    width: width-100,
+                    width: width - 100,
                     color: const Color(0xffCFCFCF),
                   ),
                   GestureDetector(
@@ -103,7 +103,9 @@ class UserSettingPageState extends ConsumerState<UserSettingPage> {
                       height: 60,
                       child: const Row(
                         children: [
-                          SizedBox(width: 10,),
+                          SizedBox(
+                            width: 10,
+                          ),
                           BodyText(
                             text: 'Translating Language',
                             size: 16,
