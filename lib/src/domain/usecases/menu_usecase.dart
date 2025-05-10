@@ -1,6 +1,7 @@
 import 'package:smart_menu_flutter/src/data/repositories/menu_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:smart_menu_flutter/src/domain/dtos/menu/menu_detail_response.dart';
+import 'package:smart_menu_flutter/src/domain/dtos/menu/menu_explanation_request.dart';
+import 'package:smart_menu_flutter/src/domain/dtos/menu/menu_explanation_response.dart';
 import 'package:smart_menu_flutter/src/domain/dtos/menu/menu_translation_response.dart';
 import 'package:smart_menu_flutter/src/domain/repositories/menu_repository.dart';
 
@@ -17,7 +18,8 @@ class MenuUsecase {
     return await repo.getMenuTranslationAndBoundingBox(filePath);
   }
 
-  Future<MenuDetailResponse> analyzeMenuDetail(String menuName) async {
-    return await repo.getMenuDetail(menuName);
+  Future<MenuExplanationResponse> analyzeMenuDetail(String menuName) async {
+    var request = MenuExplanationRequest(name: menuName);
+    return await repo.getMenuExplanation(request);
   }
 }
