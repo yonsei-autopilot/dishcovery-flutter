@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:smart_menu_flutter/src/presentation/notifiers/food_aversion_notifier.dart';
 import 'package:smart_menu_flutter/src/presentation/pages/user_setting/widget/checked_food_widget.dart';
 import 'package:smart_menu_flutter/src/presentation/pages/user_setting/widget/food_scroll_view.dart';
 import '../../../config/theme/body_text.dart';
@@ -15,13 +16,16 @@ class PreferencesPage extends ConsumerStatefulWidget {
 }
 
 class PreferencesPageState extends ConsumerState<PreferencesPage> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(aversionsProvider.notifier).initializeAversions();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    double width = size.width;
-    double height = size.height;
-
     return Scaffold(
       backgroundColor: primaryWhite,
       body: Stack(
@@ -87,18 +91,21 @@ class PreferencesPageState extends ConsumerState<PreferencesPage> {
                       borderRadius: BorderRadius.circular(24),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.4),
-                          spreadRadius: 2,
-                          blurRadius: 7,
-                          offset: const Offset(0, 3)
-                        )
-                      ]
-                  ),
-                  child: const Center(child: BodyText(text: 'Save', color: primaryWhite, size: 14,)),
+                            color: Colors.black.withOpacity(0.4),
+                            spreadRadius: 2,
+                            blurRadius: 7,
+                            offset: const Offset(0, 3))
+                      ]),
+                  child: const Center(
+                      child: BodyText(
+                    text: 'Save',
+                    color: primaryWhite,
+                    size: 14,
+                  )),
                 ),
-                // pref 서버로 전송
-                onTap: () {
-
+                onTap: () async {
+                  await ref.read(aversionsProvider.notifier).saveAversions();
+                  context.pop();
                 },
               ),
             ),

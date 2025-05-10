@@ -13,7 +13,7 @@ class FoodAversionUseCase {
   FoodAversionUseCase(this._repo);
 
   Future<List<String>> getAversions() => _repo.getAversions();
-  Future<void> saveAversions(List<String> aversions) => _repo.saveAversions(aversions);
+  Future<void> updateAversions(List<String> aversions) => _repo.updateAversions(aversions);
   Future<List<String>> fetchFromServer() => _repo.fetchFromServer();
   Future<void> syncToServer(List<String> aversions) => _repo.syncToServer(aversions);
 }

@@ -25,10 +25,13 @@ class DioService {
     Options? options,
     T Function(dynamic data)? decoder,
   }) async {
+    final effectiveOptions =
+        options?.copyWith(method: method.name) ?? Options(method: method.name);
+
     try {
       final response = await _dio.request(
         path.path,
-        options: (options ?? Options(method: method.name)),
+        options: effectiveOptions,
         queryParameters: query,
         data: body,
       );

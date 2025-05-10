@@ -30,10 +30,9 @@ class FoodScrollViewState extends ConsumerState<FoodScrollView> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     double height = size.height;
-    double width = size.width;
 
     final aversionsAsync = ref.watch(aversionsProvider);
-    final currentAversions = aversionsAsync.value ?? [];
+    final currentAversions = aversionsAsync.asData?.value ?? [];
 
     return FutureBuilder<List<PrefFoodSuspensionModel>>(
       future: ref.read(foodListProvider.future),
