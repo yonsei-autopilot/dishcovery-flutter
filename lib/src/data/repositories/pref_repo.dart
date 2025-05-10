@@ -9,8 +9,8 @@ final prefRepositoryProvider = Provider<PrefRepository>((ref) {
 
 class PrefImplRepository implements PrefRepository {
   @override
-  Future<List<PrefFoodItem>> loadFoodItemFromTxt(String path) async {
-    String content = await rootBundle.loadString(path);
+  Future<List<PrefFoodItem>> loadFoodItemFromTxt() async {
+    String content = await rootBundle.loadString('assets/data/allergens_and_polarizing_foods_sorted.txt');
     List<String> lines = content.split('\n').map((e) => e.trim()).where((e) => e.isNotEmpty).toList();
     final items = lines.map((name) {
       final tag = name.isNotEmpty && RegExp(r'^[A-Za-z]').hasMatch(name[0]) ?

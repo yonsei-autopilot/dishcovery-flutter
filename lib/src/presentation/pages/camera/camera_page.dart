@@ -72,7 +72,7 @@ class CameraPageState extends ConsumerState<CameraPage>
                 left: 33,
                 child: IconButton(
                   onPressed: () {
-                    ref.read(routerProvider).go('/user_setting');
+                    ref.read(routerProvider).push('/user_setting');
                   },
                   icon: Icon(
                     CupertinoIcons.person,
