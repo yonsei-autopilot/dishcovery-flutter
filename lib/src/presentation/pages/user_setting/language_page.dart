@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:smart_menu_flutter/src/config/theme/color.dart';
+import 'package:smart_menu_flutter/src/presentation/notifiers/language_notifier.dart';
 import 'package:smart_menu_flutter/src/presentation/pages/user_setting/widget/language_dropdown_widget.dart';
 import '../../../config/theme/body_text.dart';
 
@@ -44,10 +45,10 @@ class LanguagePageState extends ConsumerState<LanguagePage> {
             right: 0,
             child: Center(
                 child: BodyText(
-                  text: 'Translating Language',
-                  size: 20,
-                  color: primaryBlack,
-                )),
+              text: 'Translating Language',
+              size: 20,
+              color: primaryBlack,
+            )),
           ),
           const Positioned(
             top: 140,
@@ -85,15 +86,18 @@ class LanguagePageState extends ConsumerState<LanguagePage> {
                             color: Colors.black.withOpacity(0.4),
                             spreadRadius: 2,
                             blurRadius: 7,
-                            offset: const Offset(0, 3)
-                        )
-                      ]
-                  ),
-                  child: const Center(child: BodyText(text: 'Save', color: primaryWhite, size: 14,)),
+                            offset: const Offset(0, 3))
+                      ]),
+                  child: const Center(
+                      child: BodyText(
+                    text: 'Save',
+                    color: primaryWhite,
+                    size: 14,
+                  )),
                 ),
-                // language 서버로 전송
-                onTap: () {
-
+                onTap: () async {
+                  await ref.watch(languageProvider.notifier).saveLanguage();
+                  context.pop();
                 },
               ),
             ),

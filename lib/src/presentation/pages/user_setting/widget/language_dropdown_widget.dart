@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smart_menu_flutter/src/config/theme/body_text.dart';
 import 'package:smart_menu_flutter/src/config/theme/color.dart';
 import 'package:smart_menu_flutter/src/domain/usecases/language_usecase.dart';
+import 'package:smart_menu_flutter/src/presentation/notifiers/language_notifier.dart';
 
 final languageListProvider = FutureProvider<List<String>>((ref) async {
   final useCase = ref.read(languageUseCaseProvider);
@@ -19,85 +20,76 @@ class LanguageDropdownWidget extends ConsumerStatefulWidget {
 
 class LanguageDropdownWidgetState
     extends ConsumerState<LanguageDropdownWidget> {
-  String? selectedLanguage;
-
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery
-        .of(context)
-        .size;
+    Size size = MediaQuery.of(context).size;
     double height = size.height;
     double width = size.width;
 
-    final languageAsync = ref.watch(languageListProvider);
-    return languageAsync.when(
-        loading: () => const CircularProgressIndicator(),
-        error: (err, stack) => Text('Error: $err'),
-        data: (languages) =>
-            DropdownButtonHideUnderline(
-              child: DropdownButton2<String>(
-                buttonStyleData: ButtonStyleData(
-                    width: width - 70,
-                    height: 50,
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    decoration: BoxDecoration(
-                        color: selectedLanguage == null ? const Color(0xffD9D9D9) : primaryLightGreen,
-                        borderRadius: BorderRadius.circular(11)
-                    )
+    final languageListAsync = ref.watch(languageListProvider);
+    final currentLangAsync = ref.watch(languageProvider);
+
+    return languageListAsync.when(
+      loading: () => const CircularProgressIndicator(),
+      error: (err, stack) => Text('Error: $err'),
+      data: (languages) => currentLangAsync.when(
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (e, _) => Center(child: Text('Error loading sel: $e')),
+        data: (currentLang) {
+          return DropdownButtonHideUnderline(
+            child: DropdownButton2<String>(
+              value: currentLang,
+              hint: Container(
+                alignment: Alignment.centerLeft,
+                child: const BodyText(
+                  text: "Choose Preferred Language",
+                  size: 15,
+                  color: Color(0xff8C8C8C),
                 ),
-                dropdownStyleData: DropdownStyleData(
-                    maxHeight: height * 0.55,
-                    width: width - 70,
-                  decoration: BoxDecoration(
-                    color: const Color(0xffF5F5F5),
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  offset: const Offset(0, -20),
-                  scrollbarTheme: ScrollbarThemeData(
-                    radius: const Radius.circular(20),
-                    thickness: MaterialStateProperty.all(6),
-                    thumbVisibility: MaterialStateProperty.all(true),
-                    thumbColor: MaterialStateProperty.all(const Color(0xffABABAB))
-                  )
-                ),
-                selectedItemBuilder: (context) {
-                  return languages.map((item) {
-                    return Container(
-                      alignment: Alignment.centerLeft,
-                      child: BodyText(
-                          text: item,
-                          color: selectedLanguage == null
-                              ? primaryGrey
-                              : primaryBlack
-                      ),
-                    );
-                  }).toList();
-                },
-                hint: Container(
-                  alignment: Alignment.centerLeft,
-                  child: const BodyText(text: "Choose Preferred Language",
-                    size: 15,
-                    color: Color(0xff8C8C8C),),
-                ),
-                items: languages.map((item) {
-                  final bool isSelected = item == selectedLanguage;
-                  return DropdownMenuItem<String>(
-                    value: item,
-                    child: BodyText(
-                      text: item,
-                      size: 15,
-                      color: const Color(0xff8C8C8C),
-                    ),
-                  );
-                }).toList(),
-                value: selectedLanguage,
-                onChanged: (value) {
-                  setState(() {
-                    selectedLanguage = value;
-                  });
-                },
               ),
-            )
+              items: languages.map((lang) {
+                return DropdownMenuItem(
+                  value: lang,
+                  child:
+                      BodyText(text: lang, size: 15, color: Color(0xff8C8C8C)),
+                );
+              }).toList(),
+              onChanged: (newLang) {
+                if (newLang != null) {
+                  ref.read(languageProvider.notifier).updateLanguage(newLang);
+                }
+              },
+              buttonStyleData: ButtonStyleData(
+                width: MediaQuery.of(context).size.width - 70,
+                height: 50,
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                decoration: BoxDecoration(
+                  color: currentLang == null
+                      ? const Color(0xffD9D9D9)
+                      : primaryLightGreen,
+                  borderRadius: BorderRadius.circular(11),
+                ),
+              ),
+              dropdownStyleData: DropdownStyleData(
+                maxHeight: MediaQuery.of(context).size.height * 0.55,
+                width: MediaQuery.of(context).size.width - 70,
+                decoration: BoxDecoration(
+                  color: const Color(0xffF5F5F5),
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                offset: const Offset(0, -20),
+                scrollbarTheme: ScrollbarThemeData(
+                  radius: const Radius.circular(20),
+                  thickness: MaterialStateProperty.all(6),
+                  thumbVisibility: MaterialStateProperty.all(true),
+                  thumbColor:
+                      MaterialStateProperty.all(const Color(0xffABABAB)),
+                ),
+              ),
+            ),
+          );
+        },
+      ),
     );
   }
 }
