@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:smart_menu_flutter/src/config/theme/body_text.dart';
-import 'package:smart_menu_flutter/src/presentation/notifiers/food_aversion_notifier.dart';
 import 'package:smart_menu_flutter/src/presentation/pages/user_setting/widget/user_profile_widget.dart';
 import '../../../config/theme/color.dart';
 import '../../../core/router/router.dart';
