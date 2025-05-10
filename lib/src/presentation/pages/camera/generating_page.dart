@@ -58,10 +58,7 @@ class GeneratingPageState extends ConsumerState<GeneratingPage>
                 ref.read(routerProvider).push(
                     '/menu_detail',
                     extra: (
-                      imageUrl: 'https://img.bizthenaum.co.kr/data/img/1000013666/ori/1000013666_1.jpg',
-                      menuName: 'MaraTang',
-                      menuDescription: 'Very Delicious Chinese Food',
-                      foodAversion: 'I hate Cilantro'
+                      menuName: 'とんこつラーメン'
                     )
                 );
               },
