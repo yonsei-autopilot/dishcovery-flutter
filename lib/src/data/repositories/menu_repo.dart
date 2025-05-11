@@ -1,9 +1,12 @@
 import 'dart:io';
+import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smart_menu_flutter/src/data/network/api_path.dart';
 import 'package:smart_menu_flutter/src/data/network/dio_provider.dart';
 import 'package:smart_menu_flutter/src/data/network/http_method.dart';
 import 'package:smart_menu_flutter/src/domain/dtos/common/api_response.dart';
+import 'package:smart_menu_flutter/src/domain/dtos/menu/menu_order_request.dart';
+import 'package:smart_menu_flutter/src/domain/dtos/menu/menu_order_response.dart';
 import 'package:smart_menu_flutter/src/domain/dtos/menu/menu_translation_request.dart';
 import 'package:smart_menu_flutter/src/domain/dtos/menu/menu_translation_response.dart';
 import 'package:smart_menu_flutter/src/domain/repositories/menu_repository.dart';
@@ -46,5 +49,26 @@ class MenuRepositoryImpl implements MenuRepository {
   @override
   Future<MenuDetailResponse> getMenuDetail(String menuName) async {
     throw UnimplementedError();
+  }
+
+  @override
+  Future<MenuOrderResponse> getMenuOrder(MenuOrderRequest request) async {
+    final response = await dio.request<ApiResponse<MenuOrderResponse>>(
+        path: ApiPath.menuOrder,
+        method: HttpMethod.POST,
+        body: request,
+        options: Options(
+          contentType: Headers.jsonContentType,
+        ),
+        decoder: (json) => ApiResponse.fromJson(json,
+            (j) => MenuOrderResponse.fromJson(j as Map<String, dynamic>)));
+
+    final menuOrder = response.data;
+
+    if (menuOrder == null) {
+      throw Exception('Menu order is null');
+    }
+
+    return menuOrder;
   }
 }
