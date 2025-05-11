@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smart_menu_flutter/src/core/router/router.dart';
 import 'package:smart_menu_flutter/src/domain/dtos/menu/menu_translation_response.dart';
+import 'package:smart_menu_flutter/src/presentation/pages/menu_order/menu_order_page.dart';
 import '../../../config/theme/color.dart';
 
 typedef GeneratedMenuPageParams = ({
@@ -48,6 +49,24 @@ class GeneratedMenuPageState extends ConsumerState<GeneratedMenuPage> {
   void dispose() {
     _controller.dispose();
     super.dispose();
+  }
+
+  MenuOrderPageParams dummyExtra(MenuItemResponse item) {
+    final detail1 = (
+      name: item.translatedItemName,
+      count: '1',
+      description: item.translatedItemName,
+    );
+    const detail2 = (
+      name: "とんこつラーメン",
+      count: '2',
+      description: "豚丼をすごく懸念して作ったラーメンだ。",
+    );
+    return (
+      foreignLanguage: 'Japanese',
+      foreignLanguageCode: 'ja-JP',
+      menuOrderDetailParams: [detail1, detail2],
+    );
   }
 
   @override
@@ -98,10 +117,10 @@ class GeneratedMenuPageState extends ConsumerState<GeneratedMenuPage> {
                   var [ymin, xmin, ymax, xmax] = item.boundingBox;
                   final left = xmin / 1000 * displayWidth;
                   final top = ymin / 1000 * displayHeight;
-                  final width  = (xmax - xmin) / 1000 * displayWidth;
-                  final height = (ymax - ymin) * heightScaleFactor / 1000 * displayHeight;
+                  final width = (xmax - xmin) / 1000 * displayWidth;
+                  final height =
+                      (ymax - ymin) * heightScaleFactor / 1000 * displayHeight;
                   final fontSize = height * fontScaleFactor;
-
                   return Positioned(
                       left: left,
                       top: top,
@@ -111,20 +130,20 @@ class GeneratedMenuPageState extends ConsumerState<GeneratedMenuPage> {
                         ignoring: isScaling,
                         child: GestureDetector(
                           onTap: () {
-
-                            ref.read(routerProvider).push(
-                                '/menu_detail',
-                                extra: (
-                                  menuName: item.translatedItemName
-                                )
-                            );
-                            
+                            ref.read(routerProvider).push('/menu_detail',
+                                extra: (menuName: item.translatedItemName));
                           },
+                          //   final params = dummyExtra(item);
+                          //   ref.read(routerProvider).push(
+                          //     '/menu_order',
+                          //     extra: params,
+                          //   );
+                          // },
                           behavior: HitTestBehavior.opaque,
-
                           child: Container(
                             padding: const EdgeInsets.symmetric(horizontal: 10),
-                            decoration: const BoxDecoration(color: Colors.white),
+                            decoration:
+                                const BoxDecoration(color: Colors.white),
                             width: double.infinity,
                             height: double.infinity,
                             alignment: Alignment.center,

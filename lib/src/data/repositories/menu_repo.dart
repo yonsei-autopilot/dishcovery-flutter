@@ -67,4 +67,25 @@ class MenuRepositoryImpl implements MenuRepository {
 
     return menuExplanation;
   }
+
+  @override
+  Future<MenuOrderResponse> getMenuOrder(MenuOrderRequest request) async {
+    final response = await dio.request<ApiResponse<MenuOrderResponse>>(
+        path: ApiPath.menuOrder,
+        method: HttpMethod.POST,
+        body: request,
+        options: Options(
+          contentType: Headers.jsonContentType,
+        ),
+        decoder: (json) => ApiResponse.fromJson(json,
+            (j) => MenuOrderResponse.fromJson(j as Map<String, dynamic>)));
+
+    final menuOrder = response.data;
+
+    if (menuOrder == null) {
+      throw Exception('Menu order is null');
+    }
+
+    return menuOrder;
+  }
 }
