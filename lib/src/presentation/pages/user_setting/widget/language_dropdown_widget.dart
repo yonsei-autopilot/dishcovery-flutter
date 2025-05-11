@@ -22,10 +22,6 @@ class LanguageDropdownWidgetState
     extends ConsumerState<LanguageDropdownWidget> {
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    double height = size.height;
-    double width = size.width;
-
     final languageListAsync = ref.watch(languageListProvider);
     final currentLangAsync = ref.watch(languageProvider);
 
