@@ -1,7 +1,10 @@
 enum ApiPath {
   googleLogin,
   simpleLogin,
+
   menuTranslation,
+  menuExplanation,
+
   disLikeFoods,
   language,
   menuOrder
@@ -16,6 +19,8 @@ extension ApiPathExt on ApiPath {
         return "/auth/login/simple";
       case ApiPath.menuTranslation:
         return "/menus/translation";
+      case ApiPath.menuExplanation:
+        return "/menus/explanation";
       case ApiPath.disLikeFoods:
         return "/user/dislike-foods";
       case ApiPath.language:
