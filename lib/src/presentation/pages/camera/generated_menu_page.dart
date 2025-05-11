@@ -130,12 +130,15 @@ class GeneratedMenuPageState extends ConsumerState<GeneratedMenuPage> {
                         ignoring: isScaling,
                         child: GestureDetector(
                           onTap: () {
-                            final params = dummyExtra(item);
-                            ref.read(routerProvider).push(
-                              '/menu_order',
-                              extra: params,
-                            );
+                            ref.read(routerProvider).push('/menu_detail',
+                                extra: (menuName: item.translatedItemName));
                           },
+                          //   final params = dummyExtra(item);
+                          //   ref.read(routerProvider).push(
+                          //     '/menu_order',
+                          //     extra: params,
+                          //   );
+                          // },
                           behavior: HitTestBehavior.opaque,
                           child: Container(
                             padding: const EdgeInsets.symmetric(horizontal: 10),
