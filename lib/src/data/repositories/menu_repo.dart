@@ -7,6 +7,8 @@ import 'package:smart_menu_flutter/src/data/network/http_method.dart';
 import 'package:smart_menu_flutter/src/domain/dtos/common/api_response.dart';
 import 'package:smart_menu_flutter/src/domain/dtos/menu/menu_explanation_request.dart';
 import 'package:smart_menu_flutter/src/domain/dtos/menu/menu_explanation_response.dart';
+import 'package:smart_menu_flutter/src/domain/dtos/menu/menu_order_request.dart';
+import 'package:smart_menu_flutter/src/domain/dtos/menu/menu_order_response.dart';
 import 'package:smart_menu_flutter/src/domain/dtos/menu/menu_translation_request.dart';
 import 'package:smart_menu_flutter/src/domain/dtos/menu/menu_translation_response.dart';
 import 'package:smart_menu_flutter/src/domain/repositories/menu_repository.dart';
