@@ -1,4 +1,6 @@
-import 'package:camera/camera.dart';
+import 'dart:io';
+
+import 'package:flutter_document_scanner/flutter_document_scanner.dart';
 
 sealed class CameraState {}
 
@@ -7,18 +9,18 @@ class CInitial extends CameraState {}
 class CLoading extends CameraState {}
 
 class CReady extends CameraState {
-  final CameraController controller;
+  final DocumentScannerController controller;
   CReady(this.controller);
 }
 
 class CCapturing extends CameraState {}
 
 class CCapturedSuccess extends CameraState {
-  final XFile file;
+  final File file;
   CCapturedSuccess(this.file);
 }
 
 class CError extends CameraState {
-  final String error;
-  CError(this.error);
+  final String message;
+  CError(this.message);
 }

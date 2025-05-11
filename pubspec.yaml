@@ -42,12 +42,14 @@ dependencies:
   permission_handler: ^12.0.0+1
   geolocator: ^14.0.0
   image_picker: ^1.1.2
-  camera: ^0.11.1
+  camera: ^0.10.6
   json_annotation: ^4.8.1
   azlistview: ^2.0.0
   flutter_native_splash: ^2.4.6
   dropdown_button2: ^2.3.9
   audioplayers: ^6.4.0
+  flutter_document_scanner: ^1.1.2
+  path_provider: ^2.1.5
 
 dev_dependencies:
   flutter_test:

@@ -1,8 +1,16 @@
-import 'package:camera/camera.dart';
+import 'dart:io';
+import 'package:flutter_document_scanner/flutter_document_scanner.dart';
 
 abstract class CameraRepository {
-  Future<List<CameraDescription>> getAvailableCameras();
-  Future<CameraController> initializeCamera(CameraDescription camera);
-  Future<XFile> takePicture(CameraController controller);
-  Future<void> disposeCamera(CameraController controller);
+  DocumentScannerController createScanner();
+
+  Future<void> takePhoto(DocumentScannerController controller,
+      {double minContourArea});
+
+  Future<void> findContoursFromImage(
+      DocumentScannerController controller, File image);
+
+  Future<File> saveCroppedImage(DocumentScannerController controller);
+  
+  Future<void> disposeScanner(DocumentScannerController controller);
 }

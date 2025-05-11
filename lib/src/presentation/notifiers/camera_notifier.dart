@@ -1,84 +1,86 @@
-import 'package:camera/camera.dart';
+import 'dart:async';
+import 'dart:io';
+
+import 'package:flutter_document_scanner/flutter_document_scanner.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:smart_menu_flutter/src/core/router/router.dart';
 import 'package:smart_menu_flutter/src/domain/usecases/camera_usecase.dart';
-import 'package:smart_menu_flutter/src/domain/usecases/menu_usecase.dart';
 import 'package:smart_menu_flutter/src/presentation/states/camera_state.dart';
 
 final cameraControllerProvider =
     StateNotifierProvider.autoDispose<CameraControllerNotifier, CameraState>(
         (ref) {
   final notifier = CameraControllerNotifier(
-      ref.read(cameraUseCaseProvider), ref.read(menuUsecaseProvider));
+    ref.read(cameraUsecaseProvider),
+    ref.read(routerProvider),
+  );
   notifier.initialize();
   return notifier;
 });
 
 class CameraControllerNotifier extends StateNotifier<CameraState> {
-  final CameraUsecase cameraUsecase;
-  final MenuUsecase menuUsecase;
-  CameraController? controller;
+  final CameraUsecase _usecase;
+  final GoRouter _router;
+  DocumentScannerController? _controller;
+  StreamSubscription<AppStatus>? _saveSub;
 
-  CameraControllerNotifier(this.cameraUsecase, this.menuUsecase)
-      : super(CInitial());
+  CameraControllerNotifier(this._usecase, this._router) : super(CInitial());
 
   Future<void> initialize() async {
+    state = CLoading();
     try {
-      await controller?.dispose();
-      state = CLoading();
-      final cameras = await cameraUsecase.getAvailableCameras();
-      controller = await cameraUsecase.initializeCamera(cameras.first);
-      if (!controller!.value.isInitialized) {
-        await controller!.initialize();
-      }
-      state = CReady(controller!);
+      _controller = _usecase.createScanner();
+      _saveSub?.cancel();
+      _saveSub = _controller!.statusSavePhotoDocument.listen((status) async {
+        if (status == AppStatus.success) {
+          final file = await _usecase.saveCropped(_controller!);
+          state = CCapturedSuccess(file);
+          _router.go('/generating', extra: (filePath: file.path));
+        }
+      });
+
+      state = CReady(_controller!);
     } catch (e) {
       state = CError(e.toString());
-      await safeDispose();
     }
   }
 
   Future<void> takePicture() async {
-    if (state is! CReady ||
-        controller == null ||
-        !controller!.value.isInitialized) {
-      return;
-    }
-
+    if (state is! CReady || _controller == null) return;
+    state = CCapturing();
     try {
-      state = CCapturing();
-      // Take Picture
-      final file = await cameraUsecase.takePicture(controller!);
-      state = CCapturedSuccess(file);
+      await _usecase.takePhoto(_controller!);
     } catch (e) {
       state = CError(e.toString());
-      await safeDispose();
     }
   }
 
   Future<void> selectPicture() async {
+    if (_controller == null) return;
+    state = CCapturing();
     try {
-      // Take Picture
       final ImagePicker picker = ImagePicker();
       final file = await picker.pickImage(source: ImageSource.gallery);
-      state = CCapturedSuccess(XFile(file!.path));
+      state = CCapturedSuccess(File(file!.path));
+      await _usecase.findContours(_controller!, File(file.path));
     } catch (e) {
       state = CError(e.toString());
-      await safeDispose();
     }
   }
 
   Future<void> safeDispose() async {
-    if (controller != null) {
-      await controller!.dispose();
-      controller = null;
+    _saveSub?.cancel();
+    if (_controller != null) {
+      await _usecase.disposeScanner(_controller!);
+      _controller = null;
     }
   }
 
   @override
-  Future<void> dispose() async {
-    await controller?.dispose();
-    controller = null;
+  void dispose() {
+    safeDispose();
     super.dispose();
   }
 }
