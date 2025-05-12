@@ -1,6 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 
-part 'language_code_for_google_tts_response.g.dart';
+part 'foreign_language_of_menu_response.g.dart';
 
 @JsonSerializable()
 class ForeignLanguageOfMenuResponse {
@@ -13,6 +13,6 @@ class ForeignLanguageOfMenuResponse {
   ForeignLanguageOfMenuResponse({required this.languageCode, required this.languageName});
 
   factory ForeignLanguageOfMenuResponse.fromJson(Map<String, dynamic> json) =>
-      _$LanguageCodeForGoogleTtsResponseFromJson(json);
-  Map<String, dynamic> toJson() => _$LanguageCodeForGoogleTtsResponseToJson(this);
+      _$ForeignLanguageOfMenuResponseFromJson(json);
+  Map<String, dynamic> toJson() => _$ForeignLanguageOfMenuResponseToJson(this);
 }

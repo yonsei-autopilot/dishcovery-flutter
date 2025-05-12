@@ -1,19 +1,19 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'language_code_for_google_tts_response.dart';
+part of 'foreign_language_of_menu_response.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-ForeignLanguageOfMenuResponse _$LanguageCodeForGoogleTtsResponseFromJson(
+ForeignLanguageOfMenuResponse _$ForeignLanguageOfMenuResponseFromJson(
         Map<String, dynamic> json) =>
     ForeignLanguageOfMenuResponse(
       languageCode: json['languageCode'] as String,
       languageName: json['languageName'] as String,
     );
 
-Map<String, dynamic> _$LanguageCodeForGoogleTtsResponseToJson(
+Map<String, dynamic> _$ForeignLanguageOfMenuResponseToJson(
         ForeignLanguageOfMenuResponse instance) =>
     <String, dynamic>{
       'languageCode': instance.languageCode,
