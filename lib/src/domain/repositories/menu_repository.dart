@@ -1,5 +1,5 @@
-import 'package:smart_menu_flutter/src/domain/dtos/menu/language_code_for_google_tts_request.dart';
-import 'package:smart_menu_flutter/src/domain/dtos/menu/language_code_for_google_tts_response.dart';
+import 'package:smart_menu_flutter/src/domain/dtos/menu/foreign_language_of_menu_request.dart';
+import 'package:smart_menu_flutter/src/domain/dtos/menu/foreign_language_of_menu_response.dart';
 import 'package:smart_menu_flutter/src/domain/dtos/menu/menu_explanation_request.dart';
 import 'package:smart_menu_flutter/src/domain/dtos/menu/menu_order_request.dart';
 import 'package:smart_menu_flutter/src/domain/dtos/menu/menu_order_response.dart';
