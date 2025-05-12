@@ -58,13 +58,11 @@ class GeneratedMenuPageState extends ConsumerState<GeneratedMenuPage> {
       description: item.translatedItemName,
     );
     const detail2 = (
-      name: "とんこつラーメン",
+      name: "제육볶음",
       count: '2',
-      description: "豚丼をすごく懸念して作ったラーメンだ。",
+      description: "매콤하고 달콤하고 감칠맛 나는 제육볶음이다.",
     );
     return (
-      foreignLanguage: 'Japanese',
-      foreignLanguageCode: 'ja-JP',
       menuOrderDetailParams: [detail1, detail2],
     );
   }
