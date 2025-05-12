@@ -1,10 +1,13 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:smart_menu_flutter/src/data/local/foreign_language_of_menu.dart';
 import 'package:smart_menu_flutter/src/data/network/api_path.dart';
 import 'package:smart_menu_flutter/src/data/network/dio_provider.dart';
 import 'package:smart_menu_flutter/src/data/network/http_method.dart';
 import 'package:smart_menu_flutter/src/domain/dtos/common/api_response.dart';
+import 'package:smart_menu_flutter/src/domain/dtos/menu/language_code_for_google_tts_request.dart';
+import 'package:smart_menu_flutter/src/domain/dtos/menu/language_code_for_google_tts_response.dart';
 import 'package:smart_menu_flutter/src/domain/dtos/menu/menu_explanation_request.dart';
 import 'package:smart_menu_flutter/src/domain/dtos/menu/menu_explanation_response.dart';
 import 'package:smart_menu_flutter/src/domain/dtos/menu/menu_order_request.dart';
@@ -15,13 +18,15 @@ import 'package:smart_menu_flutter/src/domain/repositories/menu_repository.dart'
 
 final menuRepositoryProvider = Provider<MenuRepository>((ref) {
   final dio = ref.read(dioProvider);
-  return MenuRepositoryImpl(dio);
+  final foreignLanguageOfMenuStorage = ref.read(foreignLanguageOfMenuStorageProvider);
+  return MenuRepositoryImpl(dio, foreignLanguageOfMenuStorage);
 });
 
 class MenuRepositoryImpl implements MenuRepository {
   final DioService dio;
+  final ForeignLanguageOfMenuStorage foreignLanguageOfMenuStorage;
 
-  MenuRepositoryImpl(this.dio);
+  MenuRepositoryImpl(this.dio, this.foreignLanguageOfMenuStorage);
 
   @override
   Future<MenuTranslationResponse> getMenuTranslationAndBoundingBox(
@@ -89,5 +94,40 @@ class MenuRepositoryImpl implements MenuRepository {
     }
 
     return menuOrder;
+  }
+
+  @override
+  Future<ForeignLanguageOfMenuResponse> getLanguageCodeForGoogleTtsFromServer(ForeignLanguageOfMenuRequest request) async {
+    final response = await dio.request<ApiResponse<ForeignLanguageOfMenuResponse>>(
+        path: ApiPath.foreignLanguageOfMenu,
+        method: HttpMethod.POST,
+        body: request,
+        options: Options(
+          contentType: Headers.jsonContentType,
+        ),
+        decoder: (json) => ApiResponse.fromJson(json,
+            (j) => ForeignLanguageOfMenuResponse.fromJson(j as Map<String, dynamic>)));
+
+    final languageCode = response.data;
+
+    if (languageCode == null) {
+      throw Exception('Language Code is null');
+    }
+
+    return languageCode;
+  }
+  
+  @override
+  (String, String) getForeignLanguageOfMenu() {
+    String? languageName = foreignLanguageOfMenuStorage.getLanguageName();
+    String? languageCode = foreignLanguageOfMenuStorage.getLanguageCodeForGoogleCode();
+
+    return (languageName ?? "English", languageCode ?? "en-US");
+  }
+  
+  @override
+  void saveLanguageCodeForGoogleTts(String languageName, String languageCode) {
+    foreignLanguageOfMenuStorage.saveLanguageName(languageName);
+    foreignLanguageOfMenuStorage.savegetLanguageCodeForGoogleCode(languageCode);
   }
 }

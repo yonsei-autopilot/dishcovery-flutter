@@ -1,5 +1,6 @@
 import 'package:smart_menu_flutter/src/data/repositories/menu_repo.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:smart_menu_flutter/src/domain/dtos/menu/language_code_for_google_tts_request.dart';
 import 'package:smart_menu_flutter/src/domain/dtos/menu/menu_explanation_request.dart';
 import 'package:smart_menu_flutter/src/domain/dtos/menu/menu_explanation_response.dart';
 import 'package:smart_menu_flutter/src/domain/dtos/menu/menu_order_request.dart';
@@ -27,5 +28,15 @@ class MenuUsecase {
 
   Future<MenuOrderResponse> getMenuOrder(MenuOrderRequest request) async {
     return await repo.getMenuOrder(request);
+  }
+
+  Future<void> getLanguageCodeForGoogleCodeFromServer(String snippetOfForeignLanguage) async {
+    var request = ForeignLanguageOfMenuRequest(snippetOfForeignLanguage: snippetOfForeignLanguage);
+    final response = await repo.getLanguageCodeForGoogleTtsFromServer(request);
+    repo.saveLanguageCodeForGoogleTts(response.languageName, response.languageCode);
+  }
+
+  (String, String) getForeignLanguageOfMenu() {
+    return repo.getForeignLanguageOfMenu();
   }
 }

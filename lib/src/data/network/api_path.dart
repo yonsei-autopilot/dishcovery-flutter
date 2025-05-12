@@ -4,10 +4,11 @@ enum ApiPath {
 
   menuTranslation,
   menuExplanation,
+  menuOrder,
+  foreignLanguageOfMenu,
 
   disLikeFoods,
-  language,
-  menuOrder
+  language
 }
 
 extension ApiPathExt on ApiPath {
@@ -21,12 +22,14 @@ extension ApiPathExt on ApiPath {
         return "/menus/translation";
       case ApiPath.menuExplanation:
         return "/menus/explanation";
+      case ApiPath.menuOrder:
+        return "/menus/order";
+      case ApiPath.foreignLanguageOfMenu:
+        return "/menus/foreign-language-of-menu";
       case ApiPath.disLikeFoods:
         return "/user/dislike-foods";
       case ApiPath.language:
         return "/user/language";
-      case ApiPath.menuOrder:
-        return "/menus/order";
     }
   }
 }
