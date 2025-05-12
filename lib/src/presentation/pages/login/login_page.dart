@@ -173,19 +173,19 @@ class LoginPageState extends ConsumerState<LoginPage> {
                   const SizedBox(
                     height: 30,
                   ),
-                  // 임시 버튼
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  ElevatedButton(
-                    child: const BodyText(
-                      text: 'camera page',
-                      color: primaryRed,
-                    ),
-                    onPressed: () {
-                      ref.read(authNotifierProvider.notifier).test();
-                    },
-                  )
+                  // // 임시 버튼
+                  // const SizedBox(
+                  //   height: 20,
+                  // ),
+                  // ElevatedButton(
+                  //   child: const BodyText(
+                  //     text: 'camera page',
+                  //     color: primaryRed,
+                  //   ),
+                  //   onPressed: () {
+                  //     ref.read(authNotifierProvider.notifier).test();
+                  //   },
+                  // )
                 ],
               ),
             ),
