@@ -8,6 +8,7 @@ import 'package:smart_menu_flutter/src/core/router/router.dart';
 import 'package:smart_menu_flutter/src/domain/usecases/permission_usecase.dart';
 import 'package:smart_menu_flutter/src/presentation/notifiers/camera_notifier.dart';
 import 'package:smart_menu_flutter/src/presentation/pages/camera/generating_page.dart';
+import 'package:smart_menu_flutter/src/presentation/pages/user_setting/user_setting_page.dart';
 import 'package:smart_menu_flutter/src/presentation/states/camera_state.dart';
 import '../../../config/theme/color.dart';
 
@@ -20,6 +21,8 @@ class CameraPage extends ConsumerStatefulWidget {
 
 class CameraPageState extends ConsumerState<CameraPage>
     with WidgetsBindingObserver {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
+
   @override
   void initState() {
     super.initState();
@@ -49,9 +52,13 @@ class CameraPageState extends ConsumerState<CameraPage>
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(cameraControllerProvider);
+    final Size size = MediaQuery.of(context).size;
+    final deviceRatio = size.width / size.height;
 
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: primaryWhite,
+      drawer: const UserSettingPage(),
       body: switch (state) {
         CInitial() || CLoading() => const Center(
             child: CircularProgressIndicator(
@@ -60,23 +67,31 @@ class CameraPageState extends ConsumerState<CameraPage>
           ),
         CReady(:final controller) => Stack(
             children: [
-              Positioned(
-                top: 90,
-                left: 0,
-                right: 0,
-                bottom: 200,
-                child: CameraPreview(controller),
+              // Positioned(
+              //   top: 90,
+              //   left: 0,
+              //   right: 0,
+              //   bottom: 200,
+              //   child: CameraPreview(controller),
+              // ),
+              FittedBox(
+                fit: BoxFit.cover,
+                child: SizedBox(
+                  width: size.width,
+                  height: size.height,
+                  child: CameraPreview(controller),
+                ),
               ),
               Positioned(
                 top: 28,
                 left: 33,
                 child: IconButton(
                   onPressed: () {
-                    ref.read(routerProvider).push('/user_setting');
+                    _scaffoldKey.currentState?.openDrawer();
                   },
-                  icon: Icon(
-                    CupertinoIcons.person,
-                    color: mainColor,
+                  icon: const Icon(
+                    Icons.settings,
+                    color: primaryWhite,
                     size: 33,
                   ),
                 ),
@@ -89,32 +104,32 @@ class CameraPageState extends ConsumerState<CameraPage>
                   padding: const EdgeInsets.symmetric(horizontal: 32),
                   child: Row(
                     children: [
-                      const Expanded(
+                      Expanded(
                         child: Align(
-                            alignment: Alignment.centerLeft, child: SizedBox()),
+                          alignment: Alignment.center,
+                          child: IconButton(
+                            icon: const Icon(Icons.photo_library,
+                                size: 40, color: primaryWhite),
+                            onPressed: () => ref
+                                .read(cameraControllerProvider.notifier)
+                                .selectPicture(),
+                          ),
+                        ),
                       ),
                       Expanded(
                         child: Center(
                           child: IconButton(
-                            icon: Icon(Icons.radio_button_checked,
-                                size: 96, color: mainColor),
+                            icon: const Icon(Icons.radio_button_checked,
+                                size: 96, color: primaryWhite),
                             onPressed: () => ref
                                 .read(cameraControllerProvider.notifier)
                                 .takePicture(),
                           ),
                         ),
                       ),
-                      Expanded(
+                      const Expanded(
                         child: Align(
-                          alignment: Alignment.centerRight,
-                          child: IconButton(
-                            icon: Icon(Icons.photo_library,
-                                size: 40, color: mainColor),
-                            onPressed: () => ref
-                                .read(cameraControllerProvider.notifier)
-                                .selectPicture(),
-                          ),
-                        ),
+                            alignment: Alignment.centerRight, child: SizedBox()),
                       ),
                     ],
                   ),
@@ -129,7 +144,7 @@ class CameraPageState extends ConsumerState<CameraPage>
           )),
         CCapturedSuccess(:final file) => Builder(builder: (context) {
             WidgetsBinding.instance.addPostFrameCallback((_) {
-              context.go('/generating', extra: (filePath: file.path));
+              context.push('/generating', extra: (filePath: file.path));
             });
             return const SizedBox();
           }),

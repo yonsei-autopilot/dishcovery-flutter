@@ -43,11 +43,11 @@ class LoginPageState extends ConsumerState<LoginPage> {
                 children: [
                   const SizedBox(height: 20,),
                   Image.asset(
-                    'assets/images/green_logo.png',
-                    width: 88,
+                    'assets/images/logo_small.png',
+                    width: 150,
                   ),
                   const SizedBox(
-                    height: 40,
+                    height: 10,
                   ),
                   // id
                   Container(

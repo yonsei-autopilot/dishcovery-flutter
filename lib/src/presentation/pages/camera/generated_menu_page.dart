@@ -110,7 +110,7 @@ class GeneratedMenuPageState extends ConsumerState<GeneratedMenuPage> {
                 Positioned.fill(
                   child: Image.file(
                     File(widget.params.filePath),
-                    fit: BoxFit.fill,
+                    fit: BoxFit.fitWidth,
                   ),
                 ),
                 ...widget.params.response.items.map((item) {
