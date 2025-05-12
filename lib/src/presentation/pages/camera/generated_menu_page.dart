@@ -117,14 +117,12 @@ class GeneratedMenuPageState extends ConsumerState<GeneratedMenuPage> {
                   var [ymin, xmin, ymax, xmax] = item.boundingBox;
                   final left = xmin / 1000 * displayWidth;
                   final top = ymin / 1000 * displayHeight;
-                  final width = (xmax - xmin) / 1000 * displayWidth;
                   final height =
                       (ymax - ymin) * heightScaleFactor / 1000 * displayHeight;
                   final fontSize = height * fontScaleFactor;
                   return Positioned(
                       left: left,
                       top: top,
-                      width: width,
                       height: height,
                       child: IgnorePointer(
                         ignoring: isScaling,
@@ -133,20 +131,11 @@ class GeneratedMenuPageState extends ConsumerState<GeneratedMenuPage> {
                             ref.read(routerProvider).push('/menu_detail',
                                 extra: (menuName: item.translatedItemName));
                           },
-                          //   final params = dummyExtra(item);
-                          //   ref.read(routerProvider).push(
-                          //     '/menu_order',
-                          //     extra: params,
-                          //   );
-                          // },
                           behavior: HitTestBehavior.opaque,
                           child: Container(
                             padding: const EdgeInsets.symmetric(horizontal: 10),
                             decoration:
                                 const BoxDecoration(color: Colors.white),
-                            width: double.infinity,
-                            height: double.infinity,
-                            alignment: Alignment.center,
                             child: Text(
                               item.translatedItemName,
                               style: TextStyle(
