@@ -154,11 +154,16 @@ class MenuCartPageState extends ConsumerState<MenuCartPage> {
                                         ),
                                         onTap: () {
                                           if (item.count > 1) {
-                                            ref.read(cartProvider.notifier).addOrUpdateItem(
-                                              item.copyWith(count: item.count - 1),
-                                            );
+                                            ref
+                                                .read(cartProvider.notifier)
+                                                .addOrUpdateItem(
+                                                  item.copyWith(
+                                                      count: item.count - 1),
+                                                );
                                           } else {
-                                            ref.read(cartProvider.notifier).removeItem(item.menuName);
+                                            ref
+                                                .read(cartProvider.notifier)
+                                                .removeItem(item.menuName);
                                           }
                                         },
                                       ),
@@ -174,9 +179,12 @@ class MenuCartPageState extends ConsumerState<MenuCartPage> {
                                           size: 12,
                                         ),
                                         onTap: () {
-                                          ref.read(cartProvider.notifier).addOrUpdateItem(
-                                            item.copyWith(count: item.count + 1),
-                                          );
+                                          ref
+                                              .read(cartProvider.notifier)
+                                              .addOrUpdateItem(
+                                                item.copyWith(
+                                                    count: item.count + 1),
+                                              );
                                         },
                                       ),
                                     ],
@@ -220,7 +228,21 @@ class MenuCartPageState extends ConsumerState<MenuCartPage> {
                     size: 14,
                   )),
                 ),
-                onTap: () async {},
+                onTap: () {
+                  final details = cartItems
+                      .map((item) => (
+                            name: item.menuName,
+                            count: item.count.toString(),
+                            description: '',
+                          ))
+                      .toList();
+                  final params = (menuOrderDetailParams: details,);
+
+                  ref.read(routerProvider).push(
+                        '/menu_order',
+                        extra: params,
+                      );
+                },
               ),
             ),
           )
