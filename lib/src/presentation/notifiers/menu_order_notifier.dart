@@ -1,10 +1,13 @@
 import 'dart:convert';
+import 'dart:typed_data';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smart_menu_flutter/src/domain/dtos/menu/menu_order_request.dart';
 import 'package:smart_menu_flutter/src/domain/dtos/menu/menu_order_response.dart';
 import 'package:smart_menu_flutter/src/domain/usecases/menu_usecase.dart';
 import 'package:smart_menu_flutter/src/presentation/pages/menu_order/menu_order_page.dart';
+import 'package:path_provider/path_provider.dart';
+import 'dart:io';
 
 final menuOrderNotifierProvider = StateNotifierProvider.family<
     MenuOrderNotifier,
@@ -49,16 +52,23 @@ class MenuOrderNotifier extends StateNotifier<AsyncValue<MenuOrderResponse>> {
   Future<void> playOrderAudio() async {
     final b64 = state.value?.orderAudioBase64;
     if (b64 != null && b64.isNotEmpty) {
-      final bytes = base64Decode(b64);
-      await _player.play(BytesSource(bytes));
+      await playBytestreamAudio(base64Decode(b64));
     }
   }
 
   Future<void> playInquiryAudio() async {
     final b64 = state.value?.inquiryAudioBase64;
     if (b64 != null && b64.isNotEmpty) {
-      final bytes = base64Decode(b64);
-      await _player.play(BytesSource(bytes));
+      await playBytestreamAudio(base64Decode(b64));
     }
+  }
+
+  Future<void> playBytestreamAudio(Uint8List bytestream) async {
+    // 임시 파일 생성
+    final tempDir = await getTemporaryDirectory();
+    final file = File('${tempDir.path}/order_audio.mp3');
+    await file.writeAsBytes(bytestream);
+
+    await _player.play(DeviceFileSource(file.path));
   }
 }
