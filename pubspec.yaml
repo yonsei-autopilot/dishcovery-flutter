@@ -49,6 +49,7 @@ dependencies:
   dropdown_button2: ^2.3.9
   audioplayers: ^6.4.0
   marqueer: ^2.0.1
+  flutter_inner_shadow: ^0.0.1
 
 dev_dependencies:
   flutter_test:
