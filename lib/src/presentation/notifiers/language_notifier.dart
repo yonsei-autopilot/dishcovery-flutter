@@ -9,7 +9,7 @@ final languageProvider =
 class LanguageNotifier extends StateNotifier<AsyncValue<String>> {
   final LanguageUseCase _useCase;
 
-  LanguageNotifier(this._useCase) : super(const AsyncValue.loading()) {
+  LanguageNotifier(this._useCase) : super(const AsyncValue.data('English')) {
     initializeLanguage();
   }
 
@@ -20,8 +20,8 @@ class LanguageNotifier extends StateNotifier<AsyncValue<String>> {
   Future<void> initializeLanguage() async {
     state = const AsyncValue.loading();
     try {
-      final lanuage = await _useCase.fetchFromServer();
-      state = AsyncValue.data(lanuage);
+      final language = await _useCase.fetchFromServer();
+      state = AsyncValue.data(language);
     } catch (e) {
       state = AsyncValue.error(e, StackTrace.current);
     }

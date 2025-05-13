@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:marqueer/marqueer.dart';
+import 'package:smart_menu_flutter/src/presentation/pages/menu_order/menu_order_page.dart';
 import '../../../config/theme/body_text.dart';
 import '../../../config/theme/color.dart';
 import 'package:go_router/go_router.dart';
@@ -119,7 +120,7 @@ class MenuCartPageState extends ConsumerState<MenuCartPage> {
                             item.imageUrl,
                             width: 80,
                             height: 80,
-                            fit: BoxFit.fill,
+                            fit: BoxFit.cover,
                           ),
                           const SizedBox(
                             width: 15,
@@ -237,7 +238,7 @@ class MenuCartPageState extends ConsumerState<MenuCartPage> {
                           ))
                       .toList();
                   final params = (menuOrderDetailParams: details,);
-
+                  ref.read(pageIndexProvider.notifier).state = 0;
                   ref.read(routerProvider).push(
                         '/menu_order',
                         extra: params,

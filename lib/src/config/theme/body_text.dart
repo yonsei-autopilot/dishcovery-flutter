@@ -9,6 +9,7 @@ class BodyText extends StatelessWidget {
   final overflow;
   final TextAlign textAlign;
   final bool shadow;
+  final int? maxLine;
   const BodyText({
     super.key,
     this.size = 16,
@@ -18,6 +19,7 @@ class BodyText extends StatelessWidget {
     this.overflow = TextOverflow.clip,
     this.textAlign = TextAlign.start,
     this.shadow = false,
+    this.maxLine
   });
 
   @override
@@ -31,8 +33,9 @@ class BodyText extends StatelessWidget {
         fontSize: size,
         fontWeight: weight,
         overflow: overflow,
-        shadows: shadow ? <Shadow> [Shadow(offset: Offset(2.5, 2.5), blurRadius: 10, color: primaryGrey)] : null,
+        shadows: shadow ? <Shadow> [const Shadow(offset: Offset(2.5, 2.5), blurRadius: 10, color: primaryGrey)] : null,
       ),
+      maxLines: maxLine,
     );
   }
 }

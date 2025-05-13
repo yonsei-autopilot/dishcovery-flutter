@@ -128,6 +128,7 @@ class GeneratedMenuPageState extends ConsumerState<GeneratedMenuPage> {
                                     fontSize: fontSize,
                                     fontWeight: FontWeight.bold,
                                     color: Colors.black,
+                                    fontFamily: 'SFProRegular'
                                   ),
                                 ),
                               ),
