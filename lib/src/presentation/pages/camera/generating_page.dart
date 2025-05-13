@@ -53,22 +53,9 @@ class GeneratingPageState extends ConsumerState<GeneratingPage>
               height: 15,
             ),
             BodyText(
-              text: 'Generating Menu...',
+              text: 'Translating Menu...',
               color: mainColor,
             ),
-            // // bounding box 이전 임시 버튼
-            // const SizedBox(height: 15,),
-            // ElevatedButton(
-            //   onPressed: () {
-            //     ref.read(routerProvider).push(
-            //         '/menu_detail',
-            //         extra: (
-            //           menuName: 'とんこつラーメン'
-            //         )
-            //     );
-            //   },
-            //   child: const BodyText(text: 'menu detail'),
-            // )
           ],
         ),
       ),

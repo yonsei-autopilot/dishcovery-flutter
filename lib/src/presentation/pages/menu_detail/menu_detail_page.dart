@@ -17,6 +17,7 @@ final countProvider = StateProvider.autoDispose<int>((ref) => 1);
 
 class MenuDetailPage extends ConsumerStatefulWidget {
   final MenuDetailPageParams params;
+
   const MenuDetailPage({super.key, required this.params});
 
   @override
@@ -34,7 +35,22 @@ class _MenuDetailPageState extends ConsumerState<MenuDetailPage> {
     return detailAsync.when(
       loading: () => Scaffold(
         backgroundColor: primaryWhite,
-        body: Center(child: CircularProgressIndicator(color: mainColor,)),
+        body: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            CircularProgressIndicator(
+              color: mainColor,
+            ),
+            const SizedBox(
+              height: 15,
+            ),
+            BodyText(
+              text: 'Loading Details...',
+              color: mainColor,
+            )
+          ],
+        )),
       ),
       error: (e, _) => Scaffold(
         appBar:
@@ -68,27 +84,28 @@ class _MenuDetailPageState extends ConsumerState<MenuDetailPage> {
                   children: [
                     const Center(
                         child: BodyText(
-                          text: 'Details',
-                          size: 20,
-                          color: primaryBlack,
-                        )),
-                    const SizedBox(height: 30,),
+                      text: 'Details',
+                      size: 20,
+                      color: primaryBlack,
+                    )),
+                    const SizedBox(
+                      height: 30,
+                    ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 40),
                       child: SizedBox(
-                        width: width-80,
-                        height: 25,
-                        child: Marqueer(
-                          pps: 15,
-                          direction: MarqueerDirection.rtl,
-                          infinity: false,
-                          edgeDuration: const Duration(seconds: 1),
-                          child: BodyText(
-                            text: detail.name,
-                            size: 20,
-                          ),
-                        )
-                      ),
+                          width: width - 80,
+                          height: 25,
+                          child: Marqueer(
+                            pps: 15,
+                            direction: MarqueerDirection.rtl,
+                            infinity: false,
+                            edgeDuration: const Duration(seconds: 1),
+                            child: BodyText(
+                              text: detail.name,
+                              size: 20,
+                            ),
+                          )),
                     ),
                     const SizedBox(height: 30),
                   ],
@@ -103,17 +120,21 @@ class _MenuDetailPageState extends ConsumerState<MenuDetailPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-
                       // Image carousel
                       SizedBox(
                         height: 200,
                         child: ListView.separated(
                           scrollDirection: Axis.horizontal,
                           itemCount: detail.imageLinks.length,
-                          separatorBuilder: (_, __) => const SizedBox(width: 12),
+                          separatorBuilder: (_, __) =>
+                              const SizedBox(width: 12),
                           itemBuilder: (context, i) {
                             return Padding(
-                              padding: EdgeInsets.only(left: i == 0 ? 40 : 0, right: i == detail.imageLinks.length-1 ? 40 : 0),
+                              padding: EdgeInsets.only(
+                                  left: i == 0 ? 40 : 0,
+                                  right: i == detail.imageLinks.length - 1
+                                      ? 40
+                                      : 0),
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(8),
                                 child: Image.network(
@@ -155,11 +176,13 @@ class _MenuDetailPageState extends ConsumerState<MenuDetailPage> {
                             ),
                             const SizedBox(height: 35),
 
-
                             // Watch Out
                             const Row(
                               children: [
-                                Icon(Icons.info_outline, size: 25,),
+                                Icon(
+                                  Icons.info_outline,
+                                  size: 25,
+                                ),
                                 SizedBox(width: 8),
                                 BodyText(
                                   text: 'Watch Out',
@@ -188,7 +211,10 @@ class _MenuDetailPageState extends ConsumerState<MenuDetailPage> {
                                   },
                                 ),
                                 const SizedBox(width: 8),
-                                BodyText(text: count.toString(), size: 16,),
+                                BodyText(
+                                  text: count.toString(),
+                                  size: 16,
+                                ),
                                 const SizedBox(width: 8),
                                 IconButton(
                                   icon: const Icon(Icons.add),
@@ -228,24 +254,36 @@ class _MenuDetailPageState extends ConsumerState<MenuDetailPage> {
                           ]),
                       child: const Center(
                           child: BodyText(
-                            text: 'Add to Cart',
-                            color: primaryWhite,
-                            size: 14,
-                          )),
+                        text: 'Add to Cart',
+                        color: primaryWhite,
+                        size: 14,
+                      )),
                     ),
                     onTap: () async {
                       if (count > 0) {
-                        final cartItem = CartItem(menuName: detail.name, count: count, imageUrl: detail.imageLinks[0]);
-                        await ref.read(cartProvider.notifier).addOrUpdateItem(cartItem);
+                        final cartItem = CartItem(
+                            menuName: detail.name,
+                            count: count,
+                            imageUrl: detail.imageLinks[0]);
+                        await ref
+                            .read(cartProvider.notifier)
+                            .addOrUpdateItem(cartItem);
                         if (!context.mounted) return;
-                        ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: BodyText(text: 'Added ($count) item(s) to the cart', size: 10, color: primaryWhite,))
-                        );
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: BodyText(
+                          text: 'Added $count item(s) to the cart',
+                          size: 10,
+                          color: primaryWhite,
+                        )));
                         context.pop();
                       } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: BodyText(text: 'Please select at least one item', size: 10, color: primaryWhite,))
-                        );
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(const SnackBar(
+                                content: BodyText(
+                          text: 'Please select at least one item',
+                          size: 10,
+                          color: primaryWhite,
+                        )));
                       }
                     },
                   ),
