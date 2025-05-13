@@ -51,7 +51,6 @@ class CameraPageState extends ConsumerState<CameraPage>
   Widget build(BuildContext context) {
     final state = ref.watch(cameraControllerProvider);
     final Size size = MediaQuery.of(context).size;
-    final deviceRatio = size.width / size.height;
 
     return Scaffold(
       key: _scaffoldKey,
@@ -65,12 +64,15 @@ class CameraPageState extends ConsumerState<CameraPage>
           ),
         CReady(:final controller) => Stack(
             children: [
-              FittedBox(
-                fit: BoxFit.cover,
-                child: SizedBox(
-                  width: size.width,
-                  height: size.height,
-                  child: CameraPreview(controller),
+              OverflowBox(
+                maxWidth: double.infinity,
+                maxHeight: double.infinity,
+                child: FittedBox(
+                  fit: BoxFit.cover,
+                  child: SizedBox(
+                    height: size.height,
+                    child: CameraPreview(controller),
+                  ),
                 ),
               ),
               Positioned(
@@ -120,7 +122,8 @@ class CameraPageState extends ConsumerState<CameraPage>
                       ),
                       const Expanded(
                         child: Align(
-                            alignment: Alignment.centerRight, child: SizedBox()),
+                            alignment: Alignment.centerRight,
+                            child: SizedBox()),
                       ),
                     ],
                   ),
