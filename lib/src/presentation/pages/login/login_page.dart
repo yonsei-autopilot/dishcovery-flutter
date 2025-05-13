@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smart_menu_flutter/src/config/theme/body_text.dart';
 import 'package:smart_menu_flutter/src/config/theme/color.dart';
+import 'package:smart_menu_flutter/src/core/router/router.dart';
 import 'package:smart_menu_flutter/src/presentation/notifiers/auth_notifier.dart';
 
 class LoginPage extends ConsumerStatefulWidget {
@@ -43,11 +44,11 @@ class LoginPageState extends ConsumerState<LoginPage> {
                 children: [
                   const SizedBox(height: 20,),
                   Image.asset(
-                    'assets/images/green_logo.png',
-                    width: 88,
+                    'assets/images/logo_small.png',
+                    width: 150,
                   ),
                   const SizedBox(
-                    height: 40,
+                    height: 10,
                   ),
                   // id
                   Container(
@@ -184,6 +185,7 @@ class LoginPageState extends ConsumerState<LoginPage> {
                     ),
                     onPressed: () {
                       ref.read(authNotifierProvider.notifier).test();
+                      ref.read(routerProvider).push('/menu_cart');
                     },
                   )
                 ],
