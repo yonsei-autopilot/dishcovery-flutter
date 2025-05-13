@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:smart_menu_flutter/src/data/local/shared_preferences_provider.dart';
 import 'package:smart_menu_flutter/src/data/network/api_path.dart';
 import 'package:smart_menu_flutter/src/data/network/dio_provider.dart';
 import 'package:smart_menu_flutter/src/data/network/http_method.dart';
@@ -12,12 +14,14 @@ import 'package:smart_menu_flutter/src/domain/repositories/language_repository.d
 
 final languageRepositoryProvider = Provider<LanguageRepository>((ref) {
   final dioService = ref.read(dioProvider);
-  return LanguageRepositoryImpl(dioService);
+  final pref = ref.read(sharedPreferencesProvider);
+  return LanguageRepositoryImpl(dioService, pref);
 });
 
 class LanguageRepositoryImpl implements LanguageRepository {
   final DioService dioService;
-  LanguageRepositoryImpl(this.dioService);
+  final SharedPreferences pref;
+  LanguageRepositoryImpl(this.dioService, this.pref);
 
   @override
   Future<List<String>> getLanguages() async {
@@ -59,5 +63,7 @@ class LanguageRepositoryImpl implements LanguageRepository {
     if (!response.isSuccess) {
       throw Exception('Language is not saved');
     }
+
+    pref.setString('language', language);
   }
 }

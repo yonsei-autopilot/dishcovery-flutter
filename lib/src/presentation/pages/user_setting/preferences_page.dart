@@ -59,7 +59,7 @@ class PreferencesPageState extends ConsumerState<PreferencesPage> {
             left: 35,
             right: 35,
             child: BodyText(
-              text: 'Choose which allergies or ingredients to watch out for.',
+              text: 'Choose which allergies, ingredients, or culturally / religiously restricted foods to watch out for:',
               overflow: TextOverflow.clip,
               size: 16,
               color: primaryBlack,
