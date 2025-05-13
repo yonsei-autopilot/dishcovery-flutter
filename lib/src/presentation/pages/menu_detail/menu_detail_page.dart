@@ -2,13 +2,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:marqueer/marqueer.dart';
 import 'package:smart_menu_flutter/src/config/theme/body_text.dart';
 import 'package:smart_menu_flutter/src/presentation/notifiers/menu_detail_notifier.dart';
 import 'package:smart_menu_flutter/src/config/theme/color.dart';
+import '../../../domain/entities/cart_item.dart';
+import '../../notifiers/cart_notifier.dart';
 
 typedef MenuDetailPageParams = ({
   String menuName,
 });
+
+final countProvider = StateProvider.autoDispose<int>((ref) => 1);
 
 class MenuDetailPage extends ConsumerStatefulWidget {
   final MenuDetailPageParams params;
@@ -22,10 +27,14 @@ class _MenuDetailPageState extends ConsumerState<MenuDetailPage> {
   @override
   Widget build(BuildContext context) {
     final detailAsync = ref.watch(menuDetailNotifierProvider(widget.params));
+    final count = ref.watch(countProvider);
+    Size size = MediaQuery.of(context).size;
+    double width = size.width;
 
     return detailAsync.when(
-      loading: () => const Scaffold(
-        body: Center(child: CircularProgressIndicator()),
+      loading: () => Scaffold(
+        backgroundColor: primaryWhite,
+        body: Center(child: CircularProgressIndicator(color: mainColor,)),
       ),
       error: (e, _) => Scaffold(
         appBar:
@@ -50,19 +59,43 @@ class _MenuDetailPageState extends ConsumerState<MenuDetailPage> {
                       context.pop();
                     },
                   )),
-              const Positioned(
+              Positioned(
                 top: 75,
                 left: 0,
                 right: 0,
-                child: Center(
-                    child: BodyText(
-                      text: 'Details',
-                      size: 20,
-                      color: primaryBlack,
-                    )),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Center(
+                        child: BodyText(
+                          text: 'Details',
+                          size: 20,
+                          color: primaryBlack,
+                        )),
+                    const SizedBox(height: 30,),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 40),
+                      child: SizedBox(
+                        width: width-80,
+                        height: 25,
+                        child: Marqueer(
+                          pps: 15,
+                          direction: MarqueerDirection.rtl,
+                          infinity: false,
+                          edgeDuration: const Duration(seconds: 1),
+                          child: BodyText(
+                            text: detail.name,
+                            size: 20,
+                          ),
+                        )
+                      ),
+                    ),
+                    const SizedBox(height: 30),
+                  ],
+                ),
               ),
               Positioned(
-                top: 135,
+                top: 185,
                 left: 0,
                 right: 0,
                 bottom: 0,
@@ -70,16 +103,6 @@ class _MenuDetailPageState extends ConsumerState<MenuDetailPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Name
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 40),
-                        child: BodyText(
-                          text: detail.name,
-                          size: 20,
-                          weight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 30),
 
                       // Image carousel
                       SizedBox(
@@ -132,6 +155,7 @@ class _MenuDetailPageState extends ConsumerState<MenuDetailPage> {
                             ),
                             const SizedBox(height: 35),
 
+
                             // Watch Out
                             const Row(
                               children: [
@@ -157,14 +181,20 @@ class _MenuDetailPageState extends ConsumerState<MenuDetailPage> {
                               children: [
                                 IconButton(
                                   icon: const Icon(Icons.remove),
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    if (count > 0) {
+                                      ref.read(countProvider.notifier).state--;
+                                    }
+                                  },
                                 ),
                                 const SizedBox(width: 8),
-                                const BodyText(text: '1', size: 16,),
+                                BodyText(text: count.toString(), size: 16,),
                                 const SizedBox(width: 8),
                                 IconButton(
                                   icon: const Icon(Icons.add),
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    ref.read(countProvider.notifier).state++;
+                                  },
                                 ),
                               ],
                             ),
@@ -176,6 +206,7 @@ class _MenuDetailPageState extends ConsumerState<MenuDetailPage> {
                   ),
                 ),
               ),
+              // Add to Cart Button
               Positioned(
                 bottom: 45,
                 left: 0,
@@ -203,7 +234,19 @@ class _MenuDetailPageState extends ConsumerState<MenuDetailPage> {
                           )),
                     ),
                     onTap: () async {
-
+                      if (count > 0) {
+                        final cartItem = CartItem(menuName: detail.name, count: count, imageUrl: detail.imageLinks[0]);
+                        await ref.read(cartProvider.notifier).addOrUpdateItem(cartItem);
+                        if (!context.mounted) return;
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: BodyText(text: 'Added ($count) item(s) to the cart', size: 10, color: primaryWhite,))
+                        );
+                        context.pop();
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: BodyText(text: 'Please select at least one item', size: 10, color: primaryWhite,))
+                        );
+                      }
                     },
                   ),
                 ),

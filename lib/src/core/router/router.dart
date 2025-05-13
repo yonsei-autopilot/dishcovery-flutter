@@ -5,6 +5,7 @@ import 'package:smart_menu_flutter/src/presentation/pages/camera/generated_menu_
 import 'package:smart_menu_flutter/src/presentation/pages/camera/camera_page.dart';
 import 'package:smart_menu_flutter/src/presentation/pages/camera/generating_page.dart';
 import 'package:smart_menu_flutter/src/presentation/pages/login/login_page.dart';
+import 'package:smart_menu_flutter/src/presentation/pages/menu_cart/menu_cart_page.dart';
 import 'package:smart_menu_flutter/src/presentation/pages/menu_detail/menu_detail_page.dart';
 import 'package:smart_menu_flutter/src/presentation/pages/menu_order/menu_order_page.dart';
 import 'package:smart_menu_flutter/src/presentation/pages/user_setting/language_page.dart';
@@ -100,6 +101,12 @@ final routerProvider = Provider<GoRouter>((ref) {
                 )
             );
           }
+      ),
+      GoRoute(
+          path: '/menu_cart',
+          pageBuilder: (context, state) => buildPageWithDefaultTransition(
+              context: context, state: state, child: const MenuCartPage()
+          )
       ),
     ],
   );
