@@ -11,7 +11,7 @@
 
 
     <application
-        android:label="Dishcovery"
+        android:label="DishCovery"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
