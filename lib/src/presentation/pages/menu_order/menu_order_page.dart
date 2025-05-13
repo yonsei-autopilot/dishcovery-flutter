@@ -1,6 +1,13 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:smart_menu_flutter/src/config/theme/body_text.dart';
 import 'package:smart_menu_flutter/src/presentation/notifiers/menu_order_notifier.dart';
+import 'package:smart_menu_flutter/src/presentation/pages/menu_order/widget/default_widget.dart';
+import 'package:smart_menu_flutter/src/presentation/pages/menu_order/widget/first_card_widget.dart';
+import 'package:smart_menu_flutter/src/presentation/pages/menu_order/widget/second_card_widget.dart';
+import '../../../config/theme/color.dart';
+import '../../../domain/dtos/menu/menu_order_response.dart';
 
 typedef MenuOrderDetailParams = ({
   String name,
@@ -12,8 +19,11 @@ typedef MenuOrderPageParams = ({
   List<MenuOrderDetailParams> menuOrderDetailParams
 });
 
+final pageIndexProvider = StateProvider<int>((ref) => 0);
+
 class MenuOrderPage extends ConsumerStatefulWidget {
   const MenuOrderPage({super.key, required this.params});
+
   final MenuOrderPageParams params;
 
   @override
@@ -23,11 +33,29 @@ class MenuOrderPage extends ConsumerStatefulWidget {
 class MenuOrderPageState extends ConsumerState<MenuOrderPage> {
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     final orderAsync = ref.watch(menuOrderNotifierProvider(widget.params));
+    final currentPage = ref.watch(pageIndexProvider);
 
     return orderAsync.when(
-      loading: () => const Scaffold(
-        body: Center(child: CircularProgressIndicator()),
+      loading: () => Scaffold(
+        backgroundColor: primaryWhite,
+        body: Center(
+            child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            CircularProgressIndicator(
+              color: mainColor,
+            ),
+            const SizedBox(
+              height: 15,
+            ),
+            BodyText(
+              text: 'Generating Audio...',
+              color: mainColor,
+            )
+          ],
+        )),
       ),
       error: (e, _) => Scaffold(
         appBar: AppBar(leading: const BackButton(), title: const Text('Order')),
@@ -35,93 +63,21 @@ class MenuOrderPageState extends ConsumerState<MenuOrderPage> {
       ),
       data: (resp) {
         return Scaffold(
-          appBar: AppBar(
-            leading: const BackButton(),
-            title: const Text('Order'),
-            centerTitle: true,
-          ),
-          body: Padding(
-            padding: const EdgeInsets.all(24),
-            child: Column(
-              children: [
-                const SizedBox(height: 24),
-                const Expanded(
-                  child: Center(
-                    child: CircleAvatar(
-                      radius: 60,
-                      backgroundColor: Colors.greenAccent,
-                      child: Icon(
-                        Icons.mic,
-                        size: 60,
-                        color: Colors.black87,
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 24),
-                // Order Card
-                GestureDetector(
-                  onTap: () => ref
-                      .read(menuOrderNotifierProvider(widget.params).notifier)
-                      .playOrderAudio(),
-                  child: Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: Colors.grey.shade200,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          resp.orderInUserLanguage,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                        Text(resp.orderInForeignLanguage),
-                      ],
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 16),
-                // Inquiry Card
-                GestureDetector(
-                  onTap: () => ref
-                      .read(menuOrderNotifierProvider(widget.params).notifier)
-                      .playInquiryAudio(),
-                  child: Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: Colors.grey.shade200,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          resp.inquiryForDislikeFoodsInUserLanguage,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                        Text(resp.inquiryForDislikeFoodsInForeignLanguage),
-                      ],
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 24),
-              ],
-            ),
-          ),
+          backgroundColor: primaryWhite,
+          body: _buildPage(currentPage, resp, widget.params)
         );
       },
     );
+  }
+
+  Widget _buildPage(int index, MenuOrderResponse res, MenuOrderPageParams params) {
+    switch (index) {
+      case 1:
+        return OrderFirstCardWidget(response: res, params: params);
+      case 2:
+        return OrderSecondCardWidget(response: res, params: params);
+      default:
+        return OrderDefaultWidget(response: res, params: params,);
+    }
   }
 }
