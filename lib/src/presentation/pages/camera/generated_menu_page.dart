@@ -15,6 +15,7 @@ typedef GeneratedMenuPageParams = ({
 
 class GeneratedMenuPage extends ConsumerStatefulWidget {
   const GeneratedMenuPage({super.key, required this.params});
+
   final GeneratedMenuPageParams params;
 
   @override
@@ -60,7 +61,7 @@ class GeneratedMenuPageState extends ConsumerState<GeneratedMenuPage> {
     const detail2 = (
       name: "とんこつラーメン",
       count: '2',
-      description: "豚丼をすごく懸念して作ったラーメンだ。",
+      description: "豚丼をすごく懸念して作ったラーメン다.",
     );
     return (
       foreignLanguage: 'Japanese',
@@ -89,92 +90,110 @@ class GeneratedMenuPageState extends ConsumerState<GeneratedMenuPage> {
     const fontScaleFactor = 0.7;
 
     return Scaffold(
-        body: Stack(children: [
-      Positioned(
-        top: 90,
-        child: InteractiveViewer(
-          transformationController: _controller,
-          panEnabled: true,
-          scaleEnabled: true,
-          minScale: 1.0,
-          maxScale: 4.0,
-          // Transformation 시작
-          onInteractionStart: (_) => setState(() => isScaling = true),
-          // Transformation 종료
-          onInteractionEnd: (_) => setState(() => isScaling = false),
-          child: SizedBox(
-            width: displayWidth,
-            height: displayHeight,
-            child: Stack(
-              children: [
-                Positioned.fill(
-                  child: Image.file(
-                    File(widget.params.filePath),
-                    fit: BoxFit.fill,
-                  ),
-                ),
-                ...widget.params.response.items.map((item) {
-                  var [ymin, xmin, ymax, xmax] = item.boundingBox;
-                  final left = xmin / 1000 * displayWidth;
-                  final top = ymin / 1000 * displayHeight;
-                  final height =
-                      (ymax - ymin) * heightScaleFactor / 1000 * displayHeight;
-                  final fontSize = height * fontScaleFactor;
-                  return Positioned(
-                      left: left,
-                      top: top,
-                      height: height,
-                      child: IgnorePointer(
-                        ignoring: isScaling,
-                        child: GestureDetector(
-                          onTap: () {
-                            ref.read(routerProvider).push('/menu_detail',
-                                extra: (menuName: item.translatedItemName));
-                          },
-                          behavior: HitTestBehavior.opaque,
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 10),
-                            decoration:
-                                const BoxDecoration(color: Colors.white),
-                            child: Text(
-                              item.translatedItemName,
-                              style: TextStyle(
-                                fontSize: fontSize,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
+      backgroundColor: primaryWhite,
+      body: Stack(
+        children: [
+          Positioned.fill(
+            child: InteractiveViewer(
+              transformationController: _controller,
+              panEnabled: true,
+              scaleEnabled: true,
+              minScale: 1.0,
+              maxScale: 4.0,
+              onInteractionStart: (_) => setState(() => isScaling = true),
+              onInteractionEnd: (_) => setState(() => isScaling = false),
+              child: Center(
+                child: SizedBox(
+                  width: displayWidth,
+                  height: displayHeight,
+                  child: Stack(
+                    children: [
+                      Positioned.fill(
+                        child: Image.file(
+                          File(widget.params.filePath),
+                          fit: BoxFit.fitWidth,
+                        ),
+                      ),
+                      ...widget.params.response.items.map((item) {
+                        var [ymin, xmin, ymax, xmax] = item.boundingBox;
+                        final left = xmin / 1000 * displayWidth;
+                        final top = ymin / 1000 * displayHeight;
+                        final height = (ymax - ymin) *
+                            heightScaleFactor /
+                            1000 *
+                            displayHeight;
+                        final fontSize = height * fontScaleFactor;
+                        return Positioned(
+                          left: left,
+                          top: top,
+                          height: height,
+                          child: IgnorePointer(
+                            ignoring: isScaling,
+                            child: GestureDetector(
+                              onTap: () {
+                                ref.read(routerProvider).push('/menu_detail',
+                                    extra: (menuName: item.translatedItemName));
+                              },
+                              behavior: HitTestBehavior.opaque,
+                              child: Container(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 10),
+                                decoration:
+                                    const BoxDecoration(color: Colors.white),
+                                child: Text(
+                                  item.translatedItemName,
+                                  style: TextStyle(
+                                    fontSize: fontSize,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black,
+                                  ),
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      ));
-                }),
-              ],
+                        );
+                      }),
+                    ],
+                  ),
+                ),
+              ),
             ),
           ),
-        ),
+          Positioned(
+            top: 70,
+            left: 35,
+            child: IconButton(
+              icon: const Icon(
+                CupertinoIcons.arrow_left,
+                color: primaryBlack,
+                size: 24,
+              ),
+              onPressed: () async {
+                setState(() {
+                  isLoading = true;
+                });
+                Future.microtask(() async {
+                  ref.read(routerProvider).go('/');
+                });
+              },
+            ),
+          ),
+          Positioned(
+            top: 70,
+            right: 35,
+            child: IconButton(
+              icon: const Icon(
+                CupertinoIcons.cart,
+                size: 25,
+                color: primaryBlack,
+              ),
+              onPressed: () {
+                ref.read(routerProvider).push('/menu_cart');
+              },
+            ),
+          )
+        ],
       ),
-      Positioned(
-        bottom: 52,
-        left: 0,
-        right: 0,
-        child: Center(
-          child: IconButton(
-            icon: Icon(
-              CupertinoIcons.arrow_left,
-              color: mainColor,
-              size: 42,
-            ),
-            onPressed: () async {
-              setState(() {
-                isLoading = true;
-              });
-              Future.microtask(() async {
-                ref.read(routerProvider).go('/');
-              });
-            },
-          ),
-        ),
-      )
-    ]));
+    );
   }
 }
