@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smart_menu_flutter/src/config/theme/body_text.dart';
 import 'package:smart_menu_flutter/src/core/router/router.dart';
+import 'package:smart_menu_flutter/src/domain/dtos/menu/menu_translation_response.dart';
 import 'package:smart_menu_flutter/src/domain/usecases/menu_usecase.dart';
 import '../../../config/theme/color.dart';
 
@@ -29,6 +30,11 @@ class GeneratingPageState extends ConsumerState<GeneratingPage>
         filePath: widget.params.filePath,
         response: response,
       ));
+      String snippetOfForeignLanguage =
+          response.items.map((item) => item.translatedItemName).join(' ');
+      await ref
+          .read(menuUsecaseProvider)
+          .getLanguageCodeForGoogleCodeFromServer(snippetOfForeignLanguage);
     });
   }
 

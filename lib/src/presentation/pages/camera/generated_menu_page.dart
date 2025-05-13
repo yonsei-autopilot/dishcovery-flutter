@@ -52,24 +52,6 @@ class GeneratedMenuPageState extends ConsumerState<GeneratedMenuPage> {
     super.dispose();
   }
 
-  MenuOrderPageParams dummyExtra(MenuItemResponse item) {
-    final detail1 = (
-      name: item.translatedItemName,
-      count: '1',
-      description: item.translatedItemName,
-    );
-    const detail2 = (
-      name: "とんこつラーメン",
-      count: '2',
-      description: "豚丼をすごく懸念して作ったラーメン다.",
-    );
-    return (
-      foreignLanguage: 'Japanese',
-      foreignLanguageCode: 'ja-JP',
-      menuOrderDetailParams: [detail1, detail2],
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     if (isLoading) {

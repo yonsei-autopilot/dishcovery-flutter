@@ -9,8 +9,6 @@ typedef MenuOrderDetailParams = ({
 });
 
 typedef MenuOrderPageParams = ({
-  String foreignLanguage,
-  String foreignLanguageCode,
   List<MenuOrderDetailParams> menuOrderDetailParams
 });
 

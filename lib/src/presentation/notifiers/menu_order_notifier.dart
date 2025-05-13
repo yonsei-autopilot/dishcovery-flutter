@@ -26,9 +26,11 @@ class MenuOrderNotifier extends StateNotifier<AsyncValue<MenuOrderResponse>> {
 
   Future<void> _fetchOrder() async {
     try {
+      (String, String) foreignLanguage = _usecase.getForeignLanguageOfMenu();
+
       final req = MenuOrderRequest(
-        foreignLanguage: _params.foreignLanguage,
-        foreignLanguageCode: _params.foreignLanguageCode,
+        foreignLanguage: foreignLanguage.$1,
+        foreignLanguageCode: foreignLanguage.$2,
         menus: _params.menuOrderDetailParams
             .map((p) => MenuOrderItem(
                   name: p.name,
