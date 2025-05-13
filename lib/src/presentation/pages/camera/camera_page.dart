@@ -4,10 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:smart_menu_flutter/src/config/theme/body_text.dart';
-import 'package:smart_menu_flutter/src/core/router/router.dart';
 import 'package:smart_menu_flutter/src/domain/usecases/permission_usecase.dart';
 import 'package:smart_menu_flutter/src/presentation/notifiers/camera_notifier.dart';
-import 'package:smart_menu_flutter/src/presentation/pages/camera/generating_page.dart';
 import 'package:smart_menu_flutter/src/presentation/pages/user_setting/user_setting_page.dart';
 import 'package:smart_menu_flutter/src/presentation/states/camera_state.dart';
 import '../../../config/theme/color.dart';
@@ -67,13 +65,6 @@ class CameraPageState extends ConsumerState<CameraPage>
           ),
         CReady(:final controller) => Stack(
             children: [
-              // Positioned(
-              //   top: 90,
-              //   left: 0,
-              //   right: 0,
-              //   bottom: 200,
-              //   child: CameraPreview(controller),
-              // ),
               FittedBox(
                 fit: BoxFit.cover,
                 child: SizedBox(
