@@ -16,30 +16,28 @@ class UserProfileWidgetState extends ConsumerState<UserProfileWidget> {
     return Center(
       child: Row(
         children: [
-          const SizedBox(width: 57,),
           Image.asset(
             'assets/images/profile.png',
-            width: 80,
-            height: 80,
+            width: 55,
+            height: 55,
           ),
           const SizedBox(
             width: 25,
           ),
           const Column(
-            mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               BodyText(
                 text: 'Autopilot',
-                size: 14,
+                size: 20,
                 color: primaryBlack,
               ),
               SizedBox(
-                height: 6,
+                height: 15,
               ),
               BodyText(
                 text: 'autopilot@yonsei.ac.kr',
-                size: 14,
+                size: 12,
                 color: primaryBlack,
               ),
             ],
