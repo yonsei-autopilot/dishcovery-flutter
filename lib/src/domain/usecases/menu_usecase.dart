@@ -15,6 +15,7 @@ final menuUsecaseProvider = Provider<MenuUsecase>((ref) {
 
 class MenuUsecase {
   final MenuRepository repo;
+
   MenuUsecase(this.repo);
 
   Future<MenuTranslationResponse> analyzeMenuImage(String filePath) async {

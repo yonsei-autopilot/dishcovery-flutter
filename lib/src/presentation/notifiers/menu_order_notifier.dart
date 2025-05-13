@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smart_menu_flutter/src/domain/dtos/menu/menu_order_request.dart';
