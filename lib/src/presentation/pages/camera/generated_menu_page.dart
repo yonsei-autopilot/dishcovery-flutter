@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smart_menu_flutter/src/core/router/router.dart';
 import 'package:smart_menu_flutter/src/domain/dtos/menu/menu_translation_response.dart';
-import 'package:smart_menu_flutter/src/presentation/pages/menu_order/menu_order_page.dart';
+import 'package:smart_menu_flutter/src/presentation/notifiers/cart_notifier.dart';
 import '../../../config/theme/color.dart';
 
 typedef GeneratedMenuPageParams = ({
@@ -71,6 +71,16 @@ class GeneratedMenuPageState extends ConsumerState<GeneratedMenuPage> {
     const heightScaleFactor = 1.2;
     const fontScaleFactor = 0.7;
 
+    final cartItems = ref.watch(cartProvider);
+
+    final Map<String, int> menuCountMap = {};
+    var menuCount = 0;
+
+    for (final item in cartItems) {
+      menuCountMap[item.menuName] = item.count;
+      menuCount += item.count;
+    }
+
     return Scaffold(
       backgroundColor: primaryWhite,
       body: Stack(
@@ -105,6 +115,9 @@ class GeneratedMenuPageState extends ConsumerState<GeneratedMenuPage> {
                             1000 *
                             displayHeight;
                         final fontSize = height * fontScaleFactor;
+                        final isInCart =
+                            menuCountMap.containsKey(item.translatedItemName);
+
                         return Positioned(
                           left: left,
                           top: top,
@@ -113,28 +126,85 @@ class GeneratedMenuPageState extends ConsumerState<GeneratedMenuPage> {
                             ignoring: isScaling,
                             child: GestureDetector(
                               onTap: () {
-                                ref.read(routerProvider).push('/menu_detail',
-                                    extra: (menuName: item.translatedItemName));
+                                ref.read(routerProvider).push(
+                                  '/menu_detail',
+                                  extra: (menuName: item.translatedItemName),
+                                );
                               },
                               behavior: HitTestBehavior.opaque,
-                              child: Container(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 10),
-                                decoration:
-                                    const BoxDecoration(color: Colors.white),
-                                child: Text(
-                                  item.translatedItemName,
-                                  style: TextStyle(
-                                    fontSize: fontSize,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black,
+                              child: Stack(
+                                clipBehavior: Clip.none,
+                                children: [
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 5),
+                                    decoration: BoxDecoration(
+                                      color: isInCart
+                                          ? const Color.fromARGB(
+                                              255, 205, 243, 26)
+                                          : const Color.fromARGB(
+                                              255, 230, 230, 230),
+                                      borderRadius: BorderRadius.circular(5),
+                                      border: Border.all(
+                                          color: Colors.grey.shade400,
+                                          width: 1),
+                                      boxShadow: const [
+                                        BoxShadow(
+                                          color: Color.fromARGB(20, 0, 0, 0),
+                                          offset: Offset(0, 5),
+                                          blurRadius: 4,
+                                        ),
+                                      ],
+                                    ),
+                                    child: Text(
+                                      item.translatedItemName,
+                                      style: TextStyle(
+                                        fontSize: fontSize,
+                                        color: Colors.black,
+                                      ),
+                                    ),
                                   ),
-                                ),
+                                  if (isInCart)
+                                    Positioned(
+                                      top: -10,
+                                      right: -10,
+                                      child: Container(
+                                        padding: const EdgeInsets.all(4),
+                                        decoration: const BoxDecoration(
+                                          color: Colors.white,
+                                          shape: BoxShape.circle,
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color:
+                                                  Color.fromARGB(20, 0, 0, 0),
+                                              offset: Offset(0, 5),
+                                              blurRadius: 4,
+                                            ),
+                                          ],
+                                        ),
+                                        constraints: const BoxConstraints(
+                                          minWidth: 15,
+                                          minHeight: 15,
+                                        ),
+                                        child: Center(
+                                          child: Text(
+                                            menuCountMap[
+                                                    item.translatedItemName]
+                                                .toString(),
+                                            style: const TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 12,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                ],
                               ),
                             ),
                           ),
                         );
-                      }),
+                      })
                     ],
                   ),
                 ),
@@ -161,19 +231,55 @@ class GeneratedMenuPageState extends ConsumerState<GeneratedMenuPage> {
             ),
           ),
           Positioned(
-            top: 70,
-            right: 35,
-            child: IconButton(
-              icon: const Icon(
-                CupertinoIcons.cart,
-                size: 25,
-                color: primaryBlack,
-              ),
-              onPressed: () {
-                ref.read(routerProvider).push('/menu_cart');
-              },
-            ),
-          )
+              top: 70,
+              right: 35,
+              child: Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  IconButton(
+                    icon: const Icon(
+                      CupertinoIcons.cart,
+                      size: 25,
+                      color: primaryBlack,
+                    ),
+                    onPressed: () {
+                      ref.read(routerProvider).push('/menu_cart');
+                    },
+                  ),
+                  if (menuCount > 0)
+                    Positioned(
+                      top: -2,
+                      right: -2,
+                      child: Container(
+                        padding: const EdgeInsets.all(4),
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          shape: BoxShape.circle,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Color.fromARGB(20, 0, 0, 0),
+                              offset: Offset(0, 5),
+                              blurRadius: 4,
+                            ),
+                          ],
+                        ),
+                        constraints: const BoxConstraints(
+                          minWidth: 15,
+                          minHeight: 15,
+                        ),
+                        child: Center(
+                          child: Text(
+                            menuCount.toString(),
+                            style: const TextStyle(
+                              color: Colors.black,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                ],
+              ))
         ],
       ),
     );
