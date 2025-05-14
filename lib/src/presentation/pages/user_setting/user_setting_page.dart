@@ -29,7 +29,7 @@ class UserSettingPageState extends ConsumerState<UserSettingPage> {
             children: [
               const Positioned(
                 top: 85,
-                left: 35,
+                left: 40,
                 child: BodyText(text: 'Welcome!', color: Color(0xff8C8C8C), size: 15,),
               ),
               const Positioned(
