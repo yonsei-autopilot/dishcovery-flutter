@@ -47,7 +47,7 @@ class LanguageDropdownWidgetState
                 return DropdownMenuItem(
                   value: lang,
                   child:
-                      BodyText(text: lang, size: 15, color: Color(0xff8C8C8C)),
+                      BodyText(text: lang, size: 15, color: const Color(0xff8C8C8C)),
                 );
               }).toList(),
               onChanged: (newLang) {
@@ -64,6 +64,13 @@ class LanguageDropdownWidgetState
                       ? const Color(0xffD9D9D9)
                       : primaryLightGreen,
                   borderRadius: BorderRadius.circular(11),
+                  boxShadow: const [
+                    BoxShadow(
+                      blurRadius: 5,
+                      offset: Offset(1, 2),
+                      color: Color(0xffC8C8C8)
+                    )
+                  ]
                 ),
               ),
               dropdownStyleData: DropdownStyleData(

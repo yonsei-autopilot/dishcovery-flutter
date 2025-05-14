@@ -144,7 +144,7 @@ class MenuCartPageState extends ConsumerState<MenuCartPage> {
                                         onTap: () {
                                           ref.read(routerProvider).push(
                                               '/menu_detail',
-                                              extra: (menuName: item.menuName));
+                                              extra: (menuName: item.menuName, availableOptions: <String>[]));
                                         },
                                       ),
                                       const Spacer(),
