@@ -1,4 +1,8 @@
+import 'dart:convert';
+
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smart_menu_flutter/src/data/local/auth_storage.dart';
+import 'package:smart_menu_flutter/src/data/local/shared_preferences_provider.dart';
 import 'package:smart_menu_flutter/src/data/network/api_path.dart';
 import 'package:smart_menu_flutter/src/data/network/dio_provider.dart';
 import 'package:smart_menu_flutter/src/data/network/http_method.dart';
@@ -11,19 +15,22 @@ import 'package:smart_menu_flutter/src/domain/errors/exception_type.dart';
 import 'package:smart_menu_flutter/src/domain/repositories/auth_repository.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../domain/entities/user.dart';
 
 final authRepositoryProvider = Provider<AuthRepository>((ref) {
   final dioService = ref.read(dioProvider);
   final tokenStorage = ref.read(authStorageProvider);
-  return AuthRepositoryImpl(dioService, tokenStorage);
+  final prefs = ref.read(sharedPreferencesProvider);
+  return AuthRepositoryImpl(dioService, tokenStorage, prefs);
 });
 
 class AuthRepositoryImpl implements AuthRepository {
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   final DioService dioService;
   final AuthStorage tokenStorage;
+  final SharedPreferences pref;
 
-  AuthRepositoryImpl(this.dioService, this.tokenStorage);
+  AuthRepositoryImpl(this.dioService, this.tokenStorage, this.pref);
 
   @override
   Future<String> googleAuthenticate() async {
@@ -31,6 +38,16 @@ class AuthRepositoryImpl implements AuthRepository {
     if (googleUser == null) {
       throw Exception("Failed authentication from google");
     }
+
+    final String? userId = googleUser.displayName;
+    final String? email = googleUser.email;
+    final String? image = googleUser.photoUrl;
+    final user = User(
+      id: userId,
+      email: email,
+      imageUrl: image
+    );
+    pref.setString('user', jsonEncode(user.toJson()));
 
     final GoogleSignInAuthentication authentication = await googleUser.authentication;
     String? accessToken = authentication.accessToken;
