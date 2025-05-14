@@ -124,7 +124,7 @@ class _MenuDetailPageState extends ConsumerState<MenuDetailPage> {
                     children: [
                       // Image carousel
                       SizedBox(
-                        height: 200,
+                        height: 110,
                         child: ListView.separated(
                           scrollDirection: Axis.horizontal,
                           itemCount: detail.imageLinks.length,
@@ -141,8 +141,8 @@ class _MenuDetailPageState extends ConsumerState<MenuDetailPage> {
                                 borderRadius: BorderRadius.circular(8),
                                 child: Image.network(
                                   detail.imageLinks[i],
-                                  width: 200,
-                                  height: 200,
+                                  width: 130,
+                                  height: 110,
                                   fit: BoxFit.cover,
                                 ),
                               ),
