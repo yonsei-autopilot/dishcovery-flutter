@@ -11,6 +11,7 @@ import '../../notifiers/cart_notifier.dart';
 
 typedef MenuDetailPageParams = ({
   String menuName,
+  List<String> availableOptions
 });
 
 final countProvider = StateProvider.autoDispose<int>((ref) => 1);
@@ -31,6 +32,7 @@ class _MenuDetailPageState extends ConsumerState<MenuDetailPage> {
     final count = ref.watch(countProvider);
     Size size = MediaQuery.of(context).size;
     double width = size.width;
+    String options = widget.params.availableOptions.join(', ');
 
     return detailAsync.when(
       loading: () => Scaffold(
@@ -176,6 +178,20 @@ class _MenuDetailPageState extends ConsumerState<MenuDetailPage> {
                             ),
                             const SizedBox(height: 35),
 
+                            if (widget.params.availableOptions.isNotEmpty) ...[
+                              // available Options
+                              const BodyText(
+                                text: 'Available Options',
+                                weight: FontWeight.bold,
+                                size: 15,
+                              ),
+                              const SizedBox(height: 15),
+                              BodyText(
+                                text: options,
+                                size: 14,
+                              ),
+                              const SizedBox(height: 35),
+                            ],
                             // Watch Out
                             const Row(
                               children: [
