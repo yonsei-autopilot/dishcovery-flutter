@@ -66,6 +66,13 @@ class CheckedFoodWidgetState extends ConsumerState<CheckedFoodWidget> {
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(24),
                             color: primaryLightGreen,
+                            boxShadow: const [
+                              BoxShadow(
+                                offset: Offset(1,2),
+                                blurRadius: 5,
+                                color: Color(0xffC8C8C8)
+                              )
+                            ]
                           ),
                           child: Row(
                             children: [
