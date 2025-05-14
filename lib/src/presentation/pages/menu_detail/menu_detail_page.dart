@@ -37,7 +37,7 @@ class _MenuDetailPageState extends ConsumerState<MenuDetailPage> {
         backgroundColor: primaryWhite,
         body: Center(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             CircularProgressIndicator(
               color: mainColor,
@@ -270,11 +270,13 @@ class _MenuDetailPageState extends ConsumerState<MenuDetailPage> {
                             .addOrUpdateItem(cartItem);
                         if (!context.mounted) return;
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            content: BodyText(
-                          text: 'Added $count item(s) to the cart',
-                          size: 10,
-                          color: primaryWhite,
-                        )));
+                          content: BodyText(
+                            text: 'Added $count item(s) to the cart',
+                            size: 10,
+                            color: primaryWhite,
+                          ),
+                          duration: const Duration(seconds: 1),
+                        ));
                         context.pop();
                       } else {
                         ScaffoldMessenger.of(context)
