@@ -128,7 +128,7 @@ class GeneratedMenuPageState extends ConsumerState<GeneratedMenuPage> {
                               onTap: () {
                                 ref.read(routerProvider).push(
                                   '/menu_detail',
-                                  extra: (menuName: item.translatedItemName),
+                                  extra: (menuName: item.translatedItemName, availableOptions: item.availableOptions),
                                 );
                               },
                               behavior: HitTestBehavior.opaque,
