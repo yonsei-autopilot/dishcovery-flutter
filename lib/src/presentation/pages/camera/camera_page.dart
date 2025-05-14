@@ -76,7 +76,7 @@ class CameraPageState extends ConsumerState<CameraPage>
                 ),
               ),
               Positioned(
-                top: 28,
+                top: 70,
                 left: 33,
                 child: IconButton(
                   onPressed: () {
