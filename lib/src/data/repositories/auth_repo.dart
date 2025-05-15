@@ -99,6 +99,10 @@ class AuthRepositoryImpl implements AuthRepository {
         }
       }
 
+      final String userId = request.loginId;
+      final user = User(id: userId, email: null, imageUrl: null);
+      pref.setString('user', jsonEncode(user.toJson()));
+
       return apiResponse.data!;
     } catch (e) {
       if (e is GlobalException) rethrow;
