@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smart_menu_flutter/src/config/theme/body_text.dart';
 import 'package:smart_menu_flutter/src/config/theme/color.dart';
 import 'package:smart_menu_flutter/src/presentation/notifiers/auth_notifier.dart';
+import '../../states/auth_state.dart';
 
 class LoginPage extends ConsumerStatefulWidget {
   const LoginPage({super.key});
@@ -34,8 +35,30 @@ class LoginPageState extends ConsumerState<LoginPage> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     double width = size.width;
+    final authState = ref.watch(authNotifierProvider);
 
-    return Scaffold(
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (authState is AuthenticationError) {
+        showDialog(
+          context: context,
+          builder: (ctx) => AlertDialog(
+            title: const BodyText(text: '로그인 실패'),
+            content: BodyText(text: authState.message),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  ref.read(authNotifierProvider.notifier).clearError();
+                  Navigator.of(ctx).pop();
+                },
+                child: const BodyText(text: '확인'),
+              ),
+            ],
+          ),
+        );
+      }
+    });
+
+  return Scaffold(
         backgroundColor: primaryWhite,
         body: SafeArea(
           child: Center(

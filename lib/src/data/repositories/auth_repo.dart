@@ -42,17 +42,15 @@ class AuthRepositoryImpl implements AuthRepository {
     final String? userId = googleUser.displayName;
     final String? email = googleUser.email;
     final String? image = googleUser.photoUrl;
-    final user = User(
-      id: userId,
-      email: email,
-      imageUrl: image
-    );
+    final user = User(id: userId, email: email, imageUrl: image);
     pref.setString('user', jsonEncode(user.toJson()));
 
-    final GoogleSignInAuthentication authentication = await googleUser.authentication;
+    final GoogleSignInAuthentication authentication =
+        await googleUser.authentication;
     String? accessToken = authentication.accessToken;
     if (accessToken == null) {
-      throw Exception("Failed authentication from google; access token is null");
+      throw Exception(
+          "Failed authentication from google; access token is null");
     }
     return accessToken;
   }
@@ -60,12 +58,13 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<LoginResponse> googleLogin(String accessToken) async {
     try {
-    final apiResponse = await dioService.request<ApiResponse<LoginResponse>>(
-      path: ApiPath.googleLogin,
-      method: HttpMethod.POST,
-      body: GoogleLoginRequest(accessToken: accessToken).toJson(),
-      decoder: (json) => ApiResponse.fromJson(json, (j) => LoginResponse.fromJson(j as Map<String, dynamic>)),
-    );
+      final apiResponse = await dioService.request<ApiResponse<LoginResponse>>(
+        path: ApiPath.googleLogin,
+        method: HttpMethod.POST,
+        body: GoogleLoginRequest(accessToken: accessToken).toJson(),
+        decoder: (json) => ApiResponse.fromJson(
+            json, (j) => LoginResponse.fromJson(j as Map<String, dynamic>)),
+      );
 
       if (!apiResponse.isSuccess) {
         final error = apiResponse.error;
@@ -75,10 +74,10 @@ class AuthRepositoryImpl implements AuthRepository {
       }
 
       return apiResponse.data!;
-
     } catch (e) {
       if (e is GlobalException) rethrow;
-      throw GlobalException(ExceptionType.networkError, 'Failed to connect to server');
+      throw GlobalException(
+          ExceptionType.networkError, 'Failed to connect to server');
     }
   }
 
@@ -89,7 +88,8 @@ class AuthRepositoryImpl implements AuthRepository {
         path: ApiPath.simpleLogin,
         method: HttpMethod.POST,
         body: request.toJson(),
-        decoder: (json) => ApiResponse.fromJson(json, (j) => LoginResponse.fromJson(j as Map<String, dynamic>)),
+        decoder: (json) => ApiResponse.fromJson(
+            json, (j) => LoginResponse.fromJson(j as Map<String, dynamic>)),
       );
 
       if (!apiResponse.isSuccess) {
@@ -99,11 +99,11 @@ class AuthRepositoryImpl implements AuthRepository {
         }
       }
 
-      return apiResponse.data!; 
-
+      return apiResponse.data!;
     } catch (e) {
       if (e is GlobalException) rethrow;
-      throw GlobalException(ExceptionType.networkError, 'Failed to connect to server');
+      throw GlobalException(
+          ExceptionType.networkError, 'Failed to connect to server');
     }
   }
 
