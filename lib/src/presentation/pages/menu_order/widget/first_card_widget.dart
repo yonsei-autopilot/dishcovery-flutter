@@ -13,17 +13,30 @@ import '../../../notifiers/menu_order_notifier.dart';
 class OrderFirstCardWidget extends ConsumerStatefulWidget {
   final MenuOrderResponse response;
   final MenuOrderPageParams params;
-  const OrderFirstCardWidget({super.key, required this.response, required this.params});
+
+  const OrderFirstCardWidget(
+      {super.key, required this.response, required this.params});
 
   @override
   OrderFirstCardWidgetState createState() => OrderFirstCardWidgetState();
 }
 
 class OrderFirstCardWidgetState extends ConsumerState<OrderFirstCardWidget> {
+  late final ScrollController _scrollController;
+
   @override
   void initState() {
-    ref.read(menuOrderNotifierProvider(widget.params).notifier).playOrderAudio();
+    ref
+        .read(menuOrderNotifierProvider(widget.params).notifier)
+        .playOrderAudio();
+    _scrollController = ScrollController();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 
   @override
@@ -54,10 +67,10 @@ class OrderFirstCardWidgetState extends ConsumerState<OrderFirstCardWidget> {
           right: 0,
           child: Center(
               child: BodyText(
-                text: 'Order',
-                size: 20,
-                color: primaryBlack,
-              )),
+            text: 'Order',
+            size: 20,
+            color: primaryBlack,
+          )),
         ),
         // circle
         Positioned(
@@ -111,35 +124,52 @@ class OrderFirstCardWidgetState extends ConsumerState<OrderFirstCardWidget> {
           right: 0,
           child: GestureDetector(
             onTap: () {
-              ref.read(menuOrderNotifierProvider(widget.params).notifier).playOrderAudio();
+              ref
+                  .read(menuOrderNotifierProvider(widget.params).notifier)
+                  .playOrderAudio();
             },
             child: Center(
               child: Container(
-                padding: const EdgeInsets.all(30),
+                padding: const EdgeInsets.only(right: 12),
                 width: width - 55,
                 height: height * 0.37,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(17),
-                  color: const Color(0xffD9D9D9),
-                  boxShadow: const [
-                    BoxShadow(
-                      blurRadius: 3,
-                      offset: Offset(0, 2),
-                      color: primaryGrey
-                    )
-                  ]
-                ),
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    borderRadius: BorderRadius.circular(17),
+                    color: const Color(0xffD9D9D9),
+                    boxShadow: const [
+                      BoxShadow(
+                          blurRadius: 3,
+                          offset: Offset(0, 2),
+                          color: primaryGrey)
+                    ]),
+                child: Scrollbar(
+                  controller: _scrollController,
+                  thumbVisibility: true,
+                  radius: const Radius.circular(8),
+                  thickness: 3,
+                  child: ListView(
+                    padding: const EdgeInsets.fromLTRB(30, 30, 18, 30),
+                    controller: _scrollController,
                     children: [
-                      BodyText(text: widget.response.orderInUserLanguage, size: 20, color: primaryBlack,),
-                      const SizedBox(height: 20,),
-                      const Divider(color: Color(0xff8C8C8C),),
-                      const SizedBox(height: 20,),
-                      BodyText(text: widget.response.orderInForeignLanguage, size: 28, color: primaryBlack,),
-                      // const SizedBox(height: 20,),
-                      // BodyText(text: 'Detected Menu Language: $lang', size: 13, color: const Color(0xff8C8C8C),)
+                      BodyText(
+                        text: widget.response.orderInUserLanguage,
+                        size: 20,
+                        color: primaryBlack,
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      const Divider(
+                        color: Color(0xff8C8C8C),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      BodyText(
+                        text: widget.response.orderInForeignLanguage,
+                        size: 28,
+                        color: primaryBlack,
+                      ),
                     ],
                   ),
                 ),
@@ -155,26 +185,23 @@ class OrderFirstCardWidgetState extends ConsumerState<OrderFirstCardWidget> {
           child: Center(
             child: Container(
               padding: const EdgeInsets.only(left: 20, right: 10),
-              width: width-55,
+              width: width - 55,
               height: 50,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(17),
                   color: const Color(0xffD9D9D9),
                   boxShadow: const [
                     BoxShadow(
-                        blurRadius: 3,
-                        offset: Offset(0, 2),
-                        color: primaryGrey
-                    )
-                  ]
-              ),
+                        blurRadius: 3, offset: Offset(0, 2), color: primaryGrey)
+                  ]),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   SizedBox(
                     width: width - 220,
                     child: BodyText(
-                      text: widget.response.inquiryForDislikeFoodsInUserLanguage,
+                      text:
+                          widget.response.inquiryForDislikeFoodsInUserLanguage,
                       maxLine: 1,
                       overflow: TextOverflow.ellipsis,
                       size: 14,
@@ -186,19 +213,22 @@ class OrderFirstCardWidgetState extends ConsumerState<OrderFirstCardWidget> {
                     },
                     child: Container(
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15),
-                        color: mainColor,
-                        boxShadow: const [
-                          BoxShadow(
-                              blurRadius: 3,
-                              offset: Offset(0, 2),
-                              color: primaryGrey
-                          )
-                        ]
-                      ),
+                          borderRadius: BorderRadius.circular(15),
+                          color: mainColor,
+                          boxShadow: const [
+                            BoxShadow(
+                                blurRadius: 3,
+                                offset: Offset(0, 2),
+                                color: primaryGrey)
+                          ]),
                       width: 85,
                       height: 35,
-                      child: const Center(child: BodyText(text: 'Request', size: 14, color: primaryWhite,)),
+                      child: const Center(
+                          child: BodyText(
+                        text: 'Request',
+                        size: 14,
+                        color: primaryWhite,
+                      )),
                     ),
                   )
                 ],
