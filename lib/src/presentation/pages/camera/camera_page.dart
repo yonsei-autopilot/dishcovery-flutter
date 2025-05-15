@@ -132,10 +132,21 @@ class CameraPageState extends ConsumerState<CameraPage>
             ],
           ),
         CCapturing() => Center(
-              child: BodyText(
-            text: 'Capturing Image...',
-            color: mainColor,
-          )),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CircularProgressIndicator(
+                    color: mainColor,
+                  ),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  BodyText(
+                    text: 'Capturing Image...',
+                    color: mainColor,
+                  ),
+                ],
+              )),
         CCapturedSuccess(:final file) => Builder(builder: (context) {
             WidgetsBinding.instance.addPostFrameCallback((_) {
               context.push('/generating', extra: (filePath: file.path));

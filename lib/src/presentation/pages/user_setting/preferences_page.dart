@@ -26,6 +26,9 @@ class PreferencesPageState extends ConsumerState<PreferencesPage> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    double height = size.height;
+
     return Scaffold(
       backgroundColor: primaryWhite,
       body: Stack(
@@ -54,11 +57,11 @@ class PreferencesPageState extends ConsumerState<PreferencesPage> {
               color: primaryBlack,
             )),
           ),
-          const Positioned(
-            top: 140,
+          Positioned(
+            top: height * 0.18,
             left: 35,
             right: 35,
-            child: BodyText(
+            child: const BodyText(
               text: 'Choose which allergies, ingredients, or culturally / religiously restricted foods to watch out for:',
               overflow: TextOverflow.clip,
               size: 16,
@@ -66,13 +69,13 @@ class PreferencesPageState extends ConsumerState<PreferencesPage> {
             ),
           ),
           const Positioned(
-            top: 200,
+            top: 215,
             left: 35,
             right: 35,
             child: CheckedFoodWidget(),
           ),
           const Positioned(
-            top: 270,
+            top: 290,
             left: 35,
             right: 35,
             child: FoodScrollView(),
