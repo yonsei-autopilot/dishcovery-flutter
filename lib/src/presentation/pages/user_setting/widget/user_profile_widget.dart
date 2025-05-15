@@ -53,7 +53,7 @@ class UserProfileWidgetState extends ConsumerState<UserProfileWidget> {
                 height: 7,
               ),
               BodyText(
-                text: (user == null || user.email == null) ? 'Unknown' : user.email!,
+                text: (user == null || user.email == null) ? 'test@test.com' : user.email!,
                 size: 12,
                 color: primaryBlack,
               ),
