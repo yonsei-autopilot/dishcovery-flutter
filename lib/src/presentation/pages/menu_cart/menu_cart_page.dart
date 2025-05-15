@@ -66,7 +66,7 @@ class MenuCartPageState extends ConsumerState<MenuCartPage> {
             ),
           ),
           Positioned(
-            top: 110,
+            top: 125,
             left: 0,
             right: 0,
             bottom: 0,
