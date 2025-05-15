@@ -280,7 +280,8 @@ class _MenuDetailPageState extends ConsumerState<MenuDetailPage> {
                         final cartItem = CartItem(
                             menuName: detail.name,
                             count: count,
-                            imageUrl: detail.imageLinks[0]);
+                            imageUrl: detail.imageLinks[0],
+                            availableOptions: widget.params.availableOptions);
                         await ref
                             .read(cartProvider.notifier)
                             .addOrUpdateItem(cartItem);

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_inner_shadow/flutter_inner_shadow.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smart_menu_flutter/src/config/theme/body_text.dart';
@@ -16,10 +15,12 @@ class LoginPage extends ConsumerStatefulWidget {
 class LoginPageState extends ConsumerState<LoginPage> {
   final TextEditingController _loginIdController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  bool _passwordVisible = false;
 
   @override
   void initState() {
     super.initState();
+    _passwordVisible = false;
   }
 
   @override
@@ -75,7 +76,12 @@ class LoginPageState extends ConsumerState<LoginPage> {
                           controller: _loginIdController,
                           decoration: const InputDecoration(
                             border: InputBorder.none,
-                            hintText: 'Login Id',
+                            hintText: 'Login/E-Mail',
+                            hintStyle: TextStyle(
+                              fontFamily: 'SFProRegular',
+                              fontSize: 14,
+                              color: primaryGrey
+                            )
                           ),
                           style:
                               const TextStyle(fontSize: 14, color: primaryGrey),
@@ -108,16 +114,33 @@ class LoginPageState extends ConsumerState<LoginPage> {
                         child: Center(
                           child: TextFormField(
                             controller: _passwordController,
-                            obscureText: true,
-                            decoration: const InputDecoration(
+                            obscureText: _passwordVisible,
+                            decoration: InputDecoration(
                               border: InputBorder.none,
                               hintText: 'Password',
-                              suffixIcon: Icon(CupertinoIcons.eye_slash,
-                                  color: primaryGrey),
-                              contentPadding: EdgeInsets.symmetric(vertical: 18),
+                              hintStyle: const TextStyle(
+                                  fontFamily: 'SFProRegular',
+                                  fontSize: 14,
+                                  color: primaryGrey
+                              ),
+                              suffixIcon: IconButton(
+                                icon: Icon(
+                                  _passwordVisible
+                                      ? Icons.visibility_outlined
+                                      : Icons.visibility_off_outlined,
+                                  color: primaryGrey,
+                                ),
+                                onPressed: () {
+                                 setState(() {
+                                   _passwordVisible = !_passwordVisible;
+                                 });
+                                },
+                              ),
+                              contentPadding:
+                                  const EdgeInsets.symmetric(vertical: 18),
                             ),
-                            style:
-                                const TextStyle(fontSize: 14, color: primaryGrey),
+                            style: const TextStyle(
+                                fontSize: 14, color: primaryGrey),
                           ),
                         ),
                       ),
@@ -131,9 +154,9 @@ class LoginPageState extends ConsumerState<LoginPage> {
                       SizedBox(
                         width: 70,
                       ),
-                      Icon(CupertinoIcons.circle, size: 10, color: primaryGrey),
+                      Icon(Icons.circle_outlined, size: 18, color: primaryGrey),
                       SizedBox(
-                        width: 2,
+                        width: 10,
                       ),
                       BodyText(
                         text: "Remember Me",
