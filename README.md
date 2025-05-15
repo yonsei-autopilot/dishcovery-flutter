@@ -1,8 +1,6 @@
 <br>
 
-<p align="center">
-<img src="https://github.com/user-attachments/assets/933c4deb-5758-4ceb-9616-2b4ea0560786" width="140px" alt="DishCovery" />
-</p>
+![cover-v4](https://github.com/user-attachments/assets/933c4deb-5758-4ceb-9616-2b4ea0560786)
 
 <h1 align="center">DishCovery</h1>
 
