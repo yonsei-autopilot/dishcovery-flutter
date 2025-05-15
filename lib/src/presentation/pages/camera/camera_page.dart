@@ -153,14 +153,16 @@ class CameraPageState extends ConsumerState<CameraPage>
             });
             return const SizedBox();
           }),
-        CError(:final error) => ElevatedButton(
-            child: const BodyText(
-              text: "Retry",
-              color: primaryWhite,
+        CError(:final error) => Center(
+          child: ElevatedButton(
+              child: const BodyText(
+                text: "Retry",
+                color: primaryWhite,
+              ),
+              onPressed: () =>
+                  ref.read(cameraControllerProvider.notifier).initialize(),
             ),
-            onPressed: () =>
-                ref.read(cameraControllerProvider.notifier).initialize(),
-          ),
+        ),
       },
     );
   }
