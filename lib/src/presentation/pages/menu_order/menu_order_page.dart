@@ -7,6 +7,7 @@ import 'package:smart_menu_flutter/src/presentation/pages/menu_order/widget/defa
 import 'package:smart_menu_flutter/src/presentation/pages/menu_order/widget/first_card_widget.dart';
 import 'package:smart_menu_flutter/src/presentation/pages/menu_order/widget/second_card_widget.dart';
 import '../../../config/theme/color.dart';
+import '../../../core/router/router.dart';
 import '../../../domain/dtos/menu/menu_order_response.dart';
 
 typedef MenuOrderDetailParams = ({
@@ -62,9 +63,15 @@ class MenuOrderPageState extends ConsumerState<MenuOrderPage> {
         body: Center(child: Text('Error: $e')),
       ),
       data: (resp) {
-        return Scaffold(
-          backgroundColor: primaryWhite,
-          body: _buildPage(currentPage, resp, widget.params)
+        return WillPopScope(
+          onWillPop: () async {
+              ref.read(routerProvider).go('/');
+              return false;
+          },
+          child: Scaffold(
+            backgroundColor: primaryWhite,
+            body: _buildPage(currentPage, resp, widget.params)
+          ),
         );
       },
     );
