@@ -65,8 +65,8 @@ class MenuOrderPageState extends ConsumerState<MenuOrderPage> {
       data: (resp) {
         return WillPopScope(
           onWillPop: () async {
-              ref.read(routerProvider).go('/');
-              return false;
+            Future.microtask(() => ref.read(routerProvider).go('/'));
+            return false;
           },
           child: Scaffold(
             backgroundColor: primaryWhite,
