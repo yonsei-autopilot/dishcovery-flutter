@@ -46,6 +46,7 @@ class LoginPageState extends ConsumerState<LoginPage> {
           builder: (ctx) => AlertDialog(
             title: const BodyText(text: '로그인 실패'),
             content: BodyText(text: authState.message),
+            backgroundColor: primaryWhite,
             actions: [
               TextButton(
                 onPressed: () {
