@@ -21,6 +21,7 @@ class OrderDefaultWidgetState extends ConsumerState<OrderDefaultWidget> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    double height = size.height;
     double width = size.width;
 
     return Stack(
@@ -51,7 +52,7 @@ class OrderDefaultWidgetState extends ConsumerState<OrderDefaultWidget> {
         ),
         // circle
         Positioned(
-          top: 175,
+          top: height*0.2,
           left: 0,
           right: 0,
           child: Center(

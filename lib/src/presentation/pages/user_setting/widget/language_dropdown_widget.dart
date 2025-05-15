@@ -74,7 +74,7 @@ class LanguageDropdownWidgetState
                 ),
               ),
               dropdownStyleData: DropdownStyleData(
-                maxHeight: MediaQuery.of(context).size.height * 0.55,
+                maxHeight: MediaQuery.of(context).size.height * 0.45,
                 width: MediaQuery.of(context).size.width - 70,
                 decoration: BoxDecoration(
                   color: const Color(0xffF5F5F5),

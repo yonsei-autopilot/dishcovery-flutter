@@ -48,7 +48,7 @@ class FoodScrollViewState extends ConsumerState<FoodScrollView> {
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12),
               color: const Color(0xffD9D9D9)),
-          height: height * 0.55,
+          height: height * 0.45,
           child: AzListView(
             data: foodList,
             itemCount: foodList.length,
@@ -64,7 +64,6 @@ class FoodScrollViewState extends ConsumerState<FoodScrollView> {
                         color: primaryWhite,
                         borderRadius: BorderRadius.circular(8),
                       ),
-                      // width: width - 120,
                       height: 38,
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -88,18 +87,18 @@ class FoodScrollViewState extends ConsumerState<FoodScrollView> {
                 ],
               );
             },
-            indexBarItemHeight: height * 0.019,
+            indexBarItemHeight: height * 0.017,
             indexBarWidth: 12.5,
             indexBarData: SuspensionUtil.getTagIndexList(foodList),
             indexBarOptions: const IndexBarOptions(
               needRebuild: true,
               selectTextStyle: TextStyle(
                   color: primaryBlack,
-                  fontSize: 12,
+                  fontSize: 10,
                   fontWeight: FontWeight.bold),
               textStyle: TextStyle(
                   color: primaryGrey,
-                  fontSize: 12,
+                  fontSize: 10,
                   fontWeight: FontWeight.normal
               ),
               decoration: BoxDecoration(color: Colors.transparent),

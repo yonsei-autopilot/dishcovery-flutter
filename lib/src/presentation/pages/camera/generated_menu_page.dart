@@ -214,20 +214,26 @@ class GeneratedMenuPageState extends ConsumerState<GeneratedMenuPage> {
           Positioned(
             top: 70,
             left: 35,
-            child: IconButton(
-              icon: const Icon(
-                CupertinoIcons.arrow_left,
-                color: primaryBlack,
-                size: 24,
+            child: Container(
+              decoration: BoxDecoration(
+                color: primaryBlack.withOpacity(0.3),
+                shape: BoxShape.circle,
               ),
-              onPressed: () async {
-                setState(() {
-                  isLoading = true;
-                });
-                Future.microtask(() async {
-                  ref.read(routerProvider).go('/');
-                });
-              },
+              child: IconButton(
+                icon: const Icon(
+                  CupertinoIcons.arrow_left,
+                  color: primaryWhite,
+                  size: 24,
+                ),
+                onPressed: () async {
+                  setState(() {
+                    isLoading = true;
+                  });
+                  Future.microtask(() async {
+                    ref.read(routerProvider).go('/');
+                  });
+                },
+              ),
             ),
           ),
           Positioned(
@@ -236,15 +242,21 @@ class GeneratedMenuPageState extends ConsumerState<GeneratedMenuPage> {
               child: Stack(
                 clipBehavior: Clip.none,
                 children: [
-                  IconButton(
-                    icon: const Icon(
-                      CupertinoIcons.cart,
-                      size: 25,
-                      color: primaryBlack,
+                  Container(
+                    decoration: BoxDecoration(
+                      color: primaryBlack.withOpacity(0.3),
+                      shape: BoxShape.circle,
                     ),
-                    onPressed: () {
-                      ref.read(routerProvider).push('/menu_cart');
-                    },
+                    child: IconButton(
+                      icon: const Icon(
+                        CupertinoIcons.cart,
+                        size: 25,
+                        color: primaryWhite,
+                      ),
+                      onPressed: () {
+                        ref.read(routerProvider).push('/menu_cart');
+                      },
+                    ),
                   ),
                   if (menuCount > 0)
                     Positioned(
