@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -58,7 +60,7 @@ class PreferencesPageState extends ConsumerState<PreferencesPage> {
             )),
           ),
           Positioned(
-            top: height * 0.18,
+            top: min(height * 0.18, 135),
             left: 35,
             right: 35,
             child: const BodyText(
