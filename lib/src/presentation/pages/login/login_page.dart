@@ -17,11 +17,13 @@ class LoginPageState extends ConsumerState<LoginPage> {
   final TextEditingController _loginIdController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool _passwordVisible = false;
+  bool _rememberId = false;
 
   @override
   void initState() {
-    super.initState();
     _passwordVisible = false;
+    _rememberId = false;
+    super.initState();
   }
 
   @override
@@ -58,7 +60,7 @@ class LoginPageState extends ConsumerState<LoginPage> {
       }
     });
 
-  return Scaffold(
+    return Scaffold(
         backgroundColor: primaryWhite,
         body: SafeArea(
           child: Center(
@@ -98,14 +100,12 @@ class LoginPageState extends ConsumerState<LoginPage> {
                         child: TextFormField(
                           controller: _loginIdController,
                           decoration: const InputDecoration(
-                            border: InputBorder.none,
-                            hintText: 'Login/E-Mail',
-                            hintStyle: TextStyle(
-                              fontFamily: 'SFProRegular',
-                              fontSize: 14,
-                              color: primaryGrey
-                            )
-                          ),
+                              border: InputBorder.none,
+                              hintText: 'Login/E-Mail',
+                              hintStyle: TextStyle(
+                                  fontFamily: 'SFProRegular',
+                                  fontSize: 14,
+                                  color: primaryGrey)),
                           style:
                               const TextStyle(fontSize: 14, color: primaryGrey),
                         ),
@@ -137,26 +137,25 @@ class LoginPageState extends ConsumerState<LoginPage> {
                         child: Center(
                           child: TextFormField(
                             controller: _passwordController,
-                            obscureText: _passwordVisible,
+                            obscureText: !_passwordVisible,
                             decoration: InputDecoration(
                               border: InputBorder.none,
                               hintText: 'Password',
                               hintStyle: const TextStyle(
                                   fontFamily: 'SFProRegular',
                                   fontSize: 14,
-                                  color: primaryGrey
-                              ),
-                              suffixIcon: IconButton(
-                                icon: Icon(
+                                  color: primaryGrey),
+                              suffixIcon: GestureDetector(
+                                child: Icon(
                                   _passwordVisible
-                                      ? Icons.visibility_outlined
-                                      : Icons.visibility_off_outlined,
+                                      ? Icons.visibility_off_outlined
+                                      : Icons.visibility_outlined,
                                   color: primaryGrey,
                                 ),
-                                onPressed: () {
-                                 setState(() {
-                                   _passwordVisible = !_passwordVisible;
-                                 });
+                                onTap: () {
+                                  setState(() {
+                                    _passwordVisible = !_passwordVisible;
+                                  });
                                 },
                               ),
                               contentPadding:
@@ -172,16 +171,27 @@ class LoginPageState extends ConsumerState<LoginPage> {
                   const SizedBox(
                     height: 25,
                   ),
-                  const Row(
+                  Row(
                     children: [
-                      SizedBox(
+                      const SizedBox(
                         width: 70,
                       ),
-                      Icon(Icons.circle_outlined, size: 18, color: primaryGrey),
-                      SizedBox(
+                      GestureDetector(
+                        child: _rememberId
+                            ? const Icon(Icons.check_circle_outline_rounded,
+                                size: 18, color: primaryGrey)
+                            : const Icon(Icons.circle_outlined,
+                                size: 18, color: primaryGrey),
+                        onTap: () {
+                          setState(() {
+                            _rememberId = !_rememberId;
+                          });
+                        },
+                      ),
+                      const SizedBox(
                         width: 10,
                       ),
-                      BodyText(
+                      const BodyText(
                         text: "Remember Me",
                         size: 12,
                         color: primaryGrey,

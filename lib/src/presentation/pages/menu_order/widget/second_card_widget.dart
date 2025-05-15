@@ -19,10 +19,19 @@ class OrderSecondCardWidget extends ConsumerStatefulWidget {
 }
 
 class OrderSecondCardWidgetState extends ConsumerState<OrderSecondCardWidget> {
+  late ScrollController _scrollController;
+
   @override
   void initState() {
     ref.read(menuOrderNotifierProvider(widget.params).notifier).playInquiryAudio();
+    _scrollController = ScrollController();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 
   @override
@@ -172,7 +181,7 @@ class OrderSecondCardWidgetState extends ConsumerState<OrderSecondCardWidget> {
             },
             child: Center(
               child: Container(
-                padding: const EdgeInsets.all(30),
+                padding: const EdgeInsets.only(right: 12),
                 width: width - 55,
                 height: 315,
                 decoration: BoxDecoration(
@@ -182,21 +191,22 @@ class OrderSecondCardWidgetState extends ConsumerState<OrderSecondCardWidget> {
                       BoxShadow(
                           blurRadius: 3,
                           offset: Offset(0, 2),
-                          color: primaryGrey
-                      )
-                    ]
-                ),
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                          color: primaryGrey)
+                    ]),
+                child: Scrollbar(
+                  controller: _scrollController,
+                  thumbVisibility: true,
+                  radius: const Radius.circular(8),
+                  thickness: 3,
+                  child: ListView(
+                    padding: const EdgeInsets.fromLTRB(30, 30, 18, 30),
+                    controller: _scrollController,
                     children: [
                       BodyText(text: widget.response.inquiryForDislikeFoodsInUserLanguage, size: 20, color: primaryBlack,),
                       const SizedBox(height: 20,),
                       const Divider(color: Color(0xff8C8C8C),),
                       const SizedBox(height: 20,),
                       BodyText(text: widget.response.inquiryForDislikeFoodsInForeignLanguage, size: 28, color: primaryBlack,),
-                      // const SizedBox(height: 20,),
-                      // BodyText(text: 'Detected Menu Language: $lang', size: 13, color: const Color(0xff8C8C8C),)
                     ],
                   ),
                 ),
