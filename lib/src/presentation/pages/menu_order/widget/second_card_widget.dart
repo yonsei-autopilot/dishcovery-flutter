@@ -140,7 +140,7 @@ class OrderSecondCardWidgetState extends ConsumerState<OrderSecondCardWidget> {
                       SizedBox(
                         width: width - 220,
                         child: BodyText(
-                          text: widget.response.inquiryForDislikeFoodsInUserLanguage,
+                          text: widget.response.orderInUserLanguage,
                           maxLine: 1,
                           overflow: TextOverflow.ellipsis,
                           size: 14,
