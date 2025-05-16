@@ -25,47 +25,72 @@ class GeneratingPageState extends ConsumerState<GeneratingPage>
     'Understanding menu structure...',
     'Translating menu items...',
     'Creating new menu layout...',
-    'Taking a bit longer than expected...'
+    'Consulting AI chef...'
   ];
 
   int _currentStep = 0;
   Timer? _stepTimer;
+  Future<void>? _analysisFuture;
 
   @override
   void initState() {
     super.initState();
-
-    _stepTimer = Timer.periodic(const Duration(seconds: 5), (timer) {
-      if (!mounted) return timer.cancel();
-      if (_currentStep < _stepTexts.length - 1) {
-        setState(() => _currentStep += 1);
-      }
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      _startAnalysis();
     });
 
-    Future.microtask(() async {
-      final response = await ref
-          .read(menuUsecaseProvider)
-          .analyzeMenuImage(widget.params.filePath);
-      ref.read(routerProvider).go('/generated_menu', extra: (
-        filePath: widget.params.filePath,
-        response: response,
+    _stepTimer = Timer.periodic(const Duration(seconds: 5), (timer) {
+      if (!mounted) {
+        timer.cancel();
+        return;
+      }
+      setState(() {
+        if (_currentStep < _stepTexts.length - 1) {
+          _currentStep += 1;
+        }
+      });
+    });
+  }
+
+
+  void _startAnalysis() {
+    _analysisFuture = _performImageAnalysis();
+  }
+
+  Future<void> _performImageAnalysis() async {
+    final menuUsecase = ref.read(menuUsecaseProvider);
+    final router = ref.read(routerProvider);
+
+    try {
+      final response = await menuUsecase.analyzeMenuImage(widget.params.filePath);
+
+      if (!mounted) return;
+
+      final snippet = response.items
+          .map((item) => item.translatedItemName)
+          .join(' ');
+
+      await menuUsecase.getLanguageCodeForGoogleCodeFromServer(snippet);
+
+      if (!mounted) return;
+
+      router.go('/generated_menu', extra: (
+      filePath: widget.params.filePath,
+      response: response,
       ));
-      String snippetOfForeignLanguage =
-          response.items.map((item) => item.translatedItemName).join(' ');
-      await ref
-          .read(menuUsecaseProvider)
-          .getLanguageCodeForGoogleCodeFromServer(snippetOfForeignLanguage);
+    } finally {
       if (mounted) {
         _stepTimer?.cancel();
       }
-      ref.read(routerProvider).go(
-        '/generated_menu',
-        extra: (
-          filePath: widget.params.filePath,
-          response: response,
-        ),
-      );
-    });
+    }
+  }
+
+  @override
+  void dispose() {
+    _stepTimer?.cancel();
+    _analysisFuture?.ignore();
+    super.dispose();
   }
 
   @override
