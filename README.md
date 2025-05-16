@@ -2,13 +2,12 @@
 
 ![cover-v4](https://github.com/user-attachments/assets/933c4deb-5758-4ceb-9616-2b4ea0560786)
 
-<h1 align="center">DishCovery</h1>
+<h1 align="center"><img src="https://github.com/user-attachments/assets/aef30083-9094-4085-b8c0-2ecfdc95297d" alt="icon" width="25" height="25"> DishCovery</h1>
 
 <br>
 
 ## 👀 Overview
-*DishCovery* is a mobile app for Google Solution Challenge APAC 2025, addressing challenges in tourism and healthcare. By helping travelers overcome language barriers and unfamiliar menus, it enables safer and more enjoyable dining experiences abroad. The app supports users with allergies, religious dietary restrictions, and personal preferences by providing instant menu translations and ingredient information. It also allows you to ask questions by playing AI-generated audio in the local language. This project aligns with SDG 3: Good Health and Well-being by promoting informed and healthy food choices for travelers.
-
+*DishCovery* is a mobile app for Google APAC Solution Challenge 2025, addressing challenges in tourism and healthcare. By helping travelers overcome language barriers and unfamiliar menus, it enables safer and more enjoyable dining experiences abroad. The app supports users with allergies, religious dietary restrictions, and personal preferences by providing instant menu translations and ingredient information. It also allows travellers to ask questions by playing AI-generated audio in the local language. This project aligns with SDG 3: Good Health and Well-being by promoting informed and healthy food choices for travelers.
 
 ## 📱 Screens
 
