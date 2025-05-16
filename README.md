@@ -22,7 +22,7 @@
 
 
 
-## 📂 Dircectory Structure (Clean Architecture)
+## 📂 Directory Structure (Clean Architecture)
 
 ```
 📂 lib
@@ -44,7 +44,6 @@
    │  └─ 📂 usecases
    └─ 📂 presentation
       ├─ 📂 model
-      ├─ 📂 notifiers
       ├─ 📂 pages
       │  └─ 📂 widgets
       ├─ 📂 notifiers
@@ -60,4 +59,4 @@
 - Gemini 
 
 ## 🚀 Getting Started
- [Click to download a releaed apk](https://github.com/yonsei-autopilot/smart-menu-flutter/tree/main/release). To install this, you need to able downloading an app from unknown sources.
+ [Click to download a released apk](https://github.com/yonsei-autopilot/smart-menu-flutter/tree/main/release). To install this, you need to be able to download apps from unknown sources.
